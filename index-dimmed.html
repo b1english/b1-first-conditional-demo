@@ -3198,17 +3198,21 @@ body {
   padding-top: 16px;
 }
 .spec-mode-toggle {
-  width: 229px;
-  height: 32px;
+  width: 251px;
+  min-height: 44px;
   margin: 0 0 10px;
-  padding: 3px;
+  padding: 5px;
   display: flex;
-  gap: 3px;
+  align-items: center;
+  gap: 5px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.84);
+  border: 1px solid #C5D5FF;
+  background: #EEF4FF;
+  box-shadow: 0 8px 18px rgba(18, 78, 230, 0.18);
 }
 .spec-mode-toggle button {
   flex: 1;
+  height: 32px;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -3220,6 +3224,7 @@ body {
 .spec-mode-toggle button.active {
   background: #255FF1;
   color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(18, 78, 230, 0.22);
 }
 .spec-record-panel {
   width: 361px;
@@ -3796,6 +3801,10 @@ body {
   background: #E6E9EE;
   color: #C0C8D4;
   cursor: not-allowed;
+}
+.spec-listening-submit.retry {
+  background: #B2C5F7;
+  color: #124EE6;
 }
 .spec-bottom.typing {
   bottom: 10px;
@@ -4772,53 +4781,93 @@ function renderScenario(container, data) {
   let submitted = false;
   let completeReady = false;
   let fullPlayed = false;
-  const punctuation = _specChunkPunctuation(data.fullSentence, data.chunks);
-  const recordHintLines = _hintLinesFromText(data.recordHints || data.hints || []);
+  let recordAttemptCount = 0;
   const weakRecordIndex = data.chunks.length ? Math.floor(Math.random() * data.chunks.length) : -1;
-  const recordFeedback = data.recordFeedback || data.chunks.map((chunk,index) => ({ text: chunk.answer, good: index !== weakRecordIndex }));
-  const recordPunctuation = _specChunkPunctuation(data.fullSentence, recordFeedback);
+  const answerVariants = [
+    {
+      fullSentence: data.fullSentence,
+      chunks: data.chunks.map(chunk => chunk.answer),
+      lookupUnits: data.lookupUnits || []
+    },
+    ...(data.acceptedAnswers || []).map(answer => ({
+      fullSentence: answer.fullSentence || answer.sentence || data.fullSentence,
+      chunks: (answer.chunks || []).map(chunk => typeof chunk === 'string' ? chunk : chunk.answer),
+      lookupUnits: answer.lookupUnits || data.lookupUnits || []
+    }))
+  ].map(answer => ({
+    ...answer,
+    punctuation: _specChunkPunctuation(answer.fullSentence, answer.chunks)
+  }));
+  const defaultAnswer = answerVariants[0];
   const allFilled = () => slotStates.every(Boolean);
-  const allCorrect = () => allFilled() && slotStates.every((slot,index) => slot.text === data.chunks[index].answer);
+  const matchedAnswer = () => {
+    if (!allFilled()) return null;
+    return answerVariants.find(answer => answer.chunks.length === slotStates.length && answer.chunks.every((chunk,index) => slotStates[index]?.text === chunk)) || null;
+  };
+  const allCorrect = () => Boolean(matchedAnswer());
   const currentSlot = () => slotStates.findIndex(slot => !slot);
-  const selectedVisibleStates = () => slotStates.map((slot,index) => {
+  const topicHTML = (targetMode, showToggle = false) => {
+    const usesTranslationTopic = Boolean(data.translation);
+    const content = usesTranslationTopic ? data.translation : data.prompt;
+    const hintToggleHTML = data.hasHint && showToggle ? _specHintToggleHTML(targetMode, targetMode === 'record' ? recordHint : selectHint) : '';
+    return _specTopicCardHTML(_specEscape(content), !usesTranslationTopic, true, {
+      className: !usesTranslationTopic && data.hasHint ? 'scenario-v2' : '',
+      hintToggleHTML
+    });
+  };
+  const selectedVisibleStates = answer => slotStates.map((slot,index) => {
     if (!slot) return null;
     if (!submitted) return { ...slot, state: 'selected' };
-    return { ...slot, state: slot.text === data.chunks[index].answer ? 'correct' : 'wrong', trailingPunctuation: punctuation[index] || '' };
+    const checkAnswer = answer || defaultAnswer;
+    return { ...slot, state: slot.text === checkAnswer.chunks[index] ? 'correct' : 'wrong', trailingPunctuation: checkAnswer.punctuation[index] || '' };
   });
-  const recordResultSlotStates = () => recordFeedback.map((item,index) => ({
-    state: item.good ? 'correct' : 'wrong',
-    text: item.text,
-    trailingPunctuation: recordPunctuation[index] || ''
-  }));
-  const completeSentenceHTML = () => _specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || []);
-  const reviewHTML = resultSlots => `<div class="spec-select-review">${completeSentenceHTML()}${_specSlotsHTML(resultSlots.map(item => ({ zh: '', answer: item.text })), resultSlots, data.chunks.length, { showHints: false, submitted: true })}</div>`;
+  const recordResultSlotStates = () => {
+    const allGood = recordAttemptCount > 1 || data.recordFirstAttemptAllCorrect;
+    const feedback = data.chunks.map((chunk,index) => ({ text: chunk.answer, good: allGood || index !== weakRecordIndex }));
+    const recordPunctuation = _specChunkPunctuation(data.fullSentence, feedback);
+    return feedback.map((item,index) => ({
+      state: item.good ? 'correct' : 'wrong',
+      text: item.text,
+      trailingPunctuation: recordPunctuation[index] || ''
+    }));
+  };
+  const completeSentenceHTML = (answer = defaultAnswer) => _specCompleteSentenceHTML(answer.fullSentence, data.gloss || {}, true, answer.lookupUnits || []);
+  const reviewHTML = (resultSlots, answer = defaultAnswer) => `<div class="spec-select-review">${completeSentenceHTML(answer)}${_specSlotsHTML(resultSlots.map(item => ({ zh: '', answer: item.text })), resultSlots, data.chunks.length, { showHints: false, submitted: true })}</div>`;
   const render = () => {
     if (mode === 'record') return renderRecord();
-    const correct = submitted && allCorrect();
-    const visibleStates = selectedVisibleStates();
+    const answer = matchedAnswer();
+    const correct = submitted && Boolean(answer);
+    const visibleStates = selectedVisibleStates(answer);
     const poolHTML = optionItems.map(item => _specPillHTML(item.label, item.index, used.has(item.index) ? 'hollow' : '')).join('');
-    const hintToggle = data.hasHint && !(correct && completeReady) ? _specHintToggleHTML('select', selectHint) : '';
-    const topic = _specTopicCardHTML(_specEscape(data.prompt), true, true, { className: data.hasHint ? 'scenario-v2' : '', hintToggleHTML: hintToggle });
+    const topic = topicHTML('select', !(correct && completeReady));
     const review = submitted && !correct ? reviewHTML(visibleStates) : '';
-    const completeHTML = correct && completeReady ? completeSentenceHTML() : '';
+    const completeHTML = correct && completeReady ? completeSentenceHTML(answer) : '';
     _specShell(container, {
       exerciseId: data.id,
       progress: stepProgress(),
       screenClass: 'spec-deferred-select-screen',
       bodyHTML: `<div class="spec-main-stack">${_specModeToggleHTML(mode)}${topic}${completeHTML || review || _specSlotsHTML(data.chunks, visibleStates, Math.max(0,currentSlot()), { showHints: !data.hasHint || selectHint, canRemove: true, submitted })}${submitted ? '' : `<div class="spec-option-pool">${poolHTML}</div>`}</div>`,
-      bottomHTML: submitted ? `<button class="spec-listening-submit" type="button" data-next-scenario ${correct && !completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit" type="button" data-submit ${!allFilled() ? 'disabled' : ''}>发送</button>`,
+      bottomHTML: submitted ? (correct ? `<button class="spec-listening-submit" type="button" data-next-scenario ${!completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit retry" type="button" data-retry-scenario>再试一次</button>`) : `<button class="spec-listening-submit" type="button" data-submit ${!allFilled() ? 'disabled' : ''}>发送</button>`,
       bottomClass: 'listening'
     });
     if (correct && completeReady && !fullPlayed) {
       fullPlayed = true;
-      _playSoon(data.fullSentence, 300);
+      _playSoon(answer.fullSentence, 300);
     }
     if (submitted && !correct && !fullPlayed) {
       fullPlayed = true;
-      _playSoon(data.fullSentence, 300);
+      _playSoon(defaultAnswer.fullSentence, 300);
     }
     bindScenarioCommon();
     container.querySelector('[data-next-scenario]')?.addEventListener('click', () => completeExercise(data.id));
+    container.querySelector('[data-retry-scenario]')?.addEventListener('click', () => {
+      slotStates.fill(null);
+      used.clear();
+      submitted = false;
+      completeReady = false;
+      fullPlayed = false;
+      render();
+    });
     container.querySelector('[data-submit]')?.addEventListener('click', () => {
       if (!allFilled()) return;
       submitted = true;
@@ -4861,16 +4910,18 @@ function renderScenario(container, data) {
     });
   };
   const renderRecord = () => {
-    const topic = _specTopicCardHTML(_specEscape(data.prompt), true, true, { className: data.hasHint ? 'scenario-v2' : '', hintToggleHTML: data.hasHint && recordState !== 'done' ? _specHintToggleHTML('record', recordHint) : '' });
+    const topic = topicHTML('record', false);
+    const resultStates = recordState === 'done' ? recordResultSlotStates() : [];
+    const recordAllCorrect = resultStates.length > 0 && resultStates.every(slot => slot.state === 'correct');
     const center = recordState === 'recording'
       ? `<div class="spec-record-panel"><div class="spec-record-wave" aria-label="录音中"><span style="--bar-height:42px"></span><span style="--bar-height:68px"></span><span style="--bar-height:110px"></span><span style="--bar-height:68px"></span><span style="--bar-height:42px"></span></div></div>`
       : recordState === 'done'
-        ? `<div class="spec-record-panel done"><p class="demo-record-feedback-title">跟读结果：</p>${reviewHTML(recordResultSlotStates())}</div>`
+        ? `<div class="spec-record-panel done"><p class="demo-record-feedback-title">参考回答：</p>${reviewHTML(resultStates)}</div>`
         : `<div class="spec-record-panel"></div>`;
-    const bottom = recordState === 'recording' ? `<button class="spec-record-main" type="button" data-record="stop" aria-label="停止录音"><img src="${SPEC_ASSETS.recordStop}" alt=""></button><div class="spec-record-prompt">点击结束</div>` : recordState === 'done' ? `<div class="spec-record-actions"><button class="spec-record-action spec-record-skip" type="button" data-record="skip" aria-label="跳过"><img src="${SPEC_ASSETS.recordSkip}" alt=""></button><button class="spec-record-action spec-record-retry" type="button" data-record="retry" aria-label="点击重录"><img src="${SPEC_ASSETS.recordRetry}" alt=""></button></div>` : `<button class="spec-record-main" type="button" data-record="start" aria-label="开始录音"><img src="${SPEC_ASSETS.recordStart}" alt=""></button><div class="spec-record-prompt">点击录音</div>`;
-    _specShell(container, { exerciseId: data.id, progress: stepProgress(), bodyHTML: `<div class="spec-main-stack">${_specModeToggleHTML(mode)}${topic}${data.hasHint && recordHint && recordState !== 'done' ? _specHintLinesHTML(recordHintLines) : ''}${center}</div>`, bottomHTML: bottom, bottomClass: `record ${recordState}` });
+    const bottom = recordState === 'recording' ? `<button class="spec-record-main" type="button" data-record="stop" aria-label="停止录音"><img src="${SPEC_ASSETS.recordStop}" alt=""></button><div class="spec-record-prompt">点击结束</div>` : recordState === 'done' ? (recordAllCorrect ? `<button class="spec-continue" type="button">继续</button>` : `<div class="spec-record-actions"><button class="spec-record-action spec-record-skip" type="button" data-record="skip" aria-label="跳过"><img src="${SPEC_ASSETS.recordSkip}" alt=""></button><button class="spec-record-action spec-record-retry" type="button" data-record="retry" aria-label="点击重录"><img src="${SPEC_ASSETS.recordRetry}" alt=""></button></div>`) : `<button class="spec-record-main" type="button" data-record="start" aria-label="开始录音"><img src="${SPEC_ASSETS.recordStart}" alt=""></button><div class="spec-record-prompt">点击录音</div>`;
+    _specShell(container, { exerciseId: data.id, progress: stepProgress(), bodyHTML: `<div class="spec-main-stack">${_specModeToggleHTML(mode)}${topic}${center}</div>`, bottomHTML: bottom, bottomClass: recordState === 'done' && recordAllCorrect ? '' : `record ${recordState}` });
     bindScenarioCommon();
-    container.querySelectorAll('[data-record]').forEach(btn => btn.addEventListener('click', () => { const action = btn.dataset.record; if (action === 'start') recordState = 'recording'; if (action === 'stop') { recordState = 'done'; recordAttempt(data, true); } if (action === 'retry') recordState = 'recording'; if (action === 'skip') return completeExercise(data.id); render(); }));
+    container.querySelectorAll('[data-record]').forEach(btn => btn.addEventListener('click', () => { const action = btn.dataset.record; if (action === 'start') recordState = 'recording'; if (action === 'stop') { recordAttemptCount += 1; recordState = 'done'; recordAttempt(data, true); } if (action === 'retry') recordState = 'recording'; if (action === 'skip') return completeExercise(data.id); render(); }));
   };
   render();
 }
@@ -5206,7 +5257,7 @@ const Q = {
       { zh: "如果", options: ["If", "Will"], correct: "If" },
       { zh: "我们吃完了零食", options: ["we run out of snacks", "we pick up some snacks"], correct: "we run out of snacks" },
       { zh: "我们", options: ["we", "they"], correct: "we" },
-      { zh: "将会", options: ["will", "if"], correct: "will" },
+      { zh: "将会", options: ["will", "would"], correct: "will" },
       { zh: "觉得饿", options: ["get hungry", "run out of snacks"], correct: "get hungry" }
     ]
   },
@@ -5234,7 +5285,7 @@ const Q = {
       { zh: "如果", options: ["If", "Will"], correct: "If" },
       { zh: "我们买点咖啡", options: ["we pick up some coffee", "we run out of coffee"], correct: "we pick up some coffee" },
       { zh: "我们", options: ["we", "they"], correct: "we" },
-      { zh: "将会", options: ["will", "if"], correct: "will" },
+      { zh: "将会", options: ["will", "would"], correct: "will" },
       { zh: "保持清醒", options: ["stay awake", "pick up some coffee"], correct: "stay awake" }
     ]
   },
@@ -5253,8 +5304,9 @@ const Q = {
     translation: "如果我们买点三明治，就有足够的东西吃了。",
     hasHint: true,
     hintDefault: true,
-    slotHintsDefaultVisible: true,
-    recordHintDefaultVisible: true,
+    slotHintsDefaultVisible: false,
+    recordHintDefaultVisible: false,
+    recordFirstAttemptAllCorrect: true,
     recordHints: [
       "试着用句型 *If ..., ... will ...* 来回答。",
       "顺便买 = *pick up + 名词*",
@@ -5283,8 +5335,9 @@ const Q = {
     translation: "如果我们把牛奶喝完了，小宝宝就会哭。",
     hasHint: true,
     hintDefault: true,
-    slotHintsDefaultVisible: true,
-    recordHintDefaultVisible: true,
+    slotHintsDefaultVisible: false,
+    recordHintDefaultVisible: false,
+    recordFirstAttemptAllCorrect: true,
     recordHints: [
       "试着用句型 *If ..., ... will ...* 来回答。",
       "耗尽某物 = *run out of + 名词*",
@@ -5311,8 +5364,9 @@ const Q = {
     translation: "如果我们找到一家超市，我就会买点果汁。",
     hasHint: true,
     hintDefault: true,
-    slotHintsDefaultVisible: true,
-    recordHintDefaultVisible: true,
+    slotHintsDefaultVisible: false,
+    recordHintDefaultVisible: false,
+    recordFirstAttemptAllCorrect: false,
     recordHints: [
       "试着用句型 *If ..., ... will ...* 来回答。",
       "找到 = *find*",
@@ -5339,11 +5393,19 @@ const Q = {
     fullSentence: "If we don't stop at a gas station, we will run out of gas soon.",
     gloss: COURSE_GLOSS,
     lookupUnits: ["If", "we", "don't", "stop at", "a", "gas", "station", "we", "will", "run out of", "gas", "soon"],
+    acceptedAnswers: [
+      {
+        fullSentence: "If we don't stop at a gas station, we will soon run out of gas.",
+        chunks: ["If", "we", "don't", "stop at", "a gas station", "we", "will", "soon", "run out of", "gas"],
+        lookupUnits: ["If", "we", "don't", "stop at", "a", "gas", "station", "we", "will", "soon", "run out of", "gas"]
+      }
+    ],
     translation: "如果我们不在加油站停下，很快就会没油了。",
     hasHint: true,
     hintDefault: true,
-    slotHintsDefaultVisible: true,
-    recordHintDefaultVisible: true,
+    slotHintsDefaultVisible: false,
+    recordHintDefaultVisible: false,
+    recordFirstAttemptAllCorrect: false,
     recordHints: [
       "试着用句型 *If ..., ... will ...* 来回答。",
       "在……停下 = *stop at + 地点*",
