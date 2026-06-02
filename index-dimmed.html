@@ -4271,6 +4271,8 @@ const SPEC_ASSETS = {
 const state = { version: null, steps: [], index: 0, activeAudio: null };
 state.score = { correct: 0, total: 0, seen: new Set() };
 let _specActiveAudio = null;
+let _specAudioEpoch = 0;
+const _specPendingAudioTimers = new Set();
 const COURSE_GLOSS = {
   if: '如果',
   we: '我们',
@@ -4312,31 +4314,62 @@ function _specEscape(value) {
 function _specSlug(text) {
   return String(text).toLowerCase().replaceAll('$',' dollars ').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90) || 'audio';
 }
-function _speakEnglish(text, rate = 0.9) {
-  if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'en-US';
-  utterance.rate = rate;
-  window.speechSynthesis.speak(utterance);
+function _specCancelSpeech() {
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+}
+function _specClearPendingAudio() {
+  _specPendingAudioTimers.forEach(timer => window.clearTimeout(timer));
+  _specPendingAudioTimers.clear();
+}
+function _specCancelAudioTimer(timer) {
+  if (!timer) return;
+  window.clearTimeout(timer);
+  _specPendingAudioTimers.delete(timer);
+}
+function _specScheduleAudio(callback, delay = 0) {
+  let timer = null;
+  timer = window.setTimeout(() => {
+    _specPendingAudioTimers.delete(timer);
+    callback();
+  }, Math.max(0, delay));
+  _specPendingAudioTimers.add(timer);
+  return timer;
+}
+function _specStopCurrentAudio() {
+  if (_specActiveAudio) {
+    _specActiveAudio.pause();
+    _specActiveAudio = null;
+  }
+  _specCancelSpeech();
+}
+function _specStopAllAudio() {
+  _specAudioEpoch += 1;
+  _specClearPendingAudio();
+  _specStopCurrentAudio();
+}
+function _specAudioFailure(text, error) {
+  console.warn('Audio unavailable:', text, error?.message || error || '');
 }
 function _audioPath(text, slow = false) {
   return `assets/audio/${slow ? 'slow' : 'normal'}/${_specSlug(text)}.mp3`;
 }
 function _specPlayAudio(text, slow = false) {
-  if (_specActiveAudio) {
-    _specActiveAudio.pause();
-    _specActiveAudio = null;
-  }
+  _specAudioEpoch += 1;
+  _specClearPendingAudio();
+  _specStopCurrentAudio();
   const audio = new Audio(_audioPath(text, slow));
+  audio.preload = 'auto';
   _specActiveAudio = audio;
-  audio.onerror = () => _speakEnglish(text, slow ? 0.7 : 0.95);
-  audio.play().catch(() => _speakEnglish(text, slow ? 0.7 : 0.95));
+  audio.onerror = error => _specAudioFailure(text, error);
+  audio.play().catch(error => _specAudioFailure(text, error));
   return audio;
 }
 function _specDirectAudio(src, text, slow = false) {
+  _specStopCurrentAudio();
   const audio = new Audio(src || _audioPath(text, slow));
-  audio.onerror = () => _speakEnglish(text, slow ? 0.7 : 0.95);
+  audio.preload = 'auto';
+  _specActiveAudio = audio;
+  audio.onerror = error => _specAudioFailure(text, error);
   return audio;
 }
 function _specAudioHTML(text, includeSlow = true) {
@@ -4497,7 +4530,7 @@ function _hintLinesFromText(lines = []) {
   return lines.map(line => _htmlToParts(line));
 }
 function _playSoon(text, delay = 260) {
-  window.setTimeout(() => _specPlayAudio(text, false), delay);
+  _specScheduleAudio(() => _specPlayAudio(text, false), delay);
 }
 function _captureContentScroll(container) {
   return container.querySelector('.spec-content')?.scrollTop || 0;
@@ -4603,12 +4636,12 @@ function completeExercise() { nextStep(); }
 function showToast() {}
 function stepProgress() { return ((state.index + 1) / Math.max(1, state.steps.length)) * 100; }
 function nextStep() {
-  if (_specActiveAudio) { _specActiveAudio.pause(); _specActiveAudio = null; }
+  _specStopAllAudio();
   state.index += 1;
   renderCurrentStep();
 }
 function showEntry() {
-  if (_specActiveAudio) { _specActiveAudio.pause(); _specActiveAudio = null; }
+  _specStopAllAudio();
   state.version = null; state.steps = []; state.index = 0;
   resetScore();
   document.getElementById('entryView').classList.remove('hidden');
@@ -4616,6 +4649,7 @@ function showEntry() {
   document.getElementById('stage').innerHTML = '';
 }
 function startCourse(version) {
+  _specStopAllAudio();
   state.version = version;
   state.steps = buildSteps(version).map((item, index) => ({...item, id: `step-${index + 1}`}));
   state.index = 0;
@@ -4926,6 +4960,7 @@ function renderScenario(container, data) {
   render();
 }
 function renderListeningBase(container, data, config = {}) {
+  const audioEpoch = _specAudioEpoch;
   const waveCount = 30;
   const staticWaveHeight = 30;
   const optionOrder = _shuffleNotSame(data.options || []);
@@ -5035,8 +5070,9 @@ function renderListeningBase(container, data, config = {}) {
     updateWaveDOM(key);
     const audioItem = audioByKey.get(key);
     if (config.sceneMode === 'dialogue' && audioItem && audioItem.turnIndex === visibleDialogueCount - 1 && visibleDialogueCount < dialogueTurns.length && !answered) {
-      clearTimeout(autoTimer);
-      autoTimer = setTimeout(() => {
+      _specCancelAudioTimer(autoTimer);
+      autoTimer = _specScheduleAudio(() => {
+        if (audioEpoch !== _specAudioEpoch) return;
         visibleDialogueCount += 1;
         render();
       }, 500);
@@ -5044,7 +5080,7 @@ function renderListeningBase(container, data, config = {}) {
   };
   const playbackTick = key => {
     const playback = getPlayback(key);
-    if (playback.state !== 'playing') return;
+    if (audioEpoch !== _specAudioEpoch || playback.state !== 'playing') return;
     const audio = playback.audio;
     if (audio?.duration && Number.isFinite(audio.duration) && audio.currentTime > 0) playback.progress = Math.min(1, audio.currentTime / audio.duration);
     else playback.progress = Math.min(1, playback.startProgress + ((performance.now() - playback.startedAt) / playback.durationMs) * (1 - playback.startProgress));
@@ -5055,7 +5091,8 @@ function renderListeningBase(container, data, config = {}) {
   const startAudio = (key = defaultAudioKey, slow = false, fromProgress = 0) => {
     const item = audioByKey.get(key) || audioItems[0];
     const playback = getPlayback(item.key);
-    clearTimeout(autoTimer);
+    if (audioEpoch !== _specAudioEpoch) return;
+    _specCancelAudioTimer(autoTimer);
     stopPlayback();
     playback.state = 'playing';
     playback.slow = slow;
@@ -5072,16 +5109,22 @@ function renderListeningBase(container, data, config = {}) {
       }
     };
     audio.onended = () => finishPlayback(item.key);
-    let fallbackSpoken = false;
-    const speakFallback = () => {
-      if (fallbackSpoken) return;
-      fallbackSpoken = true;
-      _speakEnglish(item.audioText, slow ? 0.62 : 0.9);
+    const handleAudioFailure = error => {
+      _specAudioFailure(item.audioText, error);
+      stopPlayback(item.key);
+      playback.state = 'idle';
+      playback.progress = 0;
+      updateWaveDOM(item.key);
     };
-    audio.onerror = speakFallback;
-    audio.play?.().catch?.(speakFallback);
-    updateWaveDOM(item.key);
-    playback.raf = requestAnimationFrame(() => playbackTick(item.key));
+    const startWave = () => {
+      if (audioEpoch !== _specAudioEpoch) return;
+      updateWaveDOM(item.key);
+      playback.raf = requestAnimationFrame(() => playbackTick(item.key));
+    };
+    audio.onerror = handleAudioFailure;
+    const playPromise = audio.play?.();
+    if (playPromise?.then) playPromise.then(startWave).catch(handleAudioFailure);
+    else startWave();
   };
   const alignDialogueScroller = () => {
     if (config.sceneMode !== 'dialogue') return;
@@ -5103,9 +5146,12 @@ function renderListeningBase(container, data, config = {}) {
     const playback = getPlayback(key);
     if (playback.autoStarted || playback.state === 'playing' || playback.state === 'done') return;
     playback.autoStarted = true;
-    clearTimeout(autoTimer);
+    _specCancelAudioTimer(autoTimer);
     const delay = config.sceneMode === 'dialogue' && visibleDialogueCount > 1 ? 500 : 3000;
-    autoTimer = setTimeout(() => startAudio(key, false, 0), delay);
+    autoTimer = _specScheduleAudio(() => {
+      if (audioEpoch !== _specAudioEpoch) return;
+      startAudio(key, false, 0);
+    }, delay);
   };
   const bindEvents = () => {
     container.querySelectorAll('[data-listen-play]').forEach(btn => btn.addEventListener('click', () => startAudio(btn.dataset.audioKey || defaultAudioKey, btn.dataset.listenPlay === 'slow', 0)));
@@ -5119,12 +5165,12 @@ function renderListeningBase(container, data, config = {}) {
     });
     container.querySelector('[data-listening-choice-continue]')?.addEventListener('click', () => {
       stopPlayback();
-      clearTimeout(autoTimer);
+      _specCancelAudioTimer(autoTimer);
       completeExercise(data.id);
     });
     container.querySelector('[data-listening-choice-skip]')?.addEventListener('click', () => {
       stopPlayback();
-      clearTimeout(autoTimer);
+      _specCancelAudioTimer(autoTimer);
       recordAttempt(data, false);
       completeExercise(data.id);
     });
@@ -5134,7 +5180,7 @@ function renderListeningBase(container, data, config = {}) {
       if (optionOrder[index] === data.correct) {
         answered = true;
         wrongIndex = null;
-        clearTimeout(autoTimer);
+        _specCancelAudioTimer(autoTimer);
         recordAttempt(data, true);
       } else {
         recordAttempt(data, false);
