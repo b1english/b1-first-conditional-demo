@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPC Animation Preview</title>
+<link rel="stylesheet" href="assets/npcs/npc-actors.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Avenir Next", "PingFang SC", sans-serif;
+  color: #2B3142;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.72), rgba(239,244,250,0.9)),
+    radial-gradient(circle at 20% 20%, rgba(88, 160, 255, 0.26), transparent 28%),
+    radial-gradient(circle at 82% 18%, rgba(255, 198, 93, 0.34), transparent 28%),
+    #EEF3F8;
+}
+.preview-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 36px;
+}
+.preview-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+h1 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 44px);
+  line-height: 1;
+  letter-spacing: 0;
+}
+.mode-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.mode-bar button {
+  border: 1px solid rgba(44, 54, 78, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #2B3142;
+  padding: 9px 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(30, 42, 70, 0.08);
+}
+.mode-bar button.active {
+  background: #2B3142;
+  color: white;
+}
+.npc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(172px, 1fr));
+  gap: 14px;
+}
+.npc-card {
+  min-height: 264px;
+  border: 1px solid rgba(44, 54, 78, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 16px 32px rgba(30, 42, 70, 0.1);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  justify-items: center;
+  padding: 18px 14px 14px;
+  overflow: hidden;
+}
+.npc-name {
+  width: 100%;
+  margin-top: 12px;
+  border-top: 1px solid rgba(44, 54, 78, 0.1);
+  padding-top: 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<main class="preview-shell">
+  <header class="preview-header">
+    <h1>NPC Animation Preview</h1>
+    <nav class="mode-bar" aria-label="动画模式">
+      <button type="button" class="active" data-mode="idle">idle</button>
+      <button type="button" data-mode="talking">talking</button>
+      <button type="button" data-mode="walk-forward">walk-forward</button>
+      <button type="button" data-mode="walk-in-left">walk-in-left</button>
+      <button type="button" data-mode="walk-right">walk-right</button>
+    </nav>
+  </header>
+  <section id="npcGrid" class="npc-grid" aria-label="NPC 动画预览"></section>
+</main>
+<script src="assets/npcs/npc-actors.js"></script>
+<script>
+const grid = document.getElementById("npcGrid");
+let currentMode = "idle";
+
+function render(mode) {
+  grid.innerHTML = "";
+  NpcActors.manifest.forEach(npc => {
+    const card = document.createElement("article");
+    card.className = "npc-card";
+    const actor = NpcActors.create({
+      id: npc.id,
+      mode,
+      width: 116,
+      pathX: "46px",
+      pathY: "26px"
+    });
+    const name = document.createElement("div");
+    name.className = "npc-name";
+    name.textContent = npc.name;
+    card.append(actor, name);
+    grid.appendChild(card);
+  });
+}
+
+document.querySelectorAll("[data-mode]").forEach(button => {
+  button.addEventListener("click", () => {
+    currentMode = button.dataset.mode;
+    document.querySelectorAll("[data-mode]").forEach(item => item.classList.toggle("active", item === button));
+    render(currentMode);
+  });
+});
+
+render(currentMode);
+</script>
+</body>
+</html>
