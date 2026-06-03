@@ -4150,8 +4150,8 @@ body {
   transition: min-height 0.24s cubic-bezier(0.2, 0.8, 0.2, 1), max-height 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .demo-listening-analysis.expanded {
-  min-height: var(--analysis-height, 732px);
-  max-height: var(--analysis-max-height, 732px);
+  min-height: var(--analysis-height, 701px);
+  max-height: var(--analysis-max-height, 701px);
   padding: 124px 16px 42px;
   overflow-y: auto;
 }
@@ -4160,8 +4160,8 @@ body {
   transition: none !important;
 }
 .demo-listening-analysis .spec-context-robot {
-  top: 16px;
-  width: 60px;
+  top: -31px;
+  width: 64px;
 }
 .demo-listening-analysis .spec-context-analysis-text {
   width: 100%;
@@ -4182,8 +4182,8 @@ body {
   padding: 124px 16px 42px;
 }
 .spec-dialogue-listening-screen .spec-context-analysis.demo-listening-analysis.expanded {
-  min-height: var(--analysis-height, 732px);
-  max-height: var(--analysis-max-height, 732px);
+  min-height: var(--analysis-height, 701px);
+  max-height: var(--analysis-max-height, 701px);
   padding: 124px 16px 42px;
 }
 .spec-dialogue-listening-screen .spec-context-analysis.demo-listening-analysis .spec-context-analysis-text {
@@ -5250,7 +5250,7 @@ function _restoreContentScroll(container, top) {
   });
 }
 const RESIZABLE_BOARD = { collapsed: 321, expanded: 92 };
-const LISTENING_ANALYSIS = { collapsedHeight: 168, expandedHeight: 732, expandedMaxHeight: 732, collapsedBottom: 132, expandedBottom: 420 };
+const LISTENING_ANALYSIS = { collapsedHeight: 168, expandedHeight: 701, expandedMaxHeight: 701, collapsedBottom: 132, expandedBottom: 420 };
 function _clampBoardTop(value) {
   return Math.max(RESIZABLE_BOARD.expanded, Math.min(RESIZABLE_BOARD.collapsed, value));
 }
