@@ -2733,6 +2733,10 @@ body {
   display: inline-block;
   white-space: nowrap;
 }
+.spec-chinese-punctuation-group {
+  display: inline-block;
+  white-space: nowrap;
+}
 .spec-translation-popover {
   position: absolute;
   z-index: 30;
@@ -3797,6 +3801,17 @@ body {
 .spec-listening-screen.transcript-open:not(.submitted) .spec-bottom {
   pointer-events: auto;
 }
+.spec-listening-screen.submitted .spec-bottom.listening {
+  display: none;
+}
+.spec-listening-screen.submitted .spec-screen-bottom.listening {
+  z-index: 6;
+  background: transparent;
+  pointer-events: none;
+}
+.spec-listening-screen.submitted .spec-screen-bottom.listening .spec-listening-submit {
+  pointer-events: auto;
+}
 .spec-listening-screen.transcript-closing:not(.submitted) .spec-content,
 .spec-listening-screen.transcript-closing:not(.submitted) .demo-listening-analysis {
   animation: specTranscriptBoardIn 0.22s ease both;
@@ -4143,17 +4158,19 @@ body {
 }
 .demo-listening-analysis {
   z-index: 4;
-  bottom: 112px;
+  bottom: 0;
   min-height: var(--analysis-height, 168px);
-  padding: 124px 16px 42px;
+  --analysis-text-top: 90px;
+  --analysis-text-bottom: 70px;
+  padding: 0;
   overflow: visible;
   transition: min-height 0.24s cubic-bezier(0.2, 0.8, 0.2, 1), max-height 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .demo-listening-analysis.expanded {
   min-height: var(--analysis-height, 701px);
   max-height: var(--analysis-max-height, 701px);
-  padding: 124px 16px 42px;
-  overflow-y: auto;
+  padding: 0;
+  overflow: visible;
 }
 .spec-listening-screen.analysis-dragging .spec-content,
 .spec-listening-screen.analysis-dragging .demo-listening-analysis {
@@ -4164,37 +4181,49 @@ body {
   width: 64px;
 }
 .demo-listening-analysis .spec-context-analysis-text {
-  width: 100%;
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: var(--analysis-text-top);
+  width: auto;
   min-height: 56px;
   margin: 0 auto;
   text-align: justify;
   text-align-last: left;
 }
 .demo-listening-analysis.collapsed .spec-context-analysis-text {
-  max-height: 52px;
+  max-height: max(52px, calc(var(--analysis-height, 168px) - var(--analysis-text-top) - var(--analysis-text-bottom)));
   overflow: hidden;
 }
 .demo-listening-analysis.expanded .spec-context-analysis-text {
-  max-height: none;
+  max-height: max(52px, calc(var(--analysis-height, 701px) - var(--analysis-text-top) - var(--analysis-text-bottom)));
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.demo-listening-analysis.expanded .spec-context-analysis-text::-webkit-scrollbar {
+  display: none;
 }
 .spec-dialogue-listening-screen .spec-context-analysis.demo-listening-analysis.collapsed {
   min-height: var(--analysis-height, 168px);
-  padding: 124px 16px 42px;
+  padding: 0;
 }
 .spec-dialogue-listening-screen .spec-context-analysis.demo-listening-analysis.expanded {
   min-height: var(--analysis-height, 701px);
   max-height: var(--analysis-max-height, 701px);
-  padding: 124px 16px 42px;
+  padding: 0;
 }
 .spec-dialogue-listening-screen .spec-context-analysis.demo-listening-analysis .spec-context-analysis-text {
-  width: 100%;
+  left: 16px;
+  right: 16px;
+  top: var(--analysis-text-top);
+  width: auto;
   min-height: 56px;
   margin: 0 auto;
   text-align: justify;
   text-align-last: left;
 }
 .spec-dialogue-listening-screen .spec-context-analysis.demo-listening-analysis.collapsed .spec-context-analysis-text {
-  max-height: 52px;
+  max-height: max(52px, calc(var(--analysis-height, 168px) - var(--analysis-text-top) - var(--analysis-text-bottom)));
 }
 .spec-listening-area {
   width: 361px;
@@ -4353,6 +4382,19 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.spec-screen-bottom {
+  position: absolute;
+  z-index: 4;
+  left: 16px;
+  right: 16px;
+  bottom: 6px;
+  min-height: 104px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
 }
 .spec-bottom.record {
   min-height: 86px;
@@ -4795,7 +4837,7 @@ const SPEC_ASSETS = {
   dialogueAvatarA: ASSETS.avatarA,
   dialogueAvatarB: ASSETS.avatarB
 };
-const state = { version: null, steps: [], index: 0, activeAudio: null, listeningSkipFromIndex: null };
+const state = { version: null, steps: [], index: 0, activeAudio: null, listeningSkipFromIndex: null, completedSteps: new Set() };
 state.score = { correct: 0, total: 0, seen: new Set() };
 let _specActiveAudio = null;
 let _specAudioEpoch = 0;
@@ -5135,15 +5177,29 @@ function _specEnglishLookupWithPhrasesHTML(text, gloss = {}, phrases = ['run out
     });
     if (phrase) {
       const visible = source.slice(cursor, cursor + String(phrase).length);
-      html += `<span class="spec-lookup-token" data-lookup="${_specEscape(_specLookupTip(phrase, gloss))}">${_specEscape(visible)}</span>`;
+      const phraseHTML = `<span class="spec-lookup-token" data-lookup="${_specEscape(_specLookupTip(phrase, gloss))}">${_specEscape(visible)}</span>`;
       cursor += String(phrase).length;
+      const punctuation = source.slice(cursor).match(/^[^\p{L}\p{N}\s]+/u);
+      if (punctuation) {
+        html += `<span class="spec-word-punctuation-group">${phraseHTML}${_specEscape(punctuation[0])}</span>`;
+        cursor += punctuation[0].length;
+      } else {
+        html += phraseHTML;
+      }
       continue;
     }
     const word = rest.match(/^[A-Za-z]+(?:'[A-Za-z]+)?|\$?\d+(?:\.\d+)?/);
     if (word) {
       const token = word[0];
-      html += `<span class="spec-lookup-token" data-lookup="${_specEscape(_specLookupTip(token, gloss))}">${_specEscape(token)}</span>`;
+      const wordHTML = `<span class="spec-lookup-token" data-lookup="${_specEscape(_specLookupTip(token, gloss))}">${_specEscape(token)}</span>`;
       cursor += token.length;
+      const punctuation = source.slice(cursor).match(/^[^\p{L}\p{N}\s]+/u);
+      if (punctuation) {
+        html += `<span class="spec-word-punctuation-group">${wordHTML}${_specEscape(punctuation[0])}</span>`;
+        cursor += punctuation[0].length;
+      } else {
+        html += wordHTML;
+      }
       continue;
     }
     html += _specEscape(source[cursor]);
@@ -5152,10 +5208,19 @@ function _specEnglishLookupWithPhrasesHTML(text, gloss = {}, phrases = ['run out
   return html;
 }
 function _specChineseLookupHTML(segments = []) {
-  return segments.map(segment => {
-    if (typeof segment === 'string') return _specEscape(segment);
-    return `<span class="spec-lookup-token" data-lookup="${_specEscape(segment.lookup)}">${_specEscape(segment.text)}</span>`;
-  }).join('');
+  const parts = [];
+  const punctuationPattern = /^[，。！？、；：,.!?;:]+$/;
+  segments.forEach(segment => {
+    const html = typeof segment === 'string'
+      ? _specEscape(segment)
+      : `<span class="spec-lookup-token" data-lookup="${_specEscape(segment.lookup)}">${_specEscape(segment.text)}</span>`;
+    if (typeof segment === 'string' && punctuationPattern.test(segment) && parts.length) {
+      parts[parts.length - 1] = `<span class="spec-chinese-punctuation-group">${parts[parts.length - 1]}${html}</span>`;
+    } else {
+      parts.push(html);
+    }
+  });
+  return parts.join('');
 }
 function _specClearLookup(screen) {
   screen.querySelectorAll('.spec-lookup-token.active').forEach(token => token.classList.remove('active'));
@@ -5250,7 +5315,7 @@ function _restoreContentScroll(container, top) {
   });
 }
 const RESIZABLE_BOARD = { collapsed: 321, expanded: 92 };
-const LISTENING_ANALYSIS = { collapsedHeight: 168, expandedHeight: 701, expandedMaxHeight: 701, collapsedBottom: 132, expandedBottom: 420 };
+const LISTENING_ANALYSIS = { collapsedHeight: 168, expandedHeight: 701, expandedMaxHeight: 701, bottom: 0, collapsedBottom: 132, expandedBottom: 420 };
 function _clampBoardTop(value) {
   return Math.max(RESIZABLE_BOARD.expanded, Math.min(RESIZABLE_BOARD.collapsed, value));
 }
@@ -5329,21 +5394,49 @@ function _scheduleBoardAutoExpand(container, state, delay = 700) {
     window.setTimeout(() => screen.classList.remove('board-auto-expanding'), 760);
   }, delay);
 }
-function _clampListeningAnalysisHeight(value) {
-  return Math.max(LISTENING_ANALYSIS.collapsedHeight, Math.min(LISTENING_ANALYSIS.expandedHeight, value));
+function _listeningAnalysisMaxHeight(container) {
+  const screen = container.querySelector('.spec-screen');
+  const audioCard = container.querySelector('.spec-listening-card-wrap, .spec-dialogue-listening-scroller, .spec-listening-card');
+  if (!screen || !audioCard) return LISTENING_ANALYSIS.expandedHeight;
+  const screenRect = screen.getBoundingClientRect();
+  const audioRect = audioCard.getBoundingClientRect();
+  const scaleY = screenRect.height / (screen.offsetHeight || 844);
+  const audioTop = Math.max(0, (audioRect.top - screenRect.top) / Math.max(0.001, scaleY));
+  const minCardTop = Math.max(31, audioTop);
+  const maxHeight = (screen.offsetHeight || 844) - LISTENING_ANALYSIS.bottom - minCardTop;
+  return Math.max(LISTENING_ANALYSIS.collapsedHeight, Math.min(LISTENING_ANALYSIS.expandedHeight, maxHeight));
+}
+function _listeningAnalysisMinHeight(container) {
+  const screen = container.querySelector('.spec-screen');
+  const options = [...container.querySelectorAll('.spec-choice2')].filter(option => option.offsetParent !== null);
+  if (!screen || !options.length) return LISTENING_ANALYSIS.collapsedHeight;
+  const screenRect = screen.getBoundingClientRect();
+  const lastRect = options[options.length - 1].getBoundingClientRect();
+  const scaleY = screenRect.height / (screen.offsetHeight || 844);
+  const lastBottom = Math.max(0, (lastRect.bottom - screenRect.top) / Math.max(0.001, scaleY));
+  const desiredTop = lastBottom + 50;
+  const minHeight = (screen.offsetHeight || 844) - LISTENING_ANALYSIS.bottom - desiredTop;
+  return Math.max(LISTENING_ANALYSIS.collapsedHeight, Math.min(_listeningAnalysisMaxHeight(container), minHeight));
+}
+function _clampListeningAnalysisHeight(value, container) {
+  const minHeight = _listeningAnalysisMinHeight(container);
+  const maxHeight = _listeningAnalysisMaxHeight(container);
+  return Math.max(minHeight, Math.min(maxHeight, value));
 }
 function _applyListeningAnalysisResize(container, state) {
   const screen = container.querySelector('.spec-screen');
   const analysis = container.querySelector('.demo-listening-analysis');
   const handle = container.querySelector('[data-analysis-resize]');
   if (!screen || !analysis) return;
-  const height = _clampListeningAnalysisHeight(state.height ?? (state.expanded ? LISTENING_ANALYSIS.expandedHeight : LISTENING_ANALYSIS.collapsedHeight));
-  const progress = (height - LISTENING_ANALYSIS.collapsedHeight) / Math.max(1, LISTENING_ANALYSIS.expandedHeight - LISTENING_ANALYSIS.collapsedHeight);
+  const minHeight = _listeningAnalysisMinHeight(container);
+  const maxHeight = _listeningAnalysisMaxHeight(container);
+  const height = _clampListeningAnalysisHeight(state.height ?? (state.expanded ? maxHeight : minHeight), container);
+  const progress = (height - minHeight) / Math.max(1, maxHeight - minHeight);
   const bottom = LISTENING_ANALYSIS.collapsedBottom + progress * (LISTENING_ANALYSIS.expandedBottom - LISTENING_ANALYSIS.collapsedBottom);
   state.height = height;
-  state.expanded = height >= (LISTENING_ANALYSIS.collapsedHeight + LISTENING_ANALYSIS.expandedHeight) / 2;
+  state.expanded = height >= (minHeight + maxHeight) / 2;
   screen.style.setProperty('--analysis-height', `${Math.round(height)}px`);
-  screen.style.setProperty('--analysis-max-height', `${LISTENING_ANALYSIS.expandedMaxHeight}px`);
+  screen.style.setProperty('--analysis-max-height', `${Math.round(maxHeight)}px`);
   screen.style.setProperty('--analysis-content-bottom', `${Math.round(bottom)}px`);
   screen.classList.toggle('analysis-collapsed', !state.expanded);
   screen.classList.toggle('analysis-expanded', state.expanded);
@@ -5360,10 +5453,35 @@ function _bindListeningAnalysisResize(container, state) {
   let startY = 0;
   let startHeight = state.height ?? LISTENING_ANALYSIS.collapsedHeight;
   let moved = false;
+  let activePointerId = null;
   const designY = event => {
     const box = screen.getBoundingClientRect();
     const scaleY = box.height / (screen.offsetHeight || 844);
     return (event.clientY - box.top) / scaleY;
+  };
+  const moveDrag = event => {
+    if (activePointerId !== null && event?.pointerId !== undefined && event.pointerId !== activePointerId) return;
+    const delta = designY(event) - startY;
+    if (Math.abs(delta) > 3) moved = true;
+    state.height = _clampListeningAnalysisHeight(startHeight - delta, container);
+    _applyListeningAnalysisResize(container, state);
+  };
+  const removeGlobalDragListeners = () => {
+    window.removeEventListener('pointermove', moveDrag);
+    window.removeEventListener('mousemove', moveDrag);
+    window.removeEventListener('pointerup', finishDrag);
+    window.removeEventListener('pointercancel', finishDrag);
+    window.removeEventListener('mouseup', finishDrag);
+    window.removeEventListener('touchend', finishDrag);
+  };
+  const finishDrag = event => {
+    const pointerId = event?.pointerId;
+    if (activePointerId !== null && pointerId !== undefined && pointerId !== activePointerId) return;
+    screen.classList.remove('analysis-dragging');
+    if (pointerId !== undefined && handle.hasPointerCapture?.(pointerId)) handle.releasePointerCapture?.(pointerId);
+    activePointerId = null;
+    removeGlobalDragListeners();
+    _applyListeningAnalysisResize(container, state);
   };
   handle.addEventListener('click', () => {
     if (moved) {
@@ -5371,37 +5489,27 @@ function _bindListeningAnalysisResize(container, state) {
       return;
     }
     state.expanded = !state.expanded;
-    state.height = state.expanded ? LISTENING_ANALYSIS.expandedHeight : LISTENING_ANALYSIS.collapsedHeight;
+    state.height = state.expanded ? _listeningAnalysisMaxHeight(container) : _listeningAnalysisMinHeight(container);
     _applyListeningAnalysisResize(container, state);
   });
   handle.addEventListener('pointerdown', event => {
     moved = false;
     startY = designY(event);
-    startHeight = state.height ?? LISTENING_ANALYSIS.collapsedHeight;
+    startHeight = state.height ?? _listeningAnalysisMinHeight(container);
+    activePointerId = event.pointerId;
     screen.classList.add('analysis-dragging');
     handle.setPointerCapture?.(event.pointerId);
+    window.addEventListener('pointermove', moveDrag);
+    window.addEventListener('mousemove', moveDrag);
+    window.addEventListener('pointerup', finishDrag);
+    window.addEventListener('pointercancel', finishDrag);
+    window.addEventListener('mouseup', finishDrag);
+    window.addEventListener('touchend', finishDrag);
   });
-  handle.addEventListener('pointermove', event => {
-    if (!handle.hasPointerCapture?.(event.pointerId)) return;
-    const delta = designY(event) - startY;
-    if (Math.abs(delta) > 3) moved = true;
-    state.height = _clampListeningAnalysisHeight(startHeight - delta);
-    _applyListeningAnalysisResize(container, state);
-  });
-  handle.addEventListener('pointerup', event => {
-    screen.classList.remove('analysis-dragging');
-    if (!handle.hasPointerCapture?.(event.pointerId)) return;
-    handle.releasePointerCapture?.(event.pointerId);
-    const mid = (LISTENING_ANALYSIS.collapsedHeight + LISTENING_ANALYSIS.expandedHeight) / 2;
-    state.expanded = (state.height ?? LISTENING_ANALYSIS.collapsedHeight) >= mid;
-    state.height = state.expanded ? LISTENING_ANALYSIS.expandedHeight : LISTENING_ANALYSIS.collapsedHeight;
-    _applyListeningAnalysisResize(container, state);
-  });
-  handle.addEventListener('pointercancel', event => {
-    screen.classList.remove('analysis-dragging');
-    handle.releasePointerCapture?.(event.pointerId);
-    _applyListeningAnalysisResize(container, state);
-  });
+  handle.addEventListener('pointermove', moveDrag);
+  handle.addEventListener('pointerup', finishDrag);
+  handle.addEventListener('pointercancel', finishDrag);
+  handle.addEventListener('lostpointercapture', finishDrag);
 }
 function updateDemoScale() {
   const course = document.getElementById('courseView');
@@ -5515,7 +5623,10 @@ function _openDevJumpModal(container) {
       const index = Number(button.dataset.devJumpIndex);
       if (!Number.isFinite(index)) return;
       _specStopAllAudio();
-      state.index = Math.max(0, Math.min(state.steps.length - 1, index));
+      const targetIndex = Math.max(0, Math.min(state.steps.length - 1, index));
+      state.index = targetIndex;
+      state.listeningSkipFromIndex = null;
+      state.completedSteps = new Set(state.steps.slice(0, targetIndex).map(step => step.id).filter(Boolean));
       modal.remove();
       renderCurrentStep();
     });
@@ -5530,7 +5641,8 @@ function _specShell(container, config) {
   const sceneHTML = config.sceneHTML ? `<div class="${sceneClasses.join(' ')}">${config.sceneHTML}</div>` : '';
   const boardHandleHTML = config.boardHandleHTML || '';
   const screenOverlayHTML = config.screenOverlayHTML || '';
-  container.innerHTML = `<div class="spec-screen ${config.screenClass || ''}"><button class="spec-close" type="button" aria-label="返回入口">×</button><div class="spec-progress"><div class="spec-progress-track" aria-hidden="true"><div class="spec-progress-fill" style="width:${progress}%"></div></div><button class="spec-progress-hit" type="button" data-dev-jump-open aria-label="打开跳题面板"></button></div>${sceneHTML}<section class="spec-board">${boardHandleHTML}<main class="spec-content">${config.bodyHTML || ''}</main>${config.overlayHTML || ''}<footer class="spec-bottom ${config.bottomClass || ''} ${bottomHTML ? '' : 'empty'}">${bottomHTML}</footer></section>${screenOverlayHTML}</div>`;
+  const screenBottomHTML = config.screenBottomHTML || '';
+  container.innerHTML = `<div class="spec-screen ${config.screenClass || ''}"><button class="spec-close" type="button" aria-label="返回入口">×</button><div class="spec-progress"><div class="spec-progress-track" aria-hidden="true"><div class="spec-progress-fill" style="width:${progress}%"></div></div><button class="spec-progress-hit" type="button" data-dev-jump-open aria-label="打开跳题面板"></button></div>${sceneHTML}<section class="spec-board">${boardHandleHTML}<main class="spec-content">${config.bodyHTML || ''}</main>${config.overlayHTML || ''}<footer class="spec-bottom ${config.bottomClass || ''} ${bottomHTML ? '' : 'empty'}">${bottomHTML}</footer></section>${screenOverlayHTML}${screenBottomHTML}</div>`;
   container.querySelector('.spec-close')?.addEventListener('click', closeExercise);
   container.querySelector('[data-dev-jump-open]')?.addEventListener('click', () => _openDevJumpModal(container));
   container.querySelectorAll('[data-spec-say]').forEach(btn => btn.addEventListener('click', () => _specPlayAudio(btn.dataset.specSay, btn.dataset.specSlow === '1')));
@@ -5538,9 +5650,13 @@ function _specShell(container, config) {
   _specBindLookup(container);
 }
 function closeExercise() { showEntry(); }
-function completeExercise() { nextStep(); }
+function completeExercise() {
+  const currentStep = state.steps[state.index];
+  if (currentStep?.id) state.completedSteps.add(currentStep.id);
+  nextStep();
+}
 function showToast() {}
-function stepProgress() { return ((state.index + 1) / Math.max(1, state.steps.length)) * 100; }
+function stepProgress() { return ((state.completedSteps?.size || 0) / Math.max(1, state.steps.length)) * 100; }
 function nextStep() {
   _specStopAllAudio();
   state.index += 1;
@@ -5550,6 +5666,7 @@ function showEntry() {
   _specStopAllAudio();
   state.version = null; state.steps = []; state.index = 0;
   state.listeningSkipFromIndex = null;
+  state.completedSteps = new Set();
   resetScore();
   document.getElementById('entryView').classList.remove('hidden');
   document.getElementById('courseView').classList.add('hidden');
@@ -5561,6 +5678,7 @@ function startCourse(version) {
   state.steps = buildSteps(version).map((item, index) => ({...item, id: `step-${index + 1}`}));
   state.index = 0;
   state.listeningSkipFromIndex = null;
+  state.completedSteps = new Set();
   resetScore();
   document.getElementById('entryView').classList.add('hidden');
   document.getElementById('courseView').classList.remove('hidden');
@@ -6590,13 +6708,15 @@ function renderListeningBase(container, data, config = {}) {
     const analysisStateClass = answered ? (analysisResizeState.expanded ? 'analysis-expanded' : 'analysis-collapsed') : '';
     const transcriptStateClass = transcriptEnabled && transcriptOpen && !answered ? 'transcript-open' : '';
     const transcriptClosingClass = transcriptEnabled && transcriptClosing && !answered ? 'transcript-closing' : '';
+    const answeredBottomHTML = `<button class="spec-listening-submit" type="button" data-listening-choice-continue>继续</button>`;
     const bottomHTML = answered
-      ? `<button class="spec-listening-submit" type="button" data-listening-choice-continue>继续</button>`
+      ? ''
       : transcriptStateClass
         ? `<button class="spec-listening-submit spec-transcript-answer ${transcriptAnswerReady ? 'ready' : ''}" type="button" data-transcript-answer>点击答题</button>`
         : transcriptClosingClass
           ? ''
         : `<div class="spec-listening-skip-row"><button class="spec-repeat-skip-text" type="button" data-listening-choice-skip>现在不做听力题</button></div>`;
+    const screenBottomHTML = answered ? `<footer class="spec-screen-bottom listening">${answeredBottomHTML}</footer>` : '';
     _specShell(container, {
       exerciseId: data.id,
       progress: stepProgress(),
@@ -6604,6 +6724,7 @@ function renderListeningBase(container, data, config = {}) {
       sceneHTML: sceneHTML(),
       bodyHTML: bodyHTML(),
       screenOverlayHTML: analysisHTML(),
+      screenBottomHTML,
       bottomHTML,
       bottomClass: 'listening'
     });
@@ -6768,8 +6889,8 @@ const Q = {
     translation: "我们迷路了。爸爸找不到路。前面有一个加油站。如果我们在那里停下，爸爸会买一张地图。",
     transcriptLookupPhrases: ["are lost", "find the way", "gas station", "stop there", "buy a map"],
     question: "What will Dad pick up?",
-    options: ["map", "gas", "road"],
-    correct: "map",
+    options: ["gas", "a map", "a road"],
+    correct: "a map",
     analysis: "音频里说 If we stop there, Dad will buy a map. 所以爸爸会买一张地图。",
     readingFallback: {
       id: "reading-q8-listening",
@@ -6777,21 +6898,23 @@ const Q = {
       section: "环节3 · 阅读理解 · 题8补做",
       image: "assets/images/阅读1.png",
       stem: "请填空：",
+      gloss: { ...COURSE_GLOSS, are: "是；处于", buy: "买" },
+      lookupPhrases: ["can't", "find the way", "gas station", "stop there"],
       segments: [
-        "We still have three more hours on the road, but we only have one bottle of water. If we ",
-        { answer: "run out of" },
-        " water, we ",
-        { answer: "will feel" },
-        " thirsty and tired. So let's stop soon and ",
-        { answer: "pick up" },
-        " more water."
+        "We are lost. Dad can't find the way. There is a gas station ahead. If we ",
+        { answer: "stop" },
+        " there, Dad ",
+        { answer: "will" },
+        " ",
+        { answer: "buy" },
+        " a map."
       ],
       blanks: [
-        { answer: "run out of" },
-        { answer: "will feel" },
-        { answer: "pick up" }
+        { answer: "stop" },
+        { answer: "will" },
+        { answer: "buy" }
       ],
-      options: ["run out of", "will feel", "pick up", "will run out of"]
+      options: ["stop", "will", "buy", "will stop"]
     },
     fallback: {
       id: "fallback-q8-listening",
@@ -6825,7 +6948,7 @@ const Q = {
     translation: "空调开着，音乐也在播放。我们正在耗费很多汽油。如果我们继续这样开，不到一个小时汽油就会用完。",
     transcriptLookupPhrases: ["The air conditioner", "is on", "the music", "is playing", "are using", "a lot of gas", "keep driving", "like this", "run out of gas", "in less than an hour"],
     question: "What will they run out of?",
-    options: ["gas", "music", "air conditioner"],
+    options: ["gas", "music", "the air conditioner"],
     correct: "gas",
     analysis: "音频里说 If we keep driving like this, we will run out of gas in less than an hour. 所以他们会用完汽油。",
     readingFallback: {
@@ -6834,21 +6957,23 @@ const Q = {
       section: "环节3 · 阅读理解 · 题9补做",
       image: "assets/images/阅读2.png",
       stem: "请填空：",
+      gloss: { ...COURSE_GLOSS, on: "开着", in: "在……以内", an: "一", "a lot of": "很多" },
+      lookupPhrases: ["air conditioner", "is playing", "are using", "a lot of", "run out of"],
       segments: [
-        "The next service area is only ten minutes away. If we ",
-        { answer: "pick up" },
+        "The air conditioner is on and the music is playing. We are using a lot of gas. If we ",
+        { answer: "keep" },
+        " driving like this, we ",
+        { answer: "will" },
         " ",
-        { answer: "some sandwiches" },
-        " there, we ",
-        { answer: "will have" },
-        " enough food."
+        { answer: "run out of" },
+        " gas in less than an hour."
       ],
       blanks: [
-        { answer: "pick up" },
-        { answer: "some sandwiches" },
-        { answer: "will have" }
+        { answer: "keep" },
+        { answer: "will" },
+        { answer: "run out of" }
       ],
-      options: ["pick up", "some sandwiches", "will have", "run out of"]
+      options: ["keep", "will", "run out of", "pick up"]
     },
     fallback: {
       id: "fallback-q9-listening",
@@ -6881,7 +7006,7 @@ const Q = {
     audioText: "We've been driving all day. My brother and I drank a lot of juice, but we are still hungry. If Mom stops at the shop, she will pick up something to eat.",
     translation: "我们已经开了一整天的车。我和哥哥/弟弟喝了很多果汁，但我们还是饿。如果妈妈在商店停下，她会买些吃的东西。",
     question: "What will Mom probably buy?",
-    options: ["juice", "shop", "bread"],
+    options: ["juice", "a shop", "bread"],
     correct: "bread",
     analysis: "音频里说孩子们还是饿，并且 Mom will pick up something to eat. 三个选项里 bread 是吃的，所以妈妈很可能会买面包。",
     readingFallback: {
