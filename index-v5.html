@@ -4600,7 +4600,7 @@ body.demo-body {
   margin: 0;
   min-height: 100vh;
   overflow: hidden;
-  background: url("assets/images/run-out-of.png") center / cover no-repeat;
+  background: url("assets/images/run-out-of.webp") center / cover no-repeat;
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .demo-body::before {
@@ -4650,6 +4650,25 @@ body.demo-body {
 .demo-start-button {
   flex: 0 0 auto;
 }
+.demo-preload-status {
+  min-height: 22px;
+  margin-top: 14px;
+  color: #5E648A;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.demo-preload-status.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.demo-start-button.loading {
+  pointer-events: none;
+  opacity: 0.86;
+}
 .demo-course {
   position: absolute;
   left: var(--demo-left, 0px);
@@ -4669,7 +4688,7 @@ body.demo-body {
 .demo-course .spec-screen {
   height: 100%;
   min-height: 100%;
-  background-image: url("assets/ui/bg.png"), url("assets/images/run-out-of.png");
+  background-image: url("assets/ui/bg.png"), url("assets/images/run-out-of.webp");
   background-position: center top, center;
   background-size: cover, cover;
 }
@@ -4792,7 +4811,10 @@ body.demo-body {
   <main id="entryView" class="demo-entry">
     <h1 class="demo-entry-title">第一关：新学</h1>
     <div class="demo-entry-spacer" aria-hidden="true"></div>
-    <button class="spec-continue demo-start-button" type="button" data-version="new">开始学习</button>
+    <div>
+      <button class="spec-continue demo-start-button" type="button" data-version="new">开始学习</button>
+      <div id="preloadStatus" class="demo-preload-status" aria-live="polite"></div>
+    </div>
   </main>
   <main id="courseView" class="demo-course hidden"><div id="stage"></div></main>
 </div>
@@ -4811,8 +4833,8 @@ const NPC_ASSETS = {
   kukaPolarbear: "assets/npcs/kuka-polarbear-body.png"
 };
 const ASSETS = {
-  imagePickUp: "assets/images/pick-up.png",
-  imageRunOut: "assets/images/run-out-of.png",
+  imagePickUp: "assets/images/pick-up.webp",
+  imageRunOut: "assets/images/run-out-of.webp",
   audioNormalIcon: "assets/ui/audio-normal.png",
   audioSlowIcon: "assets/ui/audio-slow.png",
   robot: "assets/ui/robot.png",
@@ -6894,7 +6916,7 @@ const Q = {
       id: "reading-q8-listening",
       type: "readingCloze9876",
       section: "环节3 · 阅读理解 · 题8补做",
-      image: "assets/images/阅读1.png",
+      image: "assets/images/reading-1.webp",
       stem: "请填空：",
       gloss: { ...COURSE_GLOSS, are: "是；处于", buy: "买" },
       lookupPhrases: ["can't", "find the way", "gas station", "stop there"],
@@ -6955,7 +6977,7 @@ const Q = {
       id: "reading-q11-listening",
       type: "readingCloze9876",
       section: "环节3 · 阅读理解 · 题11补做",
-      image: "assets/images/阅读2.png",
+      image: "assets/images/reading-2.webp",
       stem: "请填空：",
       segments: [
         "The next service area is only ten minutes away. If we ",
@@ -7006,7 +7028,151 @@ const Q = {
 
 
 
-document.querySelectorAll('[data-version]').forEach(btn => btn.addEventListener('click', () => startCourse(btn.dataset.version)));
+const PRELOAD_STATE = { completeVersions: new Set(), loading: false };
+function _isEnglishAudioCandidate(text) {
+  const value = String(text || '').trim();
+  return Boolean(value && /[A-Za-z]/.test(value) && !/[\u3400-\u9FFF]/.test(value));
+}
+function _specPreloadResources(version = 'new') {
+  const images = new Set([
+    ...Object.values(ASSETS),
+    ...Object.values(SPEC_ASSETS),
+    "assets/images/reading-1.webp",
+    "assets/images/reading-2.webp"
+  ].filter(Boolean));
+  const audioNormal = new Set();
+  const audioSlow = new Set();
+  const addAudio = (text, includeSlow = false) => {
+    if (!_isEnglishAudioCandidate(text)) return;
+    audioNormal.add(_audioPath(text, false));
+    if (includeSlow) audioSlow.add(_audioPath(text, true));
+  };
+  const visit = data => {
+    if (!data || typeof data !== 'object') return;
+    if (data.image) images.add(data.image);
+    if (data.type === 'contextMeaning') addAudio(data.sentence, true);
+    if (data.type === 'spelling') {
+      addAudio(data.fullPhrase, true);
+      (data.options || []).forEach(option => addAudio(option));
+    }
+    if (data.type === 'singleBlankTranslation') {
+      addAudio(data.fullSentence, true);
+      (data.options || []).forEach(option => addAudio(option));
+    }
+    if (data.type === 'twoOption') {
+      addAudio(data.fullSentence, true);
+      (data.groups || []).forEach(group => (group.options || []).forEach(option => addAudio(option)));
+    }
+    if (data.type === 'fallbackScenario') {
+      addAudio(data.fullSentence, true);
+      (data.options || []).forEach(option => addAudio(option));
+    }
+    if (data.type === 'readingCloze9876') {
+      (data.options || []).forEach(option => addAudio(option));
+    }
+    if (data.type === 'listeningChoice' || data.type === 'listeningChoiceTranscript') {
+      addAudio(data.audioText, true);
+      visit(data.readingFallback);
+      visit(data.fallback);
+    }
+  };
+  buildSteps(version).forEach(visit);
+  return {
+    images: [...images],
+    audio: [...audioNormal, ...audioSlow]
+  };
+}
+function _preloadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(src);
+    img.onerror = () => reject(new Error(src));
+    img.src = src;
+    if (img.decode) img.decode().then(() => resolve(src)).catch(() => {});
+  });
+}
+function _preloadAudio(src) {
+  if (window.fetch && location.protocol !== 'file:') {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = controller ? window.setTimeout(() => controller.abort(), 20000) : null;
+    return fetch(src, { cache: 'force-cache', signal: controller?.signal })
+      .then(response => {
+        if (!response.ok) throw new Error(`${src} ${response.status}`);
+        return response.blob();
+      })
+      .finally(() => {
+        if (timer) window.clearTimeout(timer);
+      });
+  }
+  return new Promise(resolve => {
+    const audio = new Audio(src);
+    audio.preload = 'auto';
+    audio.oncanplaythrough = () => resolve(src);
+    audio.onerror = () => resolve(src);
+    audio.load();
+  });
+}
+function _preloadWithLimit(items, loader, onProgress, concurrency = 6) {
+  let index = 0;
+  let done = 0;
+  const total = items.length;
+  const next = () => {
+    if (index >= total) return Promise.resolve();
+    const item = items[index++];
+    return loader(item).catch(error => {
+      console.warn('Preload unavailable:', item, error?.message || error || '');
+    }).finally(() => {
+      done += 1;
+      onProgress(done, total);
+    }).then(next);
+  };
+  return Promise.all(Array.from({ length: Math.min(concurrency, total) }, next));
+}
+async function preloadCourseAssets(version = 'new', onProgress = () => {}) {
+  if (PRELOAD_STATE.completeVersions.has(version)) return;
+  const resources = _specPreloadResources(version);
+  const total = resources.images.length + resources.audio.length;
+  let loaded = 0;
+  const tick = count => {
+    loaded += count;
+    onProgress(loaded, total);
+  };
+  await _preloadWithLimit(resources.images, _preloadImage, () => tick(1), 8);
+  await _preloadWithLimit(resources.audio, _preloadAudio, () => tick(1), 6);
+  PRELOAD_STATE.completeVersions.add(version);
+}
+async function startCourseWithPreload(version, button) {
+  if (PRELOAD_STATE.loading) return;
+  if (PRELOAD_STATE.completeVersions.has(version)) return startCourse(version);
+  PRELOAD_STATE.loading = true;
+  const status = document.getElementById('preloadStatus');
+  const originalLabel = button?.textContent || '开始学习';
+  if (button) {
+    button.classList.add('loading');
+    button.disabled = true;
+    button.textContent = '加载中...';
+  }
+  if (status) {
+    status.classList.add('show');
+    status.textContent = '正在加载课程资源 0%';
+  }
+  try {
+    await preloadCourseAssets(version, (loaded, total) => {
+      if (status) status.textContent = `正在加载课程资源 ${Math.round((loaded / Math.max(1, total)) * 100)}%`;
+    });
+  } finally {
+    PRELOAD_STATE.loading = false;
+    if (button) {
+      button.classList.remove('loading');
+      button.disabled = false;
+      button.textContent = originalLabel;
+    }
+    if (status) status.classList.remove('show');
+  }
+  startCourse(version);
+}
+
+document.querySelectorAll('[data-version]').forEach(btn => btn.addEventListener('click', () => startCourseWithPreload(btn.dataset.version, btn)));
 window.addEventListener('resize', updateDemoScale);
 window.visualViewport?.addEventListener('resize', updateDemoScale);
 window.visualViewport?.addEventListener('scroll', updateDemoScale);
