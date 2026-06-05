@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>日本語 A2-B1 推し活 Demo</title>
+<title>Español A2-B1 Feria Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
@@ -1603,7 +1603,7 @@ body {
   inset: -10px;
   background-image:
     linear-gradient(180deg, rgba(19, 13, 45, 0.18), rgba(20, 27, 50, 0.55)),
-    url("各题型可用组件/整体背景（待虚化）.png");
+    url("assets/images/churros-night.webp");
   background-size: cover;
   background-position: top center;
   filter: blur(4px);
@@ -1785,7 +1785,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("各题型可用组件/大题板框.png");
+  background-image: none;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   pointer-events: none;
@@ -2254,7 +2254,7 @@ body {
   height: 100%;
   min-height: 100%;
   overflow: hidden;
-  background: url("各题型可用组件/整体背景（待虚化）.png") center top / cover no-repeat;
+  background: url("assets/images/churros-night.webp") center top / cover no-repeat;
   color: #283044;
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
@@ -2795,15 +2795,8 @@ body {
   color: #AEB5C2;
 }
 .spec-word-punctuation-group {
-  display: inline-flex;
-  align-items: flex-end;
-  white-space: nowrap;
-  vertical-align: baseline;
-}
-.spec-token-punctuation {
   display: inline-block;
-  line-height: 1.12;
-  padding-bottom: 3px;
+  white-space: nowrap;
 }
 .spec-chinese-punctuation-group {
   display: inline-block;
@@ -4610,6 +4603,25 @@ body {
   text-align: left;
   white-space: pre-line;
 }
+.spec-explanation-table {
+  width: 100%;
+  margin: 10px 0;
+  border-collapse: collapse;
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: normal;
+}
+.spec-explanation-table th,
+.spec-explanation-table td {
+  padding: 6px 7px;
+  border: 1px solid rgba(69, 118, 240, 0.22);
+  background: rgba(255, 255, 255, 0.46);
+  vertical-align: top;
+}
+.spec-explanation-table th {
+  color: #4576F0;
+  font-weight: 700;
+}
 .spec-explanation-token.blue {
   color: #4576F0;
 }
@@ -4672,7 +4684,7 @@ body.demo-body {
   margin: 0;
   min-height: 100vh;
   overflow: hidden;
-  background: url("assets/images/popculture-event-crowd.webp") center / cover no-repeat;
+  background: url("assets/images/feria-portada.webp") center / cover no-repeat;
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .demo-body::before {
@@ -4785,7 +4797,7 @@ body.demo-body {
 .demo-course .spec-screen {
   height: 100%;
   min-height: 100%;
-  background-image: url("assets/ui/bg.png"), url("assets/images/oshi-collab-cafe.webp");
+  background-image: url("assets/ui/bg.png"), url("assets/images/feria-portada.webp");
   background-position: center top, center;
   background-size: cover, cover;
 }
@@ -4906,7 +4918,7 @@ body.demo-body {
 <body class="demo-body">
 <div class="demo-root">
   <main id="entryView" class="demo-entry">
-    <h1 class="demo-entry-title">日本語 A2-B1<br>推し活カフェ</h1>
+    <h1 class="demo-entry-title">Español A2-B1<br>Feria de Abril</h1>
     <div class="demo-entry-spacer" aria-hidden="true"></div>
     <button class="spec-continue demo-start-button" type="button" data-version="new">开始学习</button>
   </main>
@@ -4927,8 +4939,8 @@ const NPC_ASSETS = {
   kukaPolarbear: "assets/npcs/kuka-polarbear-body.png"
 };
 const ASSETS = {
-  imagePickUp: "assets/images/oshi-collab-cafe.webp",
-  imageRunOut: "assets/images/reservation-rain-station.webp",
+  imagePickUp: "assets/images/feria-portada.webp",
+  imageRunOut: "assets/images/caseta-meeting.webp",
   audioNormalIcon: "assets/ui/audio-normal.png",
   audioSlowIcon: "assets/ui/audio-slow.png",
   robot: "assets/ui/robot.png",
@@ -4954,256 +4966,284 @@ const SPEC_ASSETS = {
   dialogueAvatarB: ASSETS.avatarB
 };
 const DEMO_AUDIO_ASSETS = [
-  "assets/audio/normal/304a-91d1-90hz.mp3",
-  "assets/audio/normal/3059-3050-5e30-308b-6b220i.mp3",
-  "assets/audio/normal/305b-3063-304b-304f-6avwzw.mp3",
-  "assets/audio/normal/3060-304b-3089-7bk72.mp3",
-  "assets/audio/normal/3064-3082-308a-3067-3059-1hgstq6.mp3",
-  "assets/audio/normal/3067-3082-8hyz.mp3",
-  "assets/audio/normal/3068-3066-3082-7bqro.mp3",
-  "assets/audio/normal/306e-9ke.mp3",
-  "assets/audio/normal/307e-3060-8ihu.mp3",
-  "assets/audio/normal/3082-3046-3059-3050-3067-3059-110pust.mp3",
-  "assets/audio/normal/30a4-30d9-30f3-30c8-4f1a-5834-1jg1090.mp3",
-  "assets/audio/normal/30a4-30d9-30f3-30c8-4f1a-5834-306f-20-3068-3066-3082-20-6df7-3093-3067-3044-307e-1n06h85.mp3",
-  "assets/audio/normal/30a4-30d9-30f3-30c8-4f1a-5834-306f-20-3068-3066-3082-20-6df7-3093-3067-3044-307e-dsmy7e.mp3",
-  "assets/audio/normal/30a4-30d9-30f3-30c8-4f1a-5834-306f-20-3068-3066-3082-20-6df7-3093-3067-3044-307e-gxz7qv.mp3",
-  "assets/audio/normal/30ab-30d5-30a7-304c-9060-304f-306a-3044-304b-3089-814pva.mp3",
-  "assets/audio/normal/30ab-30d5-30a7-307e-3067-1ilbtty.mp3",
-  "assets/audio/normal/30b0-30c3-30ba-3092-20-8cb7-3046-10i3ih0.mp3",
-  "assets/audio/normal/30b0-30c3-30ba-7dafb.mp3",
-  "assets/audio/normal/30b3-30e9-30dc-30ab-30d5-30a7-1qrxeaf.mp3",
-  "assets/audio/normal/30b3-30e9-30dc-30ab-30d5-30a7-306b-s7q378.mp3",
-  "assets/audio/normal/4e26-3073-307e-3059-a26b1k.mp3",
-  "assets/audio/normal/4e26-3076-dk40.mp3",
-  "assets/audio/normal/4e88-7d04-304c-20-3042-3063-3066-3082-1301fwt.mp3",
-  "assets/audio/normal/4e88-7d04-306b-20-3044-307e-3059-hrr0ry.mp3",
-  "assets/audio/normal/4e88-7d04-306b-20-9593-306b-5408-3044-307e-3059-3002-1w5il2a.mp3",
-  "assets/audio/normal/4e88-7d04-306b-20-9593-306b-5408-3044-307e-3059-dnkzj4.mp3",
-  "assets/audio/normal/4e88-7d04-306b-20-9593-306b-5408-3046-1ugnczr.mp3",
-  "assets/audio/normal/4e88-7d04-306b-20-9593-306b-5408-3046-305f-3081-dnl0ax.mp3",
-  "assets/audio/normal/4e88-7d04-306b-20-9593-306b-5408-3046-3088-3046-306b-1w5k22u.mp3",
-  "assets/audio/normal/4e88-7d04-306b-306f-af4lpc.mp3",
-  "assets/audio/normal/4e88-7d04-306b-c3mgf.mp3",
-  "assets/audio/normal/4e88-7d04-306e-20-6642-9593-306b-20-9593-306b-5408-3044-307e-3059-3002-wh9hbz.mp3",
-  "assets/audio/normal/4e88-7d04-306e-20-6642-9593-306b-i1saq4.mp3",
-  "assets/audio/normal/4e88-7d04-306e-20-6642-9593-306f-20-3082-3046-3059-3050-3067-3059-3002-5916-306f-4klp9h.mp3",
-  "assets/audio/normal/4e88-7d04-306e-20-6642-9593-306f-20-3082-3046-3059-3050-3067-3059-3002-96e8-304c-dqc974.mp3",
-  "assets/audio/normal/4e88-7d04-306e-20-6642-9593-3092-i1sar7.mp3",
-  "assets/audio/normal/4e88-7d04-306e-c3mgi.mp3",
-  "assets/audio/normal/4e88-7d04-e1ks.mp3",
-  "assets/audio/normal/4eba-6c17-3067-c1rvu.mp3",
-  "assets/audio/normal/4eca-20-51fa-307e-3059-oan7pb.mp3",
-  "assets/audio/normal/4eca-65e5-306f-20-63a8-3057-306e-20-30b3-30e9-30dc-30ab-30d5-30a7-3067-3059-3002-a06aqk.mp3",
-  "assets/audio/normal/4eca-65e5-306f-20-63a8-3057-306e-20-30b3-30e9-30dc-30ab-30d5-30a7-3067-3059-3002-bhz9z6.mp3",
-  "assets/audio/normal/4eca-65e5-306f-20-63a8-3057-306e-20-30b3-30e9-30dc-30ab-30d5-30a7-306b-20-884c-3-16zglvx.mp3",
-  "assets/audio/normal/4eca-65e5-306f-c11tg.mp3",
-  "assets/audio/normal/5098-fx4.mp3",
-  "assets/audio/normal/51fa-307e-3059-c8rv9.mp3",
-  "assets/audio/normal/5207-7b26-3092-20-8cb7-3046-304b-3089-1567hei.mp3",
-  "assets/audio/normal/5207-7b26-emm7.mp3",
-  "assets/audio/normal/5217-304c-20-9577-304f-3066-3082-3001-9650-5b9a-30b0-30c3-30ba-3092-20-8cb7-3044-tbm16d.mp3",
-  "assets/audio/normal/5217-304c-e87p.mp3",
-  "assets/audio/normal/5217-3092-e89n.mp3",
-  "assets/audio/normal/5225-306e-5e97-3078-884c-304f-rknsd.mp3",
-  "assets/audio/normal/5348-5f8c-306b-306f-awdns8.mp3",
-  "assets/audio/normal/53cb-3060-3061-306f-arskbn.mp3",
-  "assets/audio/normal/58f2-308a-5207-308c-308b-1y42fvy.mp3",
-  "assets/audio/normal/58f2-308a-5207-308c-308b-304b-3082-3057-308c-306a-3044-304b-3089-1trvqqa.mp3",
-  "assets/audio/normal/58f2-308a-5207-308c-308b-304b-3082-3057-308c-307e-305b-3093-tm8tj0.mp3",
-  "assets/audio/normal/5927-4e08-592b-3067-3059-3n1yvw.mp3",
-  "assets/audio/normal/5c11-3057-fxba.mp3",
-  "assets/audio/normal/5e30-308a-305f-3044-c30jhb.mp3",
-  "assets/audio/normal/5e30-308a-307e-3059-c30k8l.mp3",
-  "assets/audio/normal/5e30-308a-307e-305b-3093-jfxf5o.mp3",
-  "assets/audio/normal/5e30-308b-gacb.mp3",
-  "assets/audio/normal/5f85-3064-gigv.mp3",
-  "assets/audio/normal/63a8-3057-306b-20-4f1a-3046-305f-3081-bytvg2.mp3",
-  "assets/audio/normal/63a8-3057-306e-20-30b0-30c3-30ba-1sgqt52.mp3",
-  "assets/audio/normal/63a8-3057-306e-20-30b3-30e9-30dc-30ab-30d5-30a7-kb8ym0.mp3",
-  "assets/audio/normal/63a8-3057-306e-etz1b.mp3",
-  "assets/audio/normal/63a8-3057-h7sf.mp3",
-  "assets/audio/normal/65b0-3057-3044-20-30b0-30c3-30ba-306f-20-4eba-6c17-3067-3001-5348-5f8c-306b-306f-9km501.mp3",
-  "assets/audio/normal/65b0-3057-3044-f4ol9.mp3",
-  "assets/audio/normal/65e9-3081-306b-f5vw3.mp3",
-  "assets/audio/normal/6620-753b-i0ij.mp3",
-  "assets/audio/normal/6642-9593-306b-20-9593-306b-5408-3046-1j12q58.mp3",
-  "assets/audio/normal/6642-9593-306b-20-9593-306b-5408-3046-304b-3089-10q7l2y.mp3",
-  "assets/audio/normal/6642-9593-306b-20-9593-306b-5408-3046-306e-3067-10q7lw5.mp3",
-  "assets/audio/normal/6642-9593-306b-fowsa.mp3",
-  "assets/audio/normal/6642-9593-i7pt.mp3",
-  "assets/audio/normal/6700-5f8c-307e-3067-20-4e26-3076-unvj6j.mp3",
-  "assets/audio/normal/6700-5f8c-307e-3067-ddwy0l.mp3",
-  "assets/audio/normal/6765-305f-306e-3067-d8so2b.mp3",
-  "assets/audio/normal/6b69-304d-307e-3059-dr0plr.mp3",
-  "assets/audio/normal/6df7-3093-3067-3044-307e-3059-t4cvx0.mp3",
-  "assets/audio/normal/79c1-305f-3061-306f-fk5q3w.mp3",
-  "assets/audio/normal/884c-304d-307e-3059-he6llo.mp3",
-  "assets/audio/normal/898b-308b-nnts.mp3",
-  "assets/audio/normal/8a00-3044-307e-3057-305f-1cnh15u.mp3",
-  "assets/audio/normal/8cb7-3044-305f-3044-304c-3042-308a-307e-3059-9ir54t.mp3",
-  "assets/audio/normal/8cb7-3044-305f-3044-3067-3059-1phm1qc.mp3",
-  "assets/audio/normal/8cb7-3044-305f-3044-3067-3059-20-9650-5b9a-30b0-30c3-30ba-3092-pnsj69.mp3",
-  "assets/audio/normal/8cb7-3046-o773.mp3",
-  "assets/audio/normal/8cb7-3048-306a-3044-3053-3068-304c-20-3042-308a-307e-3059-17gz9tj.mp3",
-  "assets/audio/normal/8cb7-3048-306a-3044-hy8nkb.mp3",
-  "assets/audio/normal/9045-304f-20-7740-3044-305f-3089-ttw0xw.mp3",
-  "assets/audio/normal/9577-3044-3067-3059-j1yv5r.mp3",
-  "assets/audio/normal/9577-3044-3067-3082-j1yv6w.mp3",
-  "assets/audio/normal/9577-304f-3066-3082-j1z3bo.mp3",
-  "assets/audio/normal/9593-306b-3044-307e-3059-mw73qf.mp3",
-  "assets/audio/normal/9593-306b-5408-3044-307e-3059-3xd3bj.mp3",
-  "assets/audio/normal/9593-306b-5408-3046-j2nlva.mp3",
-  "assets/audio/normal/964d-3063-3066-3082-j5s5ci.mp3",
-  "assets/audio/normal/964d-308a-307e-3059-j5syt4.mp3",
-  "assets/audio/normal/964d-308b-3066-3082-j5sz0a.mp3",
-  "assets/audio/normal/964d-308b-pty6.mp3",
-  "assets/audio/normal/9650-5b9a-30b0-30c3-30ba-306b-18pmbv2.mp3",
-  "assets/audio/normal/9650-5b9a-30b0-30c3-30ba-3092-18pmbw5.mp3",
-  "assets/audio/normal/9650-5b9a-30b0-30c3-30ba-3092-20-8cb7-3044-305f-3044-3067-3059-1c0oahb.mp3",
-  "assets/audio/normal/9650-5b9a-30b0-30c3-30ba-v89dod.mp3",
-  "assets/audio/normal/9650-5b9a-q2iy.mp3",
-  "assets/audio/normal/96e8-304c-20-3084-3080-304b-3089-p176ty.mp3",
-  "assets/audio/normal/96e8-304c-20-964d-3063-3066-3044-307e-3059-3002-99c5-304b-3089-20-30ab-30d5-30a7-1n8k2bk.mp3",
-  "assets/audio/normal/96e8-304c-20-964d-3063-3066-3044-307e-3059-3002-99c5-304b-3089-20-30ab-30d5-30a7-1ygomg7.mp3",
-  "assets/audio/normal/96e8-304c-20-964d-3063-3066-3044-307e-3059-3002-99c5-304b-3089-20-30ab-30d5-30a7-p7g6zh.mp3",
-  "assets/audio/normal/96e8-304c-20-964d-3063-3066-3044-307e-3059-q31orv.mp3",
-  "assets/audio/normal/96e8-304c-20-964d-3063-3066-3082-11vcn66.mp3",
-  "assets/audio/normal/96e8-304c-20-964d-3063-3066-3082-3001-4e88-7d04-306b-20-9593-306b-5408-3044-307e-1jd3qvj.mp3",
-  "assets/audio/normal/96e8-304c-20-964d-3063-3066-3082-3001-4e88-7d04-306e-20-6642-9593-306b-20-9593-3-2owffw.mp3",
-  "assets/audio/normal/96e8-304c-20-964d-308a-307e-3059-11vdgms.mp3",
-  "assets/audio/normal/96e8-304c-3084-3093-3060-304b-3089-15j8kr.mp3",
-  "assets/audio/normal/96e8-304c-pxlw.mp3",
-  "assets/audio/normal/96e8-3092-pxnu.mp3",
-  "assets/audio/normal/96e8-tt4.mp3",
-  "assets/audio/normal/96fb-8eca-qgq7.mp3",
-  "assets/audio/normal/98df-3079-308b-mmlht.mp3",
-  "assets/audio/normal/99c5-304b-3089-mraxv.mp3",
-  "assets/audio/slow/304a-91d1-90hz.mp3",
-  "assets/audio/slow/3059-3050-5e30-308b-6b220i.mp3",
-  "assets/audio/slow/305b-3063-304b-304f-6avwzw.mp3",
-  "assets/audio/slow/3060-304b-3089-7bk72.mp3",
-  "assets/audio/slow/3064-3082-308a-3067-3059-1hgstq6.mp3",
-  "assets/audio/slow/3067-3082-8hyz.mp3",
-  "assets/audio/slow/3068-3066-3082-7bqro.mp3",
-  "assets/audio/slow/306e-9ke.mp3",
-  "assets/audio/slow/307e-3060-8ihu.mp3",
-  "assets/audio/slow/3082-3046-3059-3050-3067-3059-110pust.mp3",
-  "assets/audio/slow/30a4-30d9-30f3-30c8-4f1a-5834-1jg1090.mp3",
-  "assets/audio/slow/30a4-30d9-30f3-30c8-4f1a-5834-306f-20-3068-3066-3082-20-6df7-3093-3067-3044-307e-1n06h85.mp3",
-  "assets/audio/slow/30a4-30d9-30f3-30c8-4f1a-5834-306f-20-3068-3066-3082-20-6df7-3093-3067-3044-307e-dsmy7e.mp3",
-  "assets/audio/slow/30a4-30d9-30f3-30c8-4f1a-5834-306f-20-3068-3066-3082-20-6df7-3093-3067-3044-307e-gxz7qv.mp3",
-  "assets/audio/slow/30ab-30d5-30a7-304c-9060-304f-306a-3044-304b-3089-814pva.mp3",
-  "assets/audio/slow/30ab-30d5-30a7-307e-3067-1ilbtty.mp3",
-  "assets/audio/slow/30b0-30c3-30ba-3092-20-8cb7-3046-10i3ih0.mp3",
-  "assets/audio/slow/30b0-30c3-30ba-7dafb.mp3",
-  "assets/audio/slow/30b3-30e9-30dc-30ab-30d5-30a7-1qrxeaf.mp3",
-  "assets/audio/slow/30b3-30e9-30dc-30ab-30d5-30a7-306b-s7q378.mp3",
-  "assets/audio/slow/4e26-3073-307e-3059-a26b1k.mp3",
-  "assets/audio/slow/4e26-3076-dk40.mp3",
-  "assets/audio/slow/4e88-7d04-304c-20-3042-3063-3066-3082-1301fwt.mp3",
-  "assets/audio/slow/4e88-7d04-306b-20-3044-307e-3059-hrr0ry.mp3",
-  "assets/audio/slow/4e88-7d04-306b-20-9593-306b-5408-3044-307e-3059-3002-1w5il2a.mp3",
-  "assets/audio/slow/4e88-7d04-306b-20-9593-306b-5408-3044-307e-3059-dnkzj4.mp3",
-  "assets/audio/slow/4e88-7d04-306b-20-9593-306b-5408-3046-1ugnczr.mp3",
-  "assets/audio/slow/4e88-7d04-306b-20-9593-306b-5408-3046-305f-3081-dnl0ax.mp3",
-  "assets/audio/slow/4e88-7d04-306b-20-9593-306b-5408-3046-3088-3046-306b-1w5k22u.mp3",
-  "assets/audio/slow/4e88-7d04-306b-306f-af4lpc.mp3",
-  "assets/audio/slow/4e88-7d04-306b-c3mgf.mp3",
-  "assets/audio/slow/4e88-7d04-306e-20-6642-9593-306b-20-9593-306b-5408-3044-307e-3059-3002-wh9hbz.mp3",
-  "assets/audio/slow/4e88-7d04-306e-20-6642-9593-306b-i1saq4.mp3",
-  "assets/audio/slow/4e88-7d04-306e-20-6642-9593-306f-20-3082-3046-3059-3050-3067-3059-3002-5916-306f-4klp9h.mp3",
-  "assets/audio/slow/4e88-7d04-306e-20-6642-9593-306f-20-3082-3046-3059-3050-3067-3059-3002-96e8-304c-dqc974.mp3",
-  "assets/audio/slow/4e88-7d04-306e-20-6642-9593-3092-i1sar7.mp3",
-  "assets/audio/slow/4e88-7d04-306e-c3mgi.mp3",
-  "assets/audio/slow/4e88-7d04-e1ks.mp3",
-  "assets/audio/slow/4eba-6c17-3067-c1rvu.mp3",
-  "assets/audio/slow/4eca-20-51fa-307e-3059-oan7pb.mp3",
-  "assets/audio/slow/4eca-65e5-306f-20-63a8-3057-306e-20-30b3-30e9-30dc-30ab-30d5-30a7-3067-3059-3002-a06aqk.mp3",
-  "assets/audio/slow/4eca-65e5-306f-20-63a8-3057-306e-20-30b3-30e9-30dc-30ab-30d5-30a7-3067-3059-3002-bhz9z6.mp3",
-  "assets/audio/slow/4eca-65e5-306f-20-63a8-3057-306e-20-30b3-30e9-30dc-30ab-30d5-30a7-306b-20-884c-3-16zglvx.mp3",
-  "assets/audio/slow/4eca-65e5-306f-c11tg.mp3",
-  "assets/audio/slow/5098-fx4.mp3",
-  "assets/audio/slow/51fa-307e-3059-c8rv9.mp3",
-  "assets/audio/slow/5207-7b26-3092-20-8cb7-3046-304b-3089-1567hei.mp3",
-  "assets/audio/slow/5207-7b26-emm7.mp3",
-  "assets/audio/slow/5217-304c-20-9577-304f-3066-3082-3001-9650-5b9a-30b0-30c3-30ba-3092-20-8cb7-3044-tbm16d.mp3",
-  "assets/audio/slow/5217-304c-e87p.mp3",
-  "assets/audio/slow/5217-3092-e89n.mp3",
-  "assets/audio/slow/5225-306e-5e97-3078-884c-304f-rknsd.mp3",
-  "assets/audio/slow/5348-5f8c-306b-306f-awdns8.mp3",
-  "assets/audio/slow/53cb-3060-3061-306f-arskbn.mp3",
-  "assets/audio/slow/58f2-308a-5207-308c-308b-1y42fvy.mp3",
-  "assets/audio/slow/58f2-308a-5207-308c-308b-304b-3082-3057-308c-306a-3044-304b-3089-1trvqqa.mp3",
-  "assets/audio/slow/58f2-308a-5207-308c-308b-304b-3082-3057-308c-307e-305b-3093-tm8tj0.mp3",
-  "assets/audio/slow/5927-4e08-592b-3067-3059-3n1yvw.mp3",
-  "assets/audio/slow/5c11-3057-fxba.mp3",
-  "assets/audio/slow/5e30-308a-305f-3044-c30jhb.mp3",
-  "assets/audio/slow/5e30-308a-307e-3059-c30k8l.mp3",
-  "assets/audio/slow/5e30-308a-307e-305b-3093-jfxf5o.mp3",
-  "assets/audio/slow/5e30-308b-gacb.mp3",
-  "assets/audio/slow/5f85-3064-gigv.mp3",
-  "assets/audio/slow/63a8-3057-306b-20-4f1a-3046-305f-3081-bytvg2.mp3",
-  "assets/audio/slow/63a8-3057-306e-20-30b0-30c3-30ba-1sgqt52.mp3",
-  "assets/audio/slow/63a8-3057-306e-20-30b3-30e9-30dc-30ab-30d5-30a7-kb8ym0.mp3",
-  "assets/audio/slow/63a8-3057-306e-etz1b.mp3",
-  "assets/audio/slow/63a8-3057-h7sf.mp3",
-  "assets/audio/slow/65b0-3057-3044-20-30b0-30c3-30ba-306f-20-4eba-6c17-3067-3001-5348-5f8c-306b-306f-9km501.mp3",
-  "assets/audio/slow/65b0-3057-3044-f4ol9.mp3",
-  "assets/audio/slow/65e9-3081-306b-f5vw3.mp3",
-  "assets/audio/slow/6620-753b-i0ij.mp3",
-  "assets/audio/slow/6642-9593-306b-20-9593-306b-5408-3046-1j12q58.mp3",
-  "assets/audio/slow/6642-9593-306b-20-9593-306b-5408-3046-304b-3089-10q7l2y.mp3",
-  "assets/audio/slow/6642-9593-306b-20-9593-306b-5408-3046-306e-3067-10q7lw5.mp3",
-  "assets/audio/slow/6642-9593-306b-fowsa.mp3",
-  "assets/audio/slow/6642-9593-i7pt.mp3",
-  "assets/audio/slow/6700-5f8c-307e-3067-20-4e26-3076-unvj6j.mp3",
-  "assets/audio/slow/6700-5f8c-307e-3067-ddwy0l.mp3",
-  "assets/audio/slow/6765-305f-306e-3067-d8so2b.mp3",
-  "assets/audio/slow/6b69-304d-307e-3059-dr0plr.mp3",
-  "assets/audio/slow/6df7-3093-3067-3044-307e-3059-t4cvx0.mp3",
-  "assets/audio/slow/79c1-305f-3061-306f-fk5q3w.mp3",
-  "assets/audio/slow/884c-304d-307e-3059-he6llo.mp3",
-  "assets/audio/slow/898b-308b-nnts.mp3",
-  "assets/audio/slow/8a00-3044-307e-3057-305f-1cnh15u.mp3",
-  "assets/audio/slow/8cb7-3044-305f-3044-304c-3042-308a-307e-3059-9ir54t.mp3",
-  "assets/audio/slow/8cb7-3044-305f-3044-3067-3059-1phm1qc.mp3",
-  "assets/audio/slow/8cb7-3044-305f-3044-3067-3059-20-9650-5b9a-30b0-30c3-30ba-3092-pnsj69.mp3",
-  "assets/audio/slow/8cb7-3046-o773.mp3",
-  "assets/audio/slow/8cb7-3048-306a-3044-3053-3068-304c-20-3042-308a-307e-3059-17gz9tj.mp3",
-  "assets/audio/slow/8cb7-3048-306a-3044-hy8nkb.mp3",
-  "assets/audio/slow/9045-304f-20-7740-3044-305f-3089-ttw0xw.mp3",
-  "assets/audio/slow/9577-3044-3067-3059-j1yv5r.mp3",
-  "assets/audio/slow/9577-3044-3067-3082-j1yv6w.mp3",
-  "assets/audio/slow/9577-304f-3066-3082-j1z3bo.mp3",
-  "assets/audio/slow/9593-306b-3044-307e-3059-mw73qf.mp3",
-  "assets/audio/slow/9593-306b-5408-3044-307e-3059-3xd3bj.mp3",
-  "assets/audio/slow/9593-306b-5408-3046-j2nlva.mp3",
-  "assets/audio/slow/964d-3063-3066-3082-j5s5ci.mp3",
-  "assets/audio/slow/964d-308a-307e-3059-j5syt4.mp3",
-  "assets/audio/slow/964d-308b-3066-3082-j5sz0a.mp3",
-  "assets/audio/slow/964d-308b-pty6.mp3",
-  "assets/audio/slow/9650-5b9a-30b0-30c3-30ba-306b-18pmbv2.mp3",
-  "assets/audio/slow/9650-5b9a-30b0-30c3-30ba-3092-18pmbw5.mp3",
-  "assets/audio/slow/9650-5b9a-30b0-30c3-30ba-3092-20-8cb7-3044-305f-3044-3067-3059-1c0oahb.mp3",
-  "assets/audio/slow/9650-5b9a-30b0-30c3-30ba-v89dod.mp3",
-  "assets/audio/slow/9650-5b9a-q2iy.mp3",
-  "assets/audio/slow/96e8-304c-20-3084-3080-304b-3089-p176ty.mp3",
-  "assets/audio/slow/96e8-304c-20-964d-3063-3066-3044-307e-3059-3002-99c5-304b-3089-20-30ab-30d5-30a7-1n8k2bk.mp3",
-  "assets/audio/slow/96e8-304c-20-964d-3063-3066-3044-307e-3059-3002-99c5-304b-3089-20-30ab-30d5-30a7-1ygomg7.mp3",
-  "assets/audio/slow/96e8-304c-20-964d-3063-3066-3044-307e-3059-3002-99c5-304b-3089-20-30ab-30d5-30a7-p7g6zh.mp3",
-  "assets/audio/slow/96e8-304c-20-964d-3063-3066-3044-307e-3059-q31orv.mp3",
-  "assets/audio/slow/96e8-304c-20-964d-3063-3066-3082-11vcn66.mp3",
-  "assets/audio/slow/96e8-304c-20-964d-3063-3066-3082-3001-4e88-7d04-306b-20-9593-306b-5408-3044-307e-1jd3qvj.mp3",
-  "assets/audio/slow/96e8-304c-20-964d-3063-3066-3082-3001-4e88-7d04-306e-20-6642-9593-306b-20-9593-3-2owffw.mp3",
-  "assets/audio/slow/96e8-304c-20-964d-308a-307e-3059-11vdgms.mp3",
-  "assets/audio/slow/96e8-304c-3084-3093-3060-304b-3089-15j8kr.mp3",
-  "assets/audio/slow/96e8-304c-pxlw.mp3",
-  "assets/audio/slow/96e8-3092-pxnu.mp3",
-  "assets/audio/slow/96e8-tt4.mp3",
-  "assets/audio/slow/96fb-8eca-qgq7.mp3",
-  "assets/audio/slow/98df-3079-308b-mmlht.mp3",
-  "assets/audio/slow/99c5-304b-3089-mraxv.mp3"
+  "assets/audio/normal/a-20-la-20-caseta-b6gjop.mp3",
+  "assets/audio/normal/a-20-la-20-feria-2c-20-vamos-20-a-20-buscar-20-la-20-caseta-2e-gywo06.mp3",
+  "assets/audio/normal/a-20-la-20-feria-e5mlb3.mp3",
+  "assets/audio/normal/a-20-la-20-portada-1aryd4h.mp3",
+  "assets/audio/normal/aunque-20-la-20-feria-20-est-e9-20-llena-15ebu8y.mp3",
+  "assets/audio/normal/bailar-1bxocb7.mp3",
+  "assets/audio/normal/bailar-20-sevillanas-wozej5.mp3",
+  "assets/audio/normal/buscamos-1fysl0z.mp3",
+  "assets/audio/normal/buscamos-20-una-20-caseta-20-en-20-la-20-feria-2e-1qc5ub9.mp3",
+  "assets/audio/normal/buscar-1c8ufdg.mp3",
+  "assets/audio/normal/buscar-20-a-20-marta-pny7eo.mp3",
+  "assets/audio/normal/buscar-20-la-20-caseta-5lvbvg.mp3",
+  "assets/audio/normal/buscar-20-una-20-caseta-7gy49t.mp3",
+  "assets/audio/normal/caseta-1cew7tp.mp3",
+  "assets/audio/normal/cenar-20-juntos-xak2yg.mp3",
+  "assets/audio/normal/cerca-20-de-20-la-20-caseta-1tqh1iz.mp3",
+  "assets/audio/normal/cerca-20-del-20-escenario-rrhhda.mp3",
+  "assets/audio/normal/churro-1cisbjz.mp3",
+  "assets/audio/normal/churros-20-con-20-chocolate-5ahhw2.mp3",
+  "assets/audio/normal/churros-cj0st0.mp3",
+  "assets/audio/normal/cola-1tko1.mp3",
+  "assets/audio/normal/comemos-fppea5.mp3",
+  "assets/audio/normal/comer-1kgtm6.mp3",
+  "assets/audio/normal/comer-20-churros-11yo1pe.mp3",
+  "assets/audio/normal/compartir-1bo0xel.mp3",
+  "assets/audio/normal/comprar-20-churros-1alt10o.mp3",
+  "assets/audio/normal/con-20-la-20-caseta-kp64ju.mp3",
+  "assets/audio/normal/con-20-marta-on4371.mp3",
+  "assets/audio/normal/con-245e.mp3",
+  "assets/audio/normal/cuando-1cpks8a.mp3",
+  "assets/audio/normal/cuando-20-encontremos-20-a-20-marta-wgm8s9.mp3",
+  "assets/audio/normal/cuando-20-encontremos-20-una-20-mesa-20-libre-1fdwze1.mp3",
+  "assets/audio/normal/cuando-20-llegue-20-marta-rk3txv.mp3",
+  "assets/audio/normal/cuando-20-lleguemos-20-a-20-la-20-feria-2c-20-vamos-20-a-20-buscar-20-la-20-case-16xoepr.mp3",
+  "assets/audio/normal/cuando-20-lleguemos-20-a-20-la-20-feria-2c-20-vamos-20-a-20-buscar-20-la-20-case-1gfzonj.mp3",
+  "assets/audio/normal/cuando-20-lleguemos-20-a-20-la-20-feria-b46zg6.mp3",
+  "assets/audio/normal/cuando-20-lleguemos-20-a-20-la-20-portada-11ry3t4.mp3",
+  "assets/audio/normal/cuando-20-lleguemos-20-a-20-la-20-portada-2c-20-vamos-20-a-20-buscar-20-la-20-ca-10gn7gd.mp3",
+  "assets/audio/normal/cuando-20-que-11dojv.mp3",
+  "assets/audio/normal/cuando-20-termine-20-el-20-concierto-2c-20-vamos-20-a-20-comer-20-churros-2e-4mmyya.mp3",
+  "assets/audio/normal/cuando-20-termine-20-el-20-concierto-2c-20-vamos-20-a-20-quedar-20-con-20-marta--1b4ebfo.mp3",
+  "assets/audio/normal/cuando-20-termine-20-esta-20-canci-f3-n-eooqb2.mp3",
+  "assets/audio/normal/de-20-la-20-feria-cmimv3.mp3",
+  "assets/audio/normal/despu-e9-s-20-vamos-20-a-20-buscar-17cutos.mp3",
+  "assets/audio/normal/despu-e9-s-20-vamos-20-a-20-cenar-20-juntos-1o4sak0.mp3",
+  "assets/audio/normal/despu-e9-s-20-vamos-20-a-20-entrar-20-juntos-az3qkl.mp3",
+  "assets/audio/normal/directamente-20-al-20-escenario-122zfyp.mp3",
+  "assets/audio/normal/el-20-caseta-17mtu0m.mp3",
+  "assets/audio/normal/el-20-concierto-co9pg7.mp3",
+  "assets/audio/normal/el-20-espect-e1-culo-20-de-20-sevillanas-10opamk.mp3",
+  "assets/audio/normal/el-20-espect-e1-culo-20-de-20-sevillanas-20-est-e1-20-a-20-punto-20-de-20-empeza-1xpqati.mp3",
+  "assets/audio/normal/empieza-20-el-20-concierto-ujqt58.mp3",
+  "assets/audio/normal/en-20-la-20-caseta-1hjqprl.mp3",
+  "assets/audio/normal/en-20-la-20-feria-20-de-20-abril-2c-20-buscamos-20-una-20-caseta-20-para-20-cena-1hhnoqp.mp3",
+  "assets/audio/normal/en-20-la-20-feria-oos36f.mp3",
+  "assets/audio/normal/en-20-la-20-portada-amkk2x.mp3",
+  "assets/audio/normal/encontramos-17wc6iv.mp3",
+  "assets/audio/normal/encontremos-17weqgz.mp3",
+  "assets/audio/normal/entrar-1dk5oig.mp3",
+  "assets/audio/normal/entrar-20-juntos-vbdupp.mp3",
+  "assets/audio/normal/escenario-meskxh.mp3",
+  "assets/audio/normal/esperar-20-el-20-autob-fa-s-1ci8tn7.mp3",
+  "assets/audio/normal/est-e1-20-a-20-punto-20-de-20-empezar-1886ujz.mp3",
+  "assets/audio/normal/gazpacho-1c3nupl.mp3",
+  "assets/audio/normal/hacer-20-la-20-cola-1hbkytf.mp3",
+  "assets/audio/normal/hacer-20-la-20-cola-20-dos-20-veces-cyr9hp.mp3",
+  "assets/audio/normal/hay-20-mucha-20-gente-19r1g5x.mp3",
+  "assets/audio/normal/hay-20-mucha-20-gente-20-cerca-20-de-20-la-20-caseta-2e-20-cuando-20-encontremos-9d94xi.mp3",
+  "assets/audio/normal/hay-20-mucha-20-gente-20-en-20-la-20-feria-2e-20-cuando-20-encontremos-20-la-20--1if1o0z.mp3",
+  "assets/audio/normal/juntos-1g14kj9.mp3",
+  "assets/audio/normal/la-20-caseta-20-azul-20-est-e1-20-cerca-20-de-20-la-20-portada-2e-20-tiene-20-me-aji07g.mp3",
+  "assets/audio/normal/la-20-caseta-20-azul-20-est-e1-20-cerca-20-de-20-la-20-portada-5piq.mp3",
+  "assets/audio/normal/la-20-caseta-20-de-20-la-20-feria-sp2h3.mp3",
+  "assets/audio/normal/la-20-caseta-20-de-20-marta-20-est-e1-20-llena-2e-20-la-20-caseta-20-azul-20-tie-s60kvv.mp3",
+  "assets/audio/normal/la-20-caseta-20-de-20-marta-vscm04.mp3",
+  "assets/audio/normal/la-20-caseta-20-est-e1-20-cerca-20-del-20-escenario-1ff2bz5.mp3",
+  "assets/audio/normal/la-20-caseta-20-est-e1-20-cerca-20-del-20-escenario-2e-20-cuando-20-encontremos--ikh7q1.mp3",
+  "assets/audio/normal/la-20-caseta-ejyunc.mp3",
+  "assets/audio/normal/la-20-concierto-1ye89k5.mp3",
+  "assets/audio/normal/la-20-feria-20-empieza-20-esta-20-noche-1eikymn.mp3",
+  "assets/audio/normal/la-20-feria-20-empieza-20-esta-20-noche-2e-20-cuando-20-lleguemos-20-a-20-la-20--13eyody.mp3",
+  "assets/audio/normal/la-20-feria-20-empieza-20-esta-20-noche-2e-20-cuando-20-lleguemos-20-a-20-la-20--923x2u.mp3",
+  "assets/audio/normal/la-20-feria-20-empieza-20-esta-20-noche-2e-20-cuando-20-lleguemos-20-a-20-la-20--mjftaq.mp3",
+  "assets/audio/normal/la-20-portada-9chp02.mp3",
+  "assets/audio/normal/la-2np.mp3",
+  "assets/audio/normal/llamar-1gu17ml.mp3",
+  "assets/audio/normal/llamar-20-a-20-marta-59s1vt.mp3",
+  "assets/audio/normal/llega-1pcw3j.mp3",
+  "assets/audio/normal/llegamos-1ngt4j6.mp3",
+  "assets/audio/normal/llegar-1gu3n4j.mp3",
+  "assets/audio/normal/llegue-1gu3nle.mp3",
+  "assets/audio/normal/lleguemos-1w049lr.mp3",
+  "assets/audio/normal/lleva-20-todo-20-el-20-d-ed-a-20-hablando-20-de-1nexf5b.mp3",
+  "assets/audio/normal/los-20-churros-20-con-20-chocolate-i2giyq.mp3",
+  "assets/audio/normal/m-fa-sica-1jhh141.mp3",
+  "assets/audio/normal/marta-1ppxsb.mp3",
+  "assets/audio/normal/marta-20-est-e1-20-en-20-el-20-autob-fa-s-yu1s4a.mp3",
+  "assets/audio/normal/marta-20-est-e1-20-esperando-20-en-20-la-20-portada-2e-20-cuando-20-termine-20-e-12pe5gl.mp3",
+  "assets/audio/normal/marta-20-nos-20-espera-20-all-ed-1gl23o7.mp3",
+  "assets/audio/normal/mi-20-hermana-1yzixco.mp3",
+  "assets/audio/normal/mi-20-hermana-20-lleva-20-todo-20-el-20-d-ed-a-20-hablando-20-de-20-los-20-churr-14dtkli.mp3",
+  "assets/audio/normal/no-20-queremos-20-hacer-20-la-20-cola-20-dos-20-veces-2sv8cp.mp3",
+  "assets/audio/normal/pedir-1rfkvs.mp3",
+  "assets/audio/normal/perderlo-73fc5z.mp3",
+  "assets/audio/normal/porque-1is6172.mp3",
+  "assets/audio/normal/porque-20-el-20-espect-e1-culo-20-va-20-a-20-empezar-al2fj3.mp3",
+  "assets/audio/normal/porque-20-la-20-caseta-20-est-e1-20-cerrada-1o9uh6p.mp3",
+  "assets/audio/normal/porque-20-necesitan-20-comprar-20-entradas-1p1oqq0.mp3",
+  "assets/audio/normal/portada-1sjn9tp.mp3",
+  "assets/audio/normal/quedamos-1fieg5v.mp3",
+  "assets/audio/normal/quedamos-20-con-20-marta-1wrunxc.mp3",
+  "assets/audio/normal/quedamos-20-con-20-marta-20-en-20-la-20-portada-2e-1c7jbqd.mp3",
+  "assets/audio/normal/quedar-1jc9u7o.mp3",
+  "assets/audio/normal/quedar-20-con-20-marta-18we9t.mp3",
+  "assets/audio/normal/sacar-1t0ds6.mp3",
+  "assets/audio/normal/sacar-20-una-20-foto-swutli.mp3",
+  "assets/audio/normal/si-20-nos-20-quedamos-20-aqu-ed-96m38d.mp3",
+  "assets/audio/normal/termina-1bhju28.mp3",
+  "assets/audio/normal/termina-20-el-20-concierto-1ckh2kn.mp3",
+  "assets/audio/normal/termine-1bhju2c.mp3",
+  "assets/audio/normal/termine-20-el-20-concierto-f4hkg3.mp3",
+  "assets/audio/normal/tiene-20-mesas-20-libres-20-y-20-m-fa-sica-6nexoh.mp3",
+  "assets/audio/normal/una-20-caseta-pj2dx.mp3",
+  "assets/audio/normal/una-20-mesa-20-libre-1ddmpdi.mp3",
+  "assets/audio/normal/una-20-raci-f3-n-20-para-20-compartir-8xevyt.mp3",
+  "assets/audio/normal/una-20-tortilla-r509l9.mp3",
+  "assets/audio/normal/una-2hgo.mp3",
+  "assets/audio/normal/vamos-20-a-20-buscar-h9bo7h.mp3",
+  "assets/audio/normal/vamos-20-a-20-comer-2uyxg5.mp3",
+  "assets/audio/normal/vamos-20-a-20-entrar-20-juntos-11feq3o.mp3",
+  "assets/audio/normal/vamos-20-a-20-llamar-20-a-20-marta-1goayyq.mp3",
+  "assets/audio/normal/vamos-20-a-20-pedir-20-una-20-raci-f3-n-20-para-20-compartir-3mnoic.mp3",
+  "assets/audio/normal/vamos-20-a-20-pedir-31xopr.mp3",
+  "assets/audio/normal/vamos-20-a-20-perderlo-1pv37dc.mp3",
+  "assets/audio/normal/vamos-20-a-20-quedar-20-con-20-ella-20-en-20-la-20-caseta-20-azul-6q6098.mp3",
+  "assets/audio/normal/vamos-20-a-20-quedar-ocr31p.mp3",
+  "assets/audio/normal/vamos-20-a-20-sacar-20-una-20-foto-5a9opb.mp3",
+  "assets/audio/normal/volver-1lmc0z4.mp3",
+  "assets/audio/normal/volver-20-a-20-casa-1ekoc6z.mp3",
+  "assets/audio/slow/a-20-la-20-caseta-b6gjop.mp3",
+  "assets/audio/slow/a-20-la-20-feria-2c-20-vamos-20-a-20-buscar-20-la-20-caseta-2e-gywo06.mp3",
+  "assets/audio/slow/a-20-la-20-feria-e5mlb3.mp3",
+  "assets/audio/slow/a-20-la-20-portada-1aryd4h.mp3",
+  "assets/audio/slow/aunque-20-la-20-feria-20-est-e9-20-llena-15ebu8y.mp3",
+  "assets/audio/slow/bailar-1bxocb7.mp3",
+  "assets/audio/slow/bailar-20-sevillanas-wozej5.mp3",
+  "assets/audio/slow/buscamos-1fysl0z.mp3",
+  "assets/audio/slow/buscamos-20-una-20-caseta-20-en-20-la-20-feria-2e-1qc5ub9.mp3",
+  "assets/audio/slow/buscar-1c8ufdg.mp3",
+  "assets/audio/slow/buscar-20-a-20-marta-pny7eo.mp3",
+  "assets/audio/slow/buscar-20-la-20-caseta-5lvbvg.mp3",
+  "assets/audio/slow/buscar-20-una-20-caseta-7gy49t.mp3",
+  "assets/audio/slow/caseta-1cew7tp.mp3",
+  "assets/audio/slow/cenar-20-juntos-xak2yg.mp3",
+  "assets/audio/slow/cerca-20-de-20-la-20-caseta-1tqh1iz.mp3",
+  "assets/audio/slow/cerca-20-del-20-escenario-rrhhda.mp3",
+  "assets/audio/slow/churro-1cisbjz.mp3",
+  "assets/audio/slow/churros-20-con-20-chocolate-5ahhw2.mp3",
+  "assets/audio/slow/churros-cj0st0.mp3",
+  "assets/audio/slow/cola-1tko1.mp3",
+  "assets/audio/slow/comemos-fppea5.mp3",
+  "assets/audio/slow/comer-1kgtm6.mp3",
+  "assets/audio/slow/comer-20-churros-11yo1pe.mp3",
+  "assets/audio/slow/compartir-1bo0xel.mp3",
+  "assets/audio/slow/comprar-20-churros-1alt10o.mp3",
+  "assets/audio/slow/con-20-la-20-caseta-kp64ju.mp3",
+  "assets/audio/slow/con-20-marta-on4371.mp3",
+  "assets/audio/slow/con-245e.mp3",
+  "assets/audio/slow/cuando-1cpks8a.mp3",
+  "assets/audio/slow/cuando-20-encontremos-20-a-20-marta-wgm8s9.mp3",
+  "assets/audio/slow/cuando-20-encontremos-20-una-20-mesa-20-libre-1fdwze1.mp3",
+  "assets/audio/slow/cuando-20-llegue-20-marta-rk3txv.mp3",
+  "assets/audio/slow/cuando-20-lleguemos-20-a-20-la-20-feria-2c-20-vamos-20-a-20-buscar-20-la-20-case-16xoepr.mp3",
+  "assets/audio/slow/cuando-20-lleguemos-20-a-20-la-20-feria-2c-20-vamos-20-a-20-buscar-20-la-20-case-1gfzonj.mp3",
+  "assets/audio/slow/cuando-20-lleguemos-20-a-20-la-20-feria-b46zg6.mp3",
+  "assets/audio/slow/cuando-20-lleguemos-20-a-20-la-20-portada-11ry3t4.mp3",
+  "assets/audio/slow/cuando-20-lleguemos-20-a-20-la-20-portada-2c-20-vamos-20-a-20-buscar-20-la-20-ca-10gn7gd.mp3",
+  "assets/audio/slow/cuando-20-que-11dojv.mp3",
+  "assets/audio/slow/cuando-20-termine-20-el-20-concierto-2c-20-vamos-20-a-20-comer-20-churros-2e-4mmyya.mp3",
+  "assets/audio/slow/cuando-20-termine-20-el-20-concierto-2c-20-vamos-20-a-20-quedar-20-con-20-marta--1b4ebfo.mp3",
+  "assets/audio/slow/cuando-20-termine-20-esta-20-canci-f3-n-eooqb2.mp3",
+  "assets/audio/slow/de-20-la-20-feria-cmimv3.mp3",
+  "assets/audio/slow/despu-e9-s-20-vamos-20-a-20-buscar-17cutos.mp3",
+  "assets/audio/slow/despu-e9-s-20-vamos-20-a-20-cenar-20-juntos-1o4sak0.mp3",
+  "assets/audio/slow/despu-e9-s-20-vamos-20-a-20-entrar-20-juntos-az3qkl.mp3",
+  "assets/audio/slow/directamente-20-al-20-escenario-122zfyp.mp3",
+  "assets/audio/slow/el-20-caseta-17mtu0m.mp3",
+  "assets/audio/slow/el-20-concierto-co9pg7.mp3",
+  "assets/audio/slow/el-20-espect-e1-culo-20-de-20-sevillanas-10opamk.mp3",
+  "assets/audio/slow/el-20-espect-e1-culo-20-de-20-sevillanas-20-est-e1-20-a-20-punto-20-de-20-empeza-1xpqati.mp3",
+  "assets/audio/slow/empieza-20-el-20-concierto-ujqt58.mp3",
+  "assets/audio/slow/en-20-la-20-caseta-1hjqprl.mp3",
+  "assets/audio/slow/en-20-la-20-feria-20-de-20-abril-2c-20-buscamos-20-una-20-caseta-20-para-20-cena-1hhnoqp.mp3",
+  "assets/audio/slow/en-20-la-20-feria-oos36f.mp3",
+  "assets/audio/slow/en-20-la-20-portada-amkk2x.mp3",
+  "assets/audio/slow/encontramos-17wc6iv.mp3",
+  "assets/audio/slow/encontremos-17weqgz.mp3",
+  "assets/audio/slow/entrar-1dk5oig.mp3",
+  "assets/audio/slow/entrar-20-juntos-vbdupp.mp3",
+  "assets/audio/slow/escenario-meskxh.mp3",
+  "assets/audio/slow/esperar-20-el-20-autob-fa-s-1ci8tn7.mp3",
+  "assets/audio/slow/est-e1-20-a-20-punto-20-de-20-empezar-1886ujz.mp3",
+  "assets/audio/slow/gazpacho-1c3nupl.mp3",
+  "assets/audio/slow/hacer-20-la-20-cola-1hbkytf.mp3",
+  "assets/audio/slow/hacer-20-la-20-cola-20-dos-20-veces-cyr9hp.mp3",
+  "assets/audio/slow/hay-20-mucha-20-gente-19r1g5x.mp3",
+  "assets/audio/slow/hay-20-mucha-20-gente-20-cerca-20-de-20-la-20-caseta-2e-20-cuando-20-encontremos-9d94xi.mp3",
+  "assets/audio/slow/hay-20-mucha-20-gente-20-en-20-la-20-feria-2e-20-cuando-20-encontremos-20-la-20--1if1o0z.mp3",
+  "assets/audio/slow/juntos-1g14kj9.mp3",
+  "assets/audio/slow/la-20-caseta-20-azul-20-est-e1-20-cerca-20-de-20-la-20-portada-2e-20-tiene-20-me-aji07g.mp3",
+  "assets/audio/slow/la-20-caseta-20-azul-20-est-e1-20-cerca-20-de-20-la-20-portada-5piq.mp3",
+  "assets/audio/slow/la-20-caseta-20-de-20-la-20-feria-sp2h3.mp3",
+  "assets/audio/slow/la-20-caseta-20-de-20-marta-20-est-e1-20-llena-2e-20-la-20-caseta-20-azul-20-tie-s60kvv.mp3",
+  "assets/audio/slow/la-20-caseta-20-de-20-marta-vscm04.mp3",
+  "assets/audio/slow/la-20-caseta-20-est-e1-20-cerca-20-del-20-escenario-1ff2bz5.mp3",
+  "assets/audio/slow/la-20-caseta-20-est-e1-20-cerca-20-del-20-escenario-2e-20-cuando-20-encontremos--ikh7q1.mp3",
+  "assets/audio/slow/la-20-caseta-ejyunc.mp3",
+  "assets/audio/slow/la-20-concierto-1ye89k5.mp3",
+  "assets/audio/slow/la-20-feria-20-empieza-20-esta-20-noche-1eikymn.mp3",
+  "assets/audio/slow/la-20-feria-20-empieza-20-esta-20-noche-2e-20-cuando-20-lleguemos-20-a-20-la-20--13eyody.mp3",
+  "assets/audio/slow/la-20-feria-20-empieza-20-esta-20-noche-2e-20-cuando-20-lleguemos-20-a-20-la-20--923x2u.mp3",
+  "assets/audio/slow/la-20-feria-20-empieza-20-esta-20-noche-2e-20-cuando-20-lleguemos-20-a-20-la-20--mjftaq.mp3",
+  "assets/audio/slow/la-20-portada-9chp02.mp3",
+  "assets/audio/slow/la-2np.mp3",
+  "assets/audio/slow/llamar-1gu17ml.mp3",
+  "assets/audio/slow/llamar-20-a-20-marta-59s1vt.mp3",
+  "assets/audio/slow/llega-1pcw3j.mp3",
+  "assets/audio/slow/llegamos-1ngt4j6.mp3",
+  "assets/audio/slow/llegar-1gu3n4j.mp3",
+  "assets/audio/slow/llegue-1gu3nle.mp3",
+  "assets/audio/slow/lleguemos-1w049lr.mp3",
+  "assets/audio/slow/lleva-20-todo-20-el-20-d-ed-a-20-hablando-20-de-1nexf5b.mp3",
+  "assets/audio/slow/los-20-churros-20-con-20-chocolate-i2giyq.mp3",
+  "assets/audio/slow/m-fa-sica-1jhh141.mp3",
+  "assets/audio/slow/marta-1ppxsb.mp3",
+  "assets/audio/slow/marta-20-est-e1-20-en-20-el-20-autob-fa-s-yu1s4a.mp3",
+  "assets/audio/slow/marta-20-est-e1-20-esperando-20-en-20-la-20-portada-2e-20-cuando-20-termine-20-e-12pe5gl.mp3",
+  "assets/audio/slow/marta-20-nos-20-espera-20-all-ed-1gl23o7.mp3",
+  "assets/audio/slow/mi-20-hermana-1yzixco.mp3",
+  "assets/audio/slow/mi-20-hermana-20-lleva-20-todo-20-el-20-d-ed-a-20-hablando-20-de-20-los-20-churr-14dtkli.mp3",
+  "assets/audio/slow/no-20-queremos-20-hacer-20-la-20-cola-20-dos-20-veces-2sv8cp.mp3",
+  "assets/audio/slow/pedir-1rfkvs.mp3",
+  "assets/audio/slow/perderlo-73fc5z.mp3",
+  "assets/audio/slow/porque-1is6172.mp3",
+  "assets/audio/slow/porque-20-el-20-espect-e1-culo-20-va-20-a-20-empezar-al2fj3.mp3",
+  "assets/audio/slow/porque-20-la-20-caseta-20-est-e1-20-cerrada-1o9uh6p.mp3",
+  "assets/audio/slow/porque-20-necesitan-20-comprar-20-entradas-1p1oqq0.mp3",
+  "assets/audio/slow/portada-1sjn9tp.mp3",
+  "assets/audio/slow/quedamos-1fieg5v.mp3",
+  "assets/audio/slow/quedamos-20-con-20-marta-1wrunxc.mp3",
+  "assets/audio/slow/quedamos-20-con-20-marta-20-en-20-la-20-portada-2e-1c7jbqd.mp3",
+  "assets/audio/slow/quedar-1jc9u7o.mp3",
+  "assets/audio/slow/quedar-20-con-20-marta-18we9t.mp3",
+  "assets/audio/slow/sacar-1t0ds6.mp3",
+  "assets/audio/slow/sacar-20-una-20-foto-swutli.mp3",
+  "assets/audio/slow/si-20-nos-20-quedamos-20-aqu-ed-96m38d.mp3",
+  "assets/audio/slow/termina-1bhju28.mp3",
+  "assets/audio/slow/termina-20-el-20-concierto-1ckh2kn.mp3",
+  "assets/audio/slow/termine-1bhju2c.mp3",
+  "assets/audio/slow/termine-20-el-20-concierto-f4hkg3.mp3",
+  "assets/audio/slow/tiene-20-mesas-20-libres-20-y-20-m-fa-sica-6nexoh.mp3",
+  "assets/audio/slow/una-20-caseta-pj2dx.mp3",
+  "assets/audio/slow/una-20-mesa-20-libre-1ddmpdi.mp3",
+  "assets/audio/slow/una-20-raci-f3-n-20-para-20-compartir-8xevyt.mp3",
+  "assets/audio/slow/una-20-tortilla-r509l9.mp3",
+  "assets/audio/slow/una-2hgo.mp3",
+  "assets/audio/slow/vamos-20-a-20-buscar-h9bo7h.mp3",
+  "assets/audio/slow/vamos-20-a-20-comer-2uyxg5.mp3",
+  "assets/audio/slow/vamos-20-a-20-entrar-20-juntos-11feq3o.mp3",
+  "assets/audio/slow/vamos-20-a-20-llamar-20-a-20-marta-1goayyq.mp3",
+  "assets/audio/slow/vamos-20-a-20-pedir-20-una-20-raci-f3-n-20-para-20-compartir-3mnoic.mp3",
+  "assets/audio/slow/vamos-20-a-20-pedir-31xopr.mp3",
+  "assets/audio/slow/vamos-20-a-20-perderlo-1pv37dc.mp3",
+  "assets/audio/slow/vamos-20-a-20-quedar-20-con-20-ella-20-en-20-la-20-caseta-20-azul-6q6098.mp3",
+  "assets/audio/slow/vamos-20-a-20-quedar-ocr31p.mp3",
+  "assets/audio/slow/vamos-20-a-20-sacar-20-una-20-foto-5a9opb.mp3",
+  "assets/audio/slow/volver-1lmc0z4.mp3",
+  "assets/audio/slow/volver-20-a-20-casa-1ekoc6z.mp3"
 ];
 const state = { version: null, steps: [], index: 0, activeAudio: null, listeningSkipFromIndex: null, completedSteps: new Set() };
 state.score = { correct: 0, total: 0, seen: new Set() };
@@ -5490,7 +5530,7 @@ function _specLookupTip(unit, gloss = {}) {
   const text = typeof unit === 'string' ? unit : unit.text;
   if (typeof unit === 'object' && unit.lookup) return unit.lookup;
   const key = String(text || '').toLowerCase().replace('$', '');
-  return gloss[key] || gloss[text] || COURSE_GLOSS[key] || COURSE_GLOSS[text] || '暂无释义';
+  return gloss[key] || gloss[text] || COURSE_GLOSS[key] || COURSE_GLOSS[text] || '点击听发音';
 }
 function _specRomajiKey(value) {
   return String(value || '').replace(/\s+/g, ' ').trim().replace(/[，。！？、；：,.!?;:]+$/u, '');
@@ -5516,9 +5556,6 @@ function _specRomajiTextHTML(text, mainHTML = null) {
 function _specLookupTokenHTML(visibleText, tip) {
   return `<span class="spec-lookup-token" data-lookup="${_specEscape(tip)}">${_specRomajiTextHTML(visibleText)}</span>`;
 }
-function _specPunctuationHTML(punctuation) {
-  return `<span class="spec-token-punctuation">${_specEscape(punctuation)}</span>`;
-}
 function _specEnglishLookupUnitsHTML(sentence, gloss = {}, lookupUnits = []) {
   const source = String(sentence || '');
   const lowerSource = source.toLowerCase();
@@ -5535,7 +5572,7 @@ function _specEnglishLookupUnitsHTML(sentence, gloss = {}, lookupUnits = []) {
     let nextCursor = index + String(text).length;
     const punctuation = source.slice(nextCursor).match(/^[^\p{L}\p{N}\s]+/u);
     if (punctuation) {
-      html += `<span class="spec-word-punctuation-group">${tokenHTML}${_specPunctuationHTML(punctuation[0])}</span>`;
+      html += `<span class="spec-word-punctuation-group">${tokenHTML}${_specEscape(punctuation[0])}</span>`;
       nextCursor += punctuation[0].length;
     } else {
       html += tokenHTML;
@@ -5558,11 +5595,11 @@ function _specEnglishLookupHTML(sentence, gloss = {}, lookupUnits = []) {
       continue;
     }
     const key = token.toLowerCase().replace('$', '');
-    const tip = gloss[key] || gloss[token] || COURSE_GLOSS[key] || COURSE_GLOSS[token] || '暂无释义';
+    const tip = gloss[key] || gloss[token] || COURSE_GLOSS[key] || COURSE_GLOSS[token] || '点击听发音';
     const wordHTML = _specLookupTokenHTML(token, tip);
     const nextToken = tokens[index + 1] || '';
     if (_specIsPunctuationChar(nextToken)) {
-      html += `<span class="spec-word-punctuation-group">${wordHTML}${_specPunctuationHTML(nextToken)}</span>`;
+      html += `<span class="spec-word-punctuation-group">${wordHTML}${_specEscape(nextToken)}</span>`;
       index += 1;
     } else {
       html += wordHTML;
@@ -5591,7 +5628,7 @@ function _specEnglishLookupWithPhrasesHTML(text, gloss = {}, phrases = ['run out
       cursor += String(phrase).length;
       const punctuation = source.slice(cursor).match(/^[^\p{L}\p{N}\s]+/u);
       if (punctuation) {
-        html += `<span class="spec-word-punctuation-group">${phraseHTML}${_specPunctuationHTML(punctuation[0])}</span>`;
+        html += `<span class="spec-word-punctuation-group">${phraseHTML}${_specEscape(punctuation[0])}</span>`;
         cursor += punctuation[0].length;
       } else {
         html += phraseHTML;
@@ -5605,7 +5642,7 @@ function _specEnglishLookupWithPhrasesHTML(text, gloss = {}, phrases = ['run out
       cursor += token.length;
       const punctuation = source.slice(cursor).match(/^[^\p{L}\p{N}\s]+/u);
       if (punctuation) {
-        html += `<span class="spec-word-punctuation-group">${wordHTML}${_specPunctuationHTML(punctuation[0])}</span>`;
+        html += `<span class="spec-word-punctuation-group">${wordHTML}${_specEscape(punctuation[0])}</span>`;
         cursor += punctuation[0].length;
       } else {
         html += wordHTML;
@@ -5623,7 +5660,7 @@ function _specChineseLookupHTML(segments = []) {
   segments.forEach(segment => {
     const html = typeof segment === 'string'
       ? _specEscape(segment)
-      : `<span class="spec-lookup-token" data-lookup="${_specEscape(segment.lookup)}">${_specEscape(segment.text)}</span>`;
+      : `<span class="spec-lookup-token" data-lookup="${_specEscape(segment.lookup)}"${segment.group ? ` data-lookup-group="${_specEscape(segment.group)}"` : ''}>${_specEscape(segment.text)}</span>`;
     if (typeof segment === 'string' && punctuationPattern.test(segment) && parts.length) {
       parts[parts.length - 1] = `<span class="spec-chinese-punctuation-group">${parts[parts.length - 1]}${html}</span>`;
     } else {
@@ -5647,7 +5684,13 @@ function _specBindLookup(container) {
     token.addEventListener('click', event => {
       event.stopPropagation();
       _specClearLookup(screen);
-      token.classList.add('active');
+      if (token.dataset.lookupGroup) {
+        screen.querySelectorAll('.spec-lookup-token').forEach(peer => {
+          if (peer.dataset.lookupGroup === token.dataset.lookupGroup) peer.classList.add('active');
+        });
+      } else {
+        token.classList.add('active');
+      }
       const popover = document.createElement('div');
       popover.className = 'spec-translation-popover';
       popover.textContent = token.dataset.lookup || '';
@@ -6201,7 +6244,7 @@ function renderContextMeaning(container, data) {
   };
   const render = () => {
     const complete = answerState === 'complete';
-    const sceneHTML = imageScene(data, _specHighlightPhraseHTML(data.sentence, data.highlightPhrase || data.phrase), introComplete ? '' : 'context-intro-card');
+    const sceneHTML = imageScene(data, _specHighlightPhraseHTML(data.sentence, data.phrase), introComplete ? '' : 'context-intro-card');
     if (!introComplete) {
       _specShell(container, { exerciseId: data.id, progress: stepProgress(), screenClass: 'spec-context-intro', sceneHTML, bodyHTML: '', bottomHTML: '' });
       if (!introStarted) {
@@ -6306,8 +6349,7 @@ function renderSingleBlankTranslation(container, data) {
     const promptHTML = data.promptSegments ? _specChineseLookupHTML(data.promptSegments) : _specEscape(data.prompt);
     const slot = slotStates[0];
     const sentenceStartHTML = _specEnglishLookupHTML(data.sentenceStart, data.gloss || {}, data.sentenceStartLookupUnits || []);
-    const sentenceEndHTML = _specEnglishLookupHTML(data.sentenceEnd || '', data.gloss || {}, data.sentenceEndLookupUnits || []);
-    const sentenceHTML = done ? _specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || []) : `<div class="spec-single-translation-row"><span class="spec-single-translation-fixed">${sentenceStartHTML}</span><div class="spec-slot ${slot ? '' : 'active'}">${slot ? `<div class="spec-slot-answer"><div class="spec-slot-token ${slot.state} ${_specHasRomaji(slot.text) ? 'has-romaji' : ''}">${_specRomajiTextHTML(slot.text)}</div></div>` : `<div class="spec-slot-hint">${_specEscape(data.blank.zh)}</div><div class="spec-slot-line"></div>`}</div><span class="spec-single-translation-punctuation">${sentenceEndHTML}</span></div>`;
+    const sentenceHTML = done ? _specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || []) : `<div class="spec-single-translation-row"><span class="spec-single-translation-fixed">${sentenceStartHTML}</span><div class="spec-slot ${slot ? '' : 'active'}">${slot ? `<div class="spec-slot-answer"><div class="spec-slot-token ${slot.state} ${_specHasRomaji(slot.text) ? 'has-romaji' : ''}">${_specRomajiTextHTML(slot.text)}</div></div>` : `<div class="spec-slot-hint">${_specEscape(data.blank.zh)}</div><div class="spec-slot-line"></div>`}</div><span class="spec-single-translation-punctuation">${_specEscape(data.sentenceEnd)}</span></div>`;
     _specShell(container, { exerciseId: data.id, progress: stepProgress(), showContinue: done, sceneHTML: `<section class="spec-sentence-card demo-meaning-card" aria-label="句子题面"><span class="spec-sentence-new-label">new</span><div class="spec-sentence-text">${promptHTML}</div></section>`, bodyHTML: `<div class="spec-main-stack spec-meaning-stack"><p class="spec-stem">${_specEscape(data.stem)}</p>${sentenceHTML}${allFilled ? '' : `<div class="spec-choice-list">${optionsHTML}</div>`}</div>` });
     if (done && !fullPlayed) {
       fullPlayed = true;
@@ -6339,27 +6381,23 @@ function renderSingleBlankTranslation(container, data) {
   render();
 }
 function renderExplanation(container, data) {
-  _specShell(container, { exerciseId: data.id, progress: stepProgress(), showContinue: true, screenClass: 'spec-explanation-screen', bodyHTML: `<div class="spec-main-stack spec-explanation-stack"><section class="spec-explanation-card" aria-label="${_specEscape(data.tab)}"><div class="spec-explanation-tab">${_specEscape(data.tab)}</div><div class="spec-explanation-panel"><p class="spec-explanation-body">${data.html}</p></div></section></div>` });
+  _specShell(container, { exerciseId: data.id, progress: stepProgress(), showContinue: true, screenClass: 'spec-explanation-screen', bodyHTML: `<div class="spec-main-stack spec-explanation-stack"><section class="spec-explanation-card" aria-label="${_specEscape(data.tab)}"><div class="spec-explanation-tab">${_specEscape(data.tab)}</div><div class="spec-explanation-panel"><div class="spec-explanation-body">${data.html}</div></div></section></div>` });
 }
 function renderTwoOption(container, data) {
   let current = 0;
-  const normalizeOption = option => typeof option === 'string'
-    ? { label: option, audioText: option }
-    : { label: option.label, audioText: option.audioText || option.audio || option.label };
-  const groups = data.groups.map(group => ({ ...group, options: group.options.map(normalizeOption) }));
-  const slotStates = groups.map(() => null);
-  const optionOrders = groups.map(group => _shuffle(group.options));
+  const slotStates = data.groups.map(() => null);
+  const optionOrders = data.groups.map(group => _shuffle(group.options));
   let wrongIndex = null;
   let completeReady = false;
   let fullPlayed = false;
   const render = () => {
-    const allFilled = current >= groups.length;
+    const allFilled = current >= data.groups.length;
     const done = allFilled && completeReady;
-    const active = groups[current];
+    const active = data.groups[current];
     const activeOptions = allFilled ? [] : optionOrders[current];
-    const optionsHTML = allFilled ? '' : activeOptions.map((option,index) => _specChoice2HTML(option.label,index, wrongIndex === index ? 'wrong' : '')).join('');
+    const optionsHTML = allFilled ? '' : activeOptions.map((option,index) => _specChoice2HTML(option,index, wrongIndex === index ? 'wrong' : '')).join('');
     const promptHTML = data.promptSegments ? _specChineseLookupHTML(data.promptSegments) : _specEscape(data.prompt);
-    _specShell(container, { exerciseId: data.id, progress: stepProgress(), showContinue: done, bodyHTML: `<div class="spec-main-stack">${_specTopicCardHTML(promptHTML, false, true)}${done ? _specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || []) : _specSlotsHTML(groups.map(g => ({zh:g.zh, answer:g.correct})), slotStates, current)}${allFilled ? '' : `<div class="spec-choice-list">${optionsHTML}</div>`}</div>` });
+    _specShell(container, { exerciseId: data.id, progress: stepProgress(), showContinue: done, bodyHTML: `<div class="spec-main-stack">${_specTopicCardHTML(promptHTML, false, true)}${done ? _specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || []) : _specSlotsHTML(data.groups.map(g => ({zh:g.zh, answer:g.correct})), slotStates, current)}${allFilled ? '' : `<div class="spec-choice-list">${optionsHTML}</div>`}</div>` });
     if (done && !fullPlayed) {
       fullPlayed = true;
       _playSoon(data.fullSentence, 300);
@@ -6368,19 +6406,19 @@ function renderTwoOption(container, data) {
       if (wrongIndex !== null) return;
       const i = Number(btn.dataset.index);
       const option = activeOptions[i];
-      _specPlayAudio(option.audioText, false);
-      if (option.label === active.correct) {
+      _specPlayAudio(option, false);
+      if (option === active.correct) {
         slotStates[current] = { state: 'correct', text: active.correct };
         current += 1;
         wrongIndex = null;
-        if (current >= groups.length) {
+        if (current >= data.groups.length) {
           recordAttempt(data, true);
           setTimeout(() => { completeReady = true; render(); }, 520);
         }
       } else {
         recordAttempt(data, false);
         wrongIndex = i;
-        slotStates[current] = { state: 'wrong', text: option.label };
+        slotStates[current] = { state: 'wrong', text: option };
         setTimeout(() => {
           slotStates[current] = null;
           wrongIndex = null;
@@ -7383,7 +7421,7 @@ const Q = {
       id: "reading-q8-listening",
       type: "readingCloze9876",
       section: "环节3 · 阅读理解 · 题8补做",
-      image: "assets/images/oshi-collab-cafe.webp",
+      image: "assets/images/feria-portada.webp",
       stem: "请填空：",
       gloss: { ...COURSE_GLOSS, are: "是；处于", buy: "买" },
       lookupPhrases: ["can't", "find the way", "gas station", "stop there"],
@@ -7442,7 +7480,7 @@ const Q = {
       id: "reading-q9-listening",
       type: "readingCloze9876",
       section: "环节3 · 阅读理解 · 题9补做",
-      image: "assets/images/reservation-rain-station.webp",
+      image: "assets/images/churros-night.webp",
       stem: "请填空：",
       gloss: { ...COURSE_GLOSS, on: "开着", in: "在……以内", an: "一", "a lot of": "很多" },
       lookupPhrases: ["air conditioner", "is playing", "are using", "a lot of", "run out of"],
@@ -7500,7 +7538,7 @@ const Q = {
       id: "reading-q10-listening",
       type: "readingCloze9876",
       section: "环节3 · 阅读理解 · 题10补做",
-      image: "assets/images/popculture-event-crowd.webp",
+      image: "assets/images/sevillanas-stage.webp",
       stem: "请填空：",
       segments: [
         "We still have three more hours on the road, but we only have one bottle of water. If we ",
@@ -7556,7 +7594,7 @@ const Q = {
       id: "reading-q11-listening",
       type: "readingCloze9876",
       section: "环节3 · 阅读理解 · 题11补做",
-      image: "assets/images/oshi-goods-shop.webp",
+      image: "assets/images/caseta-meeting.webp",
       stem: "请填空：",
       segments: [
         "The next service area is only ten minutes away. If we ",
@@ -7601,521 +7639,856 @@ const Q = {
   }
 };
 
-const JAPANESE_ROMAJI = {
-  "推し": "oshi",
-  "の": "no",
-  "推しの": "oshi no",
-  "グッズ": "guzzu",
-  "グッズを": "guzzu o",
-  "推しの グッズ": "oshi no guzzu",
-  "推しの グッズを 買いたいです": "oshi no guzzu o kaitai desu",
-  "推しの コラボカフェ": "oshi no korabo kafe",
-  "コラボカフェ": "korabo kafe",
-  "コラボカフェに": "korabo kafe ni",
-  "コラボカフェです": "korabo kafe desu",
-  "今日は": "kyou wa",
-  "今日は 推しの コラボカフェに 行きます": "kyou wa oshi no korabo kafe ni ikimasu",
-  "今日は 推しの コラボカフェに 行きます。": "kyou wa oshi no korabo kafe ni ikimasu",
-  "今日は 推しの コラボカフェです": "kyou wa oshi no korabo kafe desu",
-  "今日は 推しの コラボカフェです。": "kyou wa oshi no korabo kafe desu",
-  "推しの コラボカフェ": "oshi no korabo kafe",
-  "推しの コラボカフェです": "oshi no korabo kafe desu",
-  "行きます": "ikimasu",
-  "です": "desu",
-  "行っても": "itte mo",
-  "列": "retsu",
-  "列が": "retsu ga",
-  "列を": "retsu o",
-  "列が 長くても": "retsu ga nagakute mo",
-  "長い": "nagai",
-  "長いです": "nagai desu",
-  "長くても": "nagakute mo",
-  "長いでも": "nagai demo",
-  "並ぶ": "narabu",
-  "並びます": "narabimasu",
-  "最後まで 並ぶ": "saigo made narabu",
-  "間に合う": "ma ni au",
-  "間に合います": "ma ni aimasu",
-  "間にいます": "ma ni imasu",
-  "時間に 間に合います": "jikan ni ma ni aimasu",
-  "時間に 間に合う": "jikan ni ma ni au",
-  "時間に 間に合うので": "jikan ni ma ni au node",
-  "時間に 間に合うから": "jikan ni ma ni au kara",
-  "予約": "yoyaku",
-  "予約に": "yoyaku ni",
-  "予約に 間に合う": "yoyaku ni ma ni au",
-  "予約に 間に合います": "yoyaku ni ma ni aimasu",
-  "予約に 間に合うように": "yoyaku ni ma ni au you ni",
-  "予約に います": "yoyaku ni imasu",
-  "間に合うように": "ma ni au you ni",
-  "予約の": "yoyaku no",
-  "時間は": "jikan wa",
-  "予約の 時間は": "yoyaku no jikan wa",
-  "予約には": "yoyaku ni wa",
-  "予約の 時間に": "yoyaku no jikan ni",
-  "予約の 時間を": "yoyaku no jikan o",
-  "予約の 時間に います": "yoyaku no jikan ni imasu",
-  "予約の 時間に 間に合います": "yoyaku no jikan ni ma ni aimasu",
-  "予約の 時間に 間に合います。": "yoyaku no jikan ni ma ni aimasu",
-  "予約が あっても": "yoyaku ga atte mo",
-  "時間": "jikan",
-  "時間に": "jikan ni",
-  "限定": "gentei",
-  "限定グッズ": "gentei guzzu",
-  "限定グッズを": "gentei guzzu o",
-  "限定グッズに": "gentei guzzu ni",
-  "グッズを 買いたいです": "guzzu o kaitai desu",
-  "限定グッズを 買いたいです": "gentei guzzu o kaitai desu",
-  "、限定グッズを 買いたいです。": "gentei guzzu o kaitai desu",
-  "買いたいです": "kaitai desu",
-  "買いたいがあります": "kaitai ga arimasu",
-  "買いたいです 限定グッズを": "kaitai desu gentei guzzu o",
-  "列が 長くても、限定グッズを 買いたいです": "retsu ga nagakute mo, gentei guzzu o kaitai desu",
-  "列が 長くても、限定グッズを 買いたいです。": "retsu ga nagakute mo, gentei guzzu o kaitai desu",
-  "雨が やむから": "ame ga yamu kara",
-  "切符を 買うから": "kippu o kau kara",
-  "雨": "ame",
-  "雨が": "ame ga",
-  "雨を": "ame o",
-  "雨が 降る": "ame ga furu",
-  "雨が 降っています": "ame ga futte imasu",
-  "降っています": "futte imasu",
-  "雨が 降ります": "ame ga furimasu",
-  "雨が 降っても": "ame ga futte mo",
-  "雨が 降っても、予約に 間に合います": "ame ga futte mo, yoyaku ni ma ni aimasu",
-  "雨が 降っても、予約に 間に合います。": "ame ga futte mo, yoyaku ni ma ni aimasu",
-  "雨が 降るても": "ame ga furu temo",
-  "雨が 降っても、予約の 時間に 間に合います": "ame ga futte mo, yoyaku no jikan ni ma ni aimasu",
-  "雨が 降っても、予約の 時間に 間に合います。": "ame ga futte mo, yoyaku no jikan ni ma ni aimasu",
-  "降る": "furu",
-  "降ります": "furimasu",
-  "降っても": "futte mo",
-  "降るても": "furu temo",
-  "傘": "kasa",
-  "切符": "kippu",
-  "映画": "eiga",
-  "電車": "densha",
-  "買う": "kau",
-  "帰る": "kaeru",
-  "見る": "miru",
-  "お金": "okane",
-  "写真": "shashin",
-  "待つ": "matsu",
-  "食べる": "taberu",
-  "帰ります": "kaerimasu",
-  "帰りません": "kaerimasen",
-  "駅から": "eki kara",
-  "カフェまで": "kafe made",
-  "店の 前に": "mise no mae ni",
-  "店の": "mise no",
-  "前に": "mae ni",
-  "列が あります": "retsu ga arimasu",
-  "あります": "arimasu",
-  "少し": "sukoshi",
-  "少し 歩きます": "sukoshi arukimasu",
-  "歩きます": "arukimasu",
-  "大丈夫です": "daijoubu desu",
-  "外は 雨です": "soto wa ame desu",
-  "外は": "soto wa",
-  "雨です": "ame desu",
-  "私たちは": "watashi-tachi wa",
-  "私は": "watashi wa",
-  "まだ": "mada",
-  "まだ 間に合います": "mada ma ni aimasu",
-  "もうすぐです": "mou sugu desu",
-  "イベント会場": "ibento kaijou",
-  "イベント会場は": "ibento kaijou wa",
-  "イベント会場は とても 混んでいます": "ibento kaijou wa totemo konde imasu",
-  "とても": "totemo",
-  "とても 混んでいます": "totemo konde imasu",
-  "混んでいます": "konde imasu",
-  "友だち": "tomodachi",
-  "友だちは": "tomodachi wa",
-  "帰りたい": "kaeritai",
-  "帰りたいと": "kaeritai to",
-  "言いました": "iimashita",
-  "でも": "demo",
-  "せっかく": "sekkaku",
-  "来たので": "kita node",
-  "せっかく 来たので": "sekkaku kita node",
-  "最後まで": "saigo made",
-  "つもりです": "tsumori desu",
-  "すぐ帰る": "sugu kaeru",
-  "別の店へ行く": "betsu no mise e iku",
-  "グッズを 買う": "guzzu o kau",
-  "ここに います": "koko ni imasu",
-  "新しい": "atarashii",
-  "新しい グッズ": "atarashii guzzu",
-  "新しい グッズは": "atarashii guzzu wa",
-  "人気": "ninki",
-  "人気で": "ninki de",
-  "午後には": "gogo ni wa",
-  "売り切れる": "urikireru",
-  "売り切れるかもしれません": "urikireru kamoshiremasen",
-  "売り切れるかもしれないから": "urikireru kamoshirenai kara",
-  "遅く 着いたら": "osoku tsuitara",
-  "買えない": "kaenai",
-  "買えないことが あります": "kaenai koto ga arimasu",
-  "だから": "dakara",
-  "今": "ima",
-  "早めに": "hayame ni",
-  "早めに 出ます": "hayame ni demasu",
-  "今 出ます": "ima demasu",
-  "出ます": "demasu",
-  "予約に 間に合うため": "yoyaku ni ma ni au tame",
-  "推しに 会うため": "oshi ni au tame",
-  "ここに": "koko ni",
-  "います": "imasu",
-  "雨がやんだから": "ame ga yanda kara",
-  "カフェが遠くないから": "kafe ga tooku nai kara"
-};
+const JAPANESE_ROMAJI = {};
 
-const JAPANESE_GLOSS = {
+const FRENCH_GLOSS = {
   ...COURSE_GLOSS,
-  "推し": "喜欢/支持的偶像或角色",
-  "の": "的",
-  "推しの": "喜欢的偶像/角色的",
-  "グッズ": "周边",
-  "グッズを": "把周边",
-  "推しの グッズ": "喜欢的偶像/角色的周边",
-  "推しの グッズを 買いたいです": "想买喜欢的偶像/角色的周边",
-  "推しの コラボカフェ": "喜欢的偶像/角色联名咖啡店",
-  "推しの コラボカフェです": "是喜欢的偶像/角色联名咖啡店",
-  "コラボカフェです": "是联名咖啡店",
-  "コラボカフェ": "联名咖啡店",
-  "コラボカフェに": "去联名咖啡店",
-  "今日は": "今天",
-  "今日": "今天",
-  "行きます": "去",
-  "行っても": "即使去；即使去了",
-  "行きたいです": "想去",
-  "列": "队伍",
-  "列が": "队伍",
-  "長い": "长的",
-  "長いです": "很长",
-  "長くても": "即使很长",
-  "並ぶ": "排队",
-  "並びます": "排队",
-  "並んでも": "即使排队",
-  "最後まで 並ぶ": "排到最后",
-  "間に合う": "赶得上；来得及",
-  "間に合います": "赶得上；来得及",
-  "時間に": "在时间前；赶时间",
-  "時間に 間に合う": "赶上时间",
-  "時間に 間に合います": "赶上时间",
-  "時間に 間に合うから": "因为赶得上时间",
-  "予約": "预约",
-  "予約に": "赶上预约",
-  "予約に 間に合う": "赶上预约；来得及赴约",
-  "予約に 間に合います": "赶上预约",
-  "予約に 間に合うように": "为了赶上预约",
-  "予約に います": "在预约那里",
-  "間に合うように": "为了赶得上",
-  "予約の": "预约的",
-  "予約の 時間は": "预约时间是",
-  "時間は": "时间是",
-  "予約には": "预约时间还",
-  "予約の 時間に": "在预约时间前",
-  "予約の 時間に います": "错误表达：像是在预约时间里",
-  "限定": "限定的",
-  "限定グッズ": "限定周边",
-  "限定グッズを": "把限定周边",
-  "グッズを 買いたいです": "想买周边",
-  "買いたいです": "想买",
-  "買う": "买",
-  "グッズを 買う": "买周边",
-  "買えない": "买不到",
-  "買えないことが あります": "有时会买不到",
-  "雨": "雨",
-  "雨が": "雨",
-  "降る": "下雨",
-  "雨が 降る": "下雨",
-  "雨が 降っています": "正在下雨",
-  "降っています": "正在下",
-  "雨が 降ります": "下雨",
-  "降ります": "下雨",
-  "降っても": "即使下雨",
-  "時間": "时间",
-  "大丈夫です": "没问题；不要紧",
-  "少し": "稍微；一点",
-  "少し 歩きます": "稍微走一段",
-  "歩きます": "走路",
-  "駅から": "从车站",
-  "カフェまで": "到咖啡店",
-  "店の 前に": "在店前",
-  "店の": "店的",
-  "前に": "前面；在……前",
-  "列が あります": "有队伍；在排队",
-  "あります": "有",
-  "まだ": "还；仍然",
-  "まだ 間に合います": "还赶得上",
-  "もうすぐです": "快到了；马上就到了",
-  "今日は 推しの コラボカフェに 行きます": "今天去喜欢的偶像/角色联名咖啡店",
-  "予約の 時間に 間に合います": "赶得上预约时间",
-  "列が 長くても": "即使队伍很长",
-  "限定グッズを 買いたいです": "想买限定周边",
-  "雨が 降っても": "即使下雨",
-  "雨が 降っても、予約に 間に合います": "即使下雨，也能赶上预约",
-  "雨が 降るても": "错误形式：降る不能直接接ても",
-  "予約の 時間に 間に合います": "赶得上预约时间",
-  "友だち": "朋友",
-  "友だちは": "朋友",
-  "私は": "我",
-  "私たちは": "我们",
-  "帰りたい": "想回去",
-  "帰りたいと": "说想回去时使用的表达",
-  "帰る": "回去",
-  "帰りません": "不回去",
-  "言いました": "说了",
-  "でも": "但是",
-  "せっかく": "好不容易；特意",
-  "来たので": "因为来了",
-  "つもりです": "打算",
-  "最後まで": "到最后",
-  "イベント会場": "活动会场",
-  "イベント会場は": "活动会场",
-  "とても": "非常",
-  "混んでいます": "很拥挤",
-  "とても 混んでいます": "非常拥挤",
-  "ここに います": "待在这里",
-  "ここに": "在这里",
-  "います": "在；待着",
-  "新しい": "新的",
-  "人気": "受欢迎",
-  "人気で": "因为受欢迎",
-  "午後には": "到了下午",
-  "売り切れる": "售罄",
-  "売り切れるかもしれません": "可能会售罄",
-  "予約が あっても": "即使有预约",
-  "遅く 着いたら": "如果到得晚",
-  "だから": "所以",
-  "今": "现在",
-  "早めに": "早点；提前",
-  "出ます": "出发",
-  "早めに 出ます": "早点出发",
-  "今 出ます": "现在出发",
-  "予約に 間に合うため": "为了赶上预约",
-  "推しに 会うため": "为了见喜欢的偶像/角色",
-  "雨が やむから": "因为雨会停",
-  "切符を 買うから": "因为要买票",
-  "傘": "伞",
-  "切符": "票",
-  "映画": "电影",
-  "電車": "电车",
-  "見る": "看",
-  "お金": "钱",
-  "写真": "照片",
-  "待つ": "等",
-  "食べる": "吃",
-  "外は 雨です": "外面在下雨",
-  "外は": "外面",
-  "雨です": "是雨天；在下雨",
-  "ても 表示“即使……也……”": "ても 表示“即使……也……”",
-  "日语里可省略“我”；ても 表示“即使……也……”": "日语里可省略“我”；ても 表示“即使……也……”",
-  "すぐ帰る": "马上回去",
-  "別の店へ行く": "去别的店",
-  "雨がやんだから": "因为雨停了",
-  "カフェが遠くないから": "因为咖啡店不远"
+  "faire la queue": "排队",
+  "faire": "做；进行",
+  "la queue": "队伍；排队",
+  "longtemps": "很久",
+  "faire la queue longtemps": "排很久队",
+  "Devant": "在……前面",
+  "la boulangerie": "面包店",
+  "nous devons": "我们必须",
+  "devons": "必须",
+  "nous": "我们",
+  "devant la boulangerie": "在面包店前",
+  "Devant la boulangerie": "在面包店前",
+  "Devant la boulangerie, nous devons faire la queue": "在面包店前，我们必须排队",
+  "ça vaut le coup": "这值得",
+  "ça": "这；那",
+  "vaut": "值得；值",
+  "vraiment": "真的；确实",
+  "le coup": "这件事；这一下",
+  "ça vaut vraiment le coup": "这真的很值得",
+  "Même après": "即使在……之后",
+  "vingt minutes": "二十分钟",
+  "d'attente": "等待",
+  "Même après vingt minutes d'attente": "即使等了二十分钟",
+  "Même après vingt minutes d'attente, ça vaut le coup": "即使等了二十分钟，这也值得",
+  "Même si": "即使",
+  "Même s'il": "即使它；即使天气",
+  "Même si la terrasse est bondée": "即使露台很拥挤",
+  "Même s'il pleut": "即使下雨",
+  "la terrasse": "露台；咖啡馆露天座位",
+  "la terrasse est bondée": "露台很拥挤",
+  "terrasse": "露台",
+  "est bondée": "很拥挤",
+  "bondée": "拥挤的（阴性）",
+  "bondé": "拥挤的",
+  "réserverons": "我们将预订",
+  "nous réserverons": "我们将预订",
+  "réservons": "我们预订",
+  "réserver": "预订",
+  "réserver une table": "预订一张桌子",
+  "réserverons une table": "将预订一张桌子",
+  "nous réserverons une table": "我们将预订一张桌子",
+  "une table": "一张桌子",
+  "un table": "错误：table 是阴性名词",
+  "Même si la terrasse est bondée, nous réserverons une table": "即使露台很拥挤，我们也会预订一张桌子",
+  "pleut": "下雨",
+  "il pleut": "下雨",
+  "nous ferons la queue": "我们会排队",
+  "ferons": "将会做；将会进行",
+  "ferons la queue": "会排队",
+  "faisons la queue": "正在/经常排队",
+  "pour": "为了",
+  "les croissants": "可颂面包",
+  "croissants": "可颂面包",
+  "pour les croissants": "为了可颂",
+  "avec les croissants": "和可颂一起",
+  "Même s'il pleut, nous ferons la queue pour les croissants": "即使下雨，我们也会为了可颂排队",
+  "Il pleut un peu": "下着一点雨",
+  "un peu": "一点",
+  "la file": "队伍",
+  "la file est longue": "队伍很长",
+  "file": "队伍",
+  "longue": "长的（阴性）",
+  "courte": "短的",
+  "Les croissants": "可颂面包",
+  "sont célèbres": "很有名",
+  "célèbres": "有名的",
+  "Il pleut un peu devant la boulangerie": "面包店前下着一点雨",
+  "Même si la file est longue": "即使队伍很长",
+  "Les croissants sont célèbres": "这些可颂很有名",
+  "rentrer chez eux": "回家",
+  "La terrasse": "露台",
+  "est presque pleine": "快满了",
+  "presque pleine": "几乎满了",
+  "pleine": "满的（阴性）",
+  "le café": "咖啡馆",
+  "le café est bondé": "咖啡馆很拥挤",
+  "Léa": "莱娅（人名）",
+  "réservera": "她将预订",
+  "Elle veut": "她想要",
+  "veut": "想要",
+  "rester": "待着；停留",
+  "dehors": "在外面",
+  "rester dehors": "待在外面",
+  "La terrasse est presque pleine": "露台几乎坐满了",
+  "Même si le café est bondé": "即使咖啡馆很拥挤",
+  "Léa réservera une table": "莱娅会预订一张桌子",
+  "Elle veut rester dehors": "她想待在外面",
+  "un croissant": "一个可颂",
+  "un billet": "一张票",
+  "partira": "将离开",
+  "Nous arrivons": "我们到达",
+  "arrivons": "我们到达",
+  "après midi": "中午以后",
+  "Il y aura": "将会有",
+  "beaucoup de touristes": "很多游客",
+  "touristes": "游客",
+  "près du marché": "在市场附近",
+  "le marché": "市场",
+  "nous devons attendre": "我们必须等待",
+  "attendre": "等待",
+  "les pâtisseries": "糕点",
+  "pâtisseries": "糕点",
+  "valent": "值得；值（复数主语）",
+  "les pâtisseries valent le coup": "这些糕点值得",
+  "Nous arrivons après midi": "我们中午以后到达",
+  "Il y aura beaucoup de touristes près du marché": "市场附近会有很多游客",
+  "Même si nous devons attendre": "即使我们必须等待",
+  "rentrer": "回去",
+  "Le soleil": "太阳",
+  "se couche": "落下",
+  "bientôt": "很快",
+  "sur la Seine": "在塞纳河边",
+  "la Seine": "塞纳河",
+  "le quai": "河岸；码头",
+  "le quai est plein": "河岸很挤/满了",
+  "plein": "满的；挤的",
+  "achèterons": "我们将买",
+  "nous achèterons": "我们将买",
+  "des sandwichs": "一些三明治",
+  "nous ferons": "我们将做",
+  "un pique-nique": "一次野餐",
+  "faire un pique-nique": "野餐",
+  "ferons un pique-nique": "会野餐",
+  "Le soleil se couche bientôt sur la Seine": "太阳很快会在塞纳河边落下",
+  "Même si le quai est plein": "即使河岸很挤",
+  "nous achèterons des sandwichs": "我们会买三明治",
+  "nous ferons un pique-nique": "我们会野餐",
+  "prendre le métro": "坐地铁",
+  "chercher un hôtel": "找酒店",
+  "métro": "地铁"
 };
 
 Object.assign(Q, {
   q1: {
     type: "contextMeaning",
     section: "环节1 · 词汇学习 · 题1",
-    phrase: "推し",
-    image: "assets/images/oshi-collab-cafe.webp",
-    sentence: "今日は 推しの コラボカフェに 行きます。",
-    options: ["喜欢/支持的偶像或角色", "把东西往前推"],
-    correct: "喜欢/支持的偶像或角色",
-    analysis: "<strong>推し</strong> = 自己喜欢、支持的偶像、角色或作品对象。<br><br>句意：今天我要去喜欢的角色/偶像的联名咖啡店。"
+    phrase: "faire la queue",
+    image: "assets/images/feria-portada.webp",
+    sentence: "Devant la boulangerie, nous devons faire la queue.",
+    options: ["排队", "做一条线"],
+    correct: "排队",
+    analysis: "<strong>faire la queue</strong> = 排队。<br><br>句意：在面包店前，我们必须排队。"
   },
   q2: {
     type: "spelling",
     section: "环节1 · 词汇学习 · 题2",
-    image: "assets/images/oshi-collab-cafe.webp",
-    fullPhrase: "推しの コラボカフェ",
-    translation: "喜欢的角色/偶像的联名咖啡店",
-    gloss: JAPANESE_GLOSS,
-    lookupUnits: ["推し", "の", "コラボカフェ"],
+    image: "assets/images/feria-portada.webp",
+    fullPhrase: "faire la queue longtemps",
+    translation: "排很久队",
+    gloss: FRENCH_GLOSS,
+    lookupUnits: ["faire la queue", "longtemps"],
     fixedWord: "",
-    chunks: ["推し", "の", "コラボカフェ"],
-    options: ["推し", "の", "コラボカフェ"]
+    chunks: ["faire", "la queue", "longtemps"],
+    options: ["faire", "la queue", "longtemps"]
   },
   q3: {
     type: "contextMeaning",
     section: "环节1 · 词汇学习 · 题3",
-    phrase: "間に合います",
-    image: "assets/images/reservation-rain-station.webp",
-    sentence: "予約に 間に合います。",
-    options: ["赶上预约；来得及赴约", "排很久队"],
-    correct: "赶上预约；来得及赴约",
-    analysis: "<strong>間に合います</strong> = 赶得上、来得及。它的原形是 <strong>間に合う</strong>。<br><br>句意：能赶上预约。"
+    phrase: "ça vaut le coup",
+    image: "assets/images/caseta-meeting.webp",
+    sentence: "Même après vingt minutes d'attente, ça vaut le coup.",
+    options: ["值得", "很贵"],
+    correct: "值得",
+    analysis: "<strong>ça vaut le coup</strong> = 这值得、值得这么做。<br><br>句意：即使等了二十分钟，这也值得。"
   },
   q4: {
     type: "spelling",
     section: "环节1 · 词汇学习 · 题4",
-    image: "assets/images/reservation-rain-station.webp",
-    fullPhrase: "予約に 間に合います",
-    translation: "赶上预约；来得及赴约",
-    gloss: JAPANESE_GLOSS,
-    lookupUnits: ["予約に", "間に合います"],
+    image: "assets/images/caseta-meeting.webp",
+    fullPhrase: "ça vaut vraiment le coup",
+    translation: "这真的很值得",
+    gloss: FRENCH_GLOSS,
+    lookupUnits: ["ça", "vaut", "vraiment", "le coup"],
     fixedWord: "",
-    chunks: ["予約に", "間に合います"],
-    options: ["予約に", "間に合います"]
+    chunks: ["ça", "vaut", "vraiment", "le coup"],
+    options: ["ça", "vaut", "vraiment", "le coup"]
   },
   q5: {
     type: "singleBlankTranslation",
     section: "环节2 · 句式学习 · 题5",
-    prompt: "即使队伍很长，我也想买限定周边。",
+    prompt: "即使露台很挤，我们也会预订一张桌子。",
     promptSegments: [
-      { text: "即使", lookup: "長くても" },
-      { text: "队伍", lookup: "列" },
-      { text: "很长", lookup: "長い" },
+      { text: "即使", lookup: "Même si" },
+      { text: "露台", lookup: "la terrasse" },
+      { text: "很挤", lookup: "est bondée" },
       "，",
-      { text: "我也想买", lookup: "買いたいです" },
-      { text: "限定周边", lookup: "限定グッズ" },
+      { text: "我们也会预订", lookup: "nous réserverons" },
+      { text: "一张桌子", lookup: "une table" },
       "。"
     ],
     stem: "请翻译：",
-    sentenceStart: "列が ",
-    sentenceStartLookupUnits: ["列が"],
-    sentenceEnd: "、限定グッズを 買いたいです。",
-    sentenceEndLookupUnits: ["限定グッズを", "買いたいです"],
-    blank: { zh: "即使很长", answer: "長くても" },
-    fullSentence: "列が 長くても、限定グッズを 買いたいです。",
-    gloss: JAPANESE_GLOSS,
-    lookupUnits: ["列が", "長くても", "限定グッズを", "買いたいです"],
-    options: ["長くても", "長いです"],
-    correct: "長くても"
+    sentenceStart: "Même si la terrasse est bondée, nous",
+    sentenceStartLookupUnits: ["Même si", "la terrasse", "est bondée", "nous"],
+    sentenceEnd: ".",
+    blank: { zh: "会预订一张桌子", answer: "réserverons une table" },
+    fullSentence: "Même si la terrasse est bondée, nous réserverons une table.",
+    gloss: FRENCH_GLOSS,
+    lookupUnits: ["Même si", "la terrasse", "est bondée", "nous réserverons", "une table"],
+    options: ["réserverons une table", "réservons une table"],
+    correct: "réserverons une table"
   },
   exp1: {
     type: "explanation",
     tab: "语法讲解",
-    html: "<strong style=\"color:#4576F0\">〜ても</strong> = 即使……也……。<br><br>1. 结构是：<strong style=\"color:#4576F0\">A ても、B</strong>。<br>2. A 是“即使发生的情况”，B 是“仍然成立的结果”。它强调：就算 A 发生，B 也不改变。<br><br>接在不同词后面时，A 的形式会变：<br>1. <strong style=\"color:#4576F0\">い形容词</strong>：去掉 <strong style=\"color:#4576F0\">い</strong>，加 <strong style=\"color:#4576F0\">くても</strong>。例：<strong style=\"color:#4576F0\">長い → 長くても</strong>。<br>2. <strong style=\"color:#4576F0\">动词</strong>：先变成 <strong style=\"color:#4576F0\">て形</strong>，再加 <strong style=\"color:#4576F0\">も</strong>。例：<strong style=\"color:#4576F0\">降る → 降って → 降っても</strong>。<br><br>B 部分正常说结果。<br><br>例句：列が 長くても、限定グッズを 買いたいです。<br>即使队伍很长，我也想买限定周边。"
+    html: "<strong style=\"color:#4576F0\">Même si ..., ...</strong> = 即使……也……。<br><br><strong style=\"color:#4576F0\">Même si</strong> 后面说让步条件，后半句说仍然成立的决定或结果。<br><br>例句：<strong style=\"color:#4576F0\">Même si la terrasse est bondée, nous réserverons une table.</strong><br>即使露台很挤，我们也会预订一张桌子。"
   },
   q6: {
     type: "twoOption",
     section: "环节2 · 句式学习 · 题6",
-    prompt: "即使队伍很长，我也想买限定周边。",
+    prompt: "即使露台很挤，我们也会预订一张桌子。",
     promptSegments: [
-      { text: "即使", lookup: "長くても" },
-      { text: "队伍", lookup: "列が" },
-      { text: "很长", lookup: "長い" },
+      { text: "即使", lookup: "Même si" },
+      { text: "露台", lookup: "la terrasse" },
+      { text: "很挤", lookup: "est bondée" },
       "，",
-      { text: "我也", lookup: "日语里可省略“我”；ても 表示“即使……也……”" },
-      { text: "想买", lookup: "買いたいです" },
-      { text: "限定周边", lookup: "限定グッズ" },
+      { text: "我们会预订", lookup: "nous réserverons" },
+      { text: "一张桌子", lookup: "une table" },
       "。"
     ],
-    fullSentence: "列が 長くても、限定グッズを 買いたいです。",
-    gloss: JAPANESE_GLOSS,
-    lookupUnits: ["列が", "長くても", "限定グッズを", "買いたいです"],
+    fullSentence: "Même si la terrasse est bondée, nous réserverons une table.",
+    gloss: FRENCH_GLOSS,
+    lookupUnits: ["Même si", "la terrasse", "est bondée", "nous réserverons", "une table"],
     groups: [
-      { zh: "队伍", options: ["列が", "列を"], correct: "列が" },
-      { zh: "即使很长", options: ["長くても", "長いです"], correct: "長くても" },
-      { zh: "限定周边", options: ["限定グッズを", "限定グッズに"], correct: "限定グッズを" },
-      { zh: "想买", options: ["買いたいです", "買いたいがあります"], correct: "買いたいです" }
+      { zh: "即使", options: ["Même si", "Même que"], correct: "Même si" },
+      { zh: "露台", options: ["la terrasse", "le terrasse"], correct: "la terrasse" },
+      { zh: "很挤", options: ["est bondée", "est bondé"], correct: "est bondée" },
+      { zh: "我们会预订", options: ["nous réserverons", "nous réservons"], correct: "nous réserverons" },
+      { zh: "一张桌子", options: ["une table", "un table"], correct: "une table" }
     ]
   },
   q7: {
     type: "twoOption",
     section: "环节2 · 句式学习 · 题7",
-    prompt: "即使下雨，也能赶上预约。",
+    prompt: "即使下雨，我们也会为了可颂排队。",
     promptSegments: [
-      { text: "即使", lookup: "降っても" },
-      { text: "下雨", lookup: "雨が 降る" },
+      { text: "即使下雨", lookup: "Même s'il pleut" },
       "，",
-      { text: "也能", lookup: "ても 表示“即使……也……”" },
-      { text: "赶上", lookup: "間に合います" },
-      { text: "预约", lookup: "予約に" },
+      { text: "我们会排队", lookup: "nous ferons la queue" },
+      { text: "为了可颂", lookup: "pour les croissants" },
       "。"
     ],
-    fullSentence: "雨が 降っても、予約に 間に合います。",
-    gloss: JAPANESE_GLOSS,
-    lookupUnits: ["雨が", "降っても", "予約に", "間に合います"],
+    fullSentence: "Même s'il pleut, nous ferons la queue pour les croissants.",
+    gloss: FRENCH_GLOSS,
+    lookupUnits: ["Même s'il", "pleut", "nous ferons la queue", "pour les croissants"],
     groups: [
-      { zh: "雨", options: ["雨が", "雨を"], correct: "雨が" },
-      { zh: "即使下", options: ["降っても", "降ります"], correct: "降っても" },
-      { zh: "预约", options: ["予約に", "予約"], correct: "予約に" },
-      { zh: "赶得上", options: ["間に合います", "間にいます"], correct: "間に合います" }
+      { zh: "即使下雨", options: ["Même s'il pleut", "Même il pleut"], correct: "Même s'il pleut" },
+      { zh: "我们会排队", options: ["nous ferons la queue", "nous faisons la queue"], correct: "nous ferons la queue" },
+      { zh: "为了可颂", options: ["pour les croissants", "avec les croissants"], correct: "pour les croissants" }
     ]
+  },
+  exp2: {
+    type: "explanation",
+    tab: "语法讲解",
+    html: "1. <strong style=\"color:#4576F0\">Même si</strong> 后面通常接直陈式，不用英语式的 will。<br>2. 后半句可以用将来时表达“仍然会做”：<strong style=\"color:#4576F0\">nous réserverons</strong>。<br>3. 遇到 <strong style=\"color:#4576F0\">il</strong> 时常写成 <strong style=\"color:#4576F0\">Même s'il</strong>。"
   },
   q8: {
     type: "listeningChoiceTranscript",
     section: "环节3 · 听力理解 · 题8",
-    audioText: "今日は 推しの コラボカフェです。店の 前に 列が あります。列が 長くても、私は グッズを 買いたいです。予約に 間に合います。",
-    translation: "今天是喜欢的角色/偶像联名咖啡店。店前有队伍。即使队伍很长，我也想买周边。能赶上预约。",
-    transcriptLookupPhrases: ["推しの", "コラボカフェです", "店の", "前に", "列が", "あります", "長くても", "私は", "グッズを", "買いたいです", "予約に", "間に合います"],
-    question: "说话人想做什么？",
-    options: ["買う", "帰る", "見る"],
-    correct: "買う",
-    analysis: "音频里说 グッズを 買いたいです，所以说话人想买东西。",
-    gloss: JAPANESE_GLOSS,
+    audioText: "Il pleut un peu devant la boulangerie. Même si la file est longue, nous ferons la queue. Les croissants sont célèbres.",
+    translation: "面包店前下着一点雨。即使队伍很长，我们也会排队。这些可颂很有名。",
+    transcriptLookupPhrases: ["Il pleut un peu", "devant la boulangerie", "Même si la file est longue", "nous ferons la queue", "Les croissants sont célèbres"],
+    question: "他们会做什么？",
+    options: ["faire la queue", "rentrer chez eux", "réserver une table"],
+    correct: "faire la queue",
+    analysis: "音频里说 <strong>nous ferons la queue</strong>，所以他们会排队。",
+    gloss: FRENCH_GLOSS,
     readingFallback: {
       id: "reading-q8-listening",
       type: "readingCloze9876",
       section: "环节3 · 阅读理解 · 题8补做",
-      image: "assets/images/oshi-collab-cafe.webp",
+      image: "assets/images/sevillanas-stage.webp",
       stem: "请填空：",
-      gloss: JAPANESE_GLOSS,
-      lookupPhrases: ["推しの", "コラボカフェです", "店の", "前に", "列が", "あります", "長くても", "私は", "グッズを", "買いたいです", "予約に", "間に合います"],
+      gloss: FRENCH_GLOSS,
+      lookupPhrases: ["Il pleut un peu", "devant la boulangerie", "Même si la file est longue", "nous ferons la queue", "Les croissants sont célèbres"],
       segments: [
-        "今日は 推しの コラボカフェです。店の 前に 列が あります。列が ",
-        { answer: "長くても" },
-        "、私は グッズを ",
-        { answer: "買いたいです" },
-        "。予約に ",
-        { answer: "間に合います" },
-        "。"
+        "Il pleut un peu devant la boulangerie. Même si la file est ",
+        { answer: "longue" },
+        ", nous ",
+        { answer: "ferons" },
+        " la queue. Les croissants sont ",
+        { answer: "célèbres" },
+        "."
       ],
       blanks: [
-        { answer: "長くても" },
-        { answer: "買いたいです" },
-        { answer: "間に合います" }
+        { answer: "longue" },
+        { answer: "ferons" },
+        { answer: "célèbres" }
       ],
-      options: ["長くても", "買いたいです", "間に合います", "帰ります"]
+      options: ["longue", "ferons", "célèbres", "courte"]
     }
   },
   q9: {
     type: "listeningChoiceTranscript",
     section: "环节3 · 听力理解 · 题9",
-    audioText: "雨が 降っています。駅から カフェまで 少し 歩きます。雨が 降っても、予約に 間に合います。だから 大丈夫です。",
-    translation: "正在下雨。从车站到咖啡店要稍微走一段。即使下雨，也能赶上预约。所以没问题。",
-    transcriptLookupPhrases: ["雨が", "降っています", "駅から", "カフェまで", "少し", "歩きます", "降っても", "予約に", "間に合います", "大丈夫です"],
-    question: "他们不担心什么？",
-    options: ["時間", "お金", "写真"],
-    correct: "時間",
-    analysis: "音频里说 予約に 間に合います，所以他们不担心时间。",
-    gloss: JAPANESE_GLOSS,
+    audioText: "La terrasse est presque pleine. Même si le café est bondé, Léa réservera une table. Elle veut rester dehors.",
+    translation: "露台几乎坐满了。即使咖啡馆很拥挤，莱娅也会预订一张桌子。她想待在外面。",
+    transcriptLookupPhrases: ["La terrasse est presque pleine", "Même si le café est bondé", "Léa réservera une table", "Elle veut rester dehors"],
+    question: "Léa 会预订什么？",
+    options: ["une table", "un croissant", "un billet"],
+    correct: "une table",
+    analysis: "音频里说 <strong>Léa réservera une table</strong>，所以她会预订一张桌子。",
+    gloss: FRENCH_GLOSS,
     readingFallback: {
       id: "reading-q9-listening",
       type: "readingCloze9876",
       section: "环节3 · 阅读理解 · 题9补做",
-      image: "assets/images/reservation-rain-station.webp",
+      image: "assets/images/churros-night.webp",
       stem: "请填空：",
-      gloss: JAPANESE_GLOSS,
-      lookupPhrases: ["雨が", "降っています", "駅から", "カフェまで", "少し", "歩きます", "降っても", "予約に", "間に合います", "大丈夫です"],
+      gloss: FRENCH_GLOSS,
+      lookupPhrases: ["La terrasse est presque pleine", "Même si le café est bondé", "Léa réservera une table", "Elle veut rester dehors"],
       segments: [
-        "雨が 降っています。駅から カフェまで 少し ",
-        { answer: "歩きます" },
-        "。雨が ",
-        { answer: "降っても" },
-        "、予約に ",
-        { answer: "間に合います" },
-        "。だから 大丈夫です。"
+        "La terrasse est presque pleine. Même si le café est ",
+        { answer: "bondé" },
+        ", Léa ",
+        { answer: "réservera" },
+        " une table. Elle veut ",
+        { answer: "rester" },
+        " dehors."
       ],
       blanks: [
-        { answer: "歩きます" },
-        { answer: "降っても" },
-        { answer: "間に合います" }
+        { answer: "bondé" },
+        { answer: "réservera" },
+        { answer: "rester" }
       ],
-      options: ["歩きます", "降っても", "間に合います", "帰ります"]
+      options: ["bondé", "réservera", "rester", "partira"]
+    }
+  },
+  q10: {
+    type: "listeningChoice",
+    section: "环节3 · 听力理解 · 题10",
+    audioText: "Nous arrivons après midi. Il y aura beaucoup de touristes près du marché. Même si nous devons attendre, les pâtisseries valent le coup.",
+    translation: "我们中午以后到。市场附近会有很多游客。即使我们必须等待，这些糕点也值得。",
+    question: "为什么他们还是愿意等？",
+    options: ["Les pâtisseries valent le coup", "Le marché est vide", "Ils ont déjà une table"],
+    correct: "Les pâtisseries valent le coup",
+    analysis: "音频里说 <strong>les pâtisseries valent le coup</strong>，所以他们愿意等，是因为糕点值得。",
+    gloss: FRENCH_GLOSS,
+    readingFallback: {
+      id: "reading-q10-listening",
+      type: "readingCloze9876",
+      section: "环节3 · 阅读理解 · 题10补做",
+      image: "assets/images/feria-portada.webp",
+      stem: "请填空：",
+      gloss: FRENCH_GLOSS,
+      lookupPhrases: ["Nous arrivons après midi", "Il y aura beaucoup de touristes près du marché", "Même si nous devons attendre", "les pâtisseries valent le coup"],
+      segments: [
+        "Nous arrivons après midi. Il y aura beaucoup de touristes près du marché. Même si nous devons ",
+        { answer: "attendre" },
+        ", les pâtisseries ",
+        { answer: "valent" },
+        " ",
+        { answer: "le coup" },
+        "."
+      ],
+      blanks: [
+        { answer: "attendre" },
+        { answer: "valent" },
+        { answer: "le coup" }
+      ],
+      options: ["attendre", "valent", "le coup", "rentrer"]
+    }
+  },
+  q11: {
+    type: "listeningChoice",
+    section: "环节3 · 听力理解 · 题11",
+    audioText: "Le soleil se couche bientôt sur la Seine. Même si le quai est plein, nous achèterons des sandwichs et nous ferons un pique-nique.",
+    translation: "太阳很快会在塞纳河边落下。即使河岸很挤，我们也会买三明治，然后野餐。",
+    question: "他们打算做什么？",
+    options: ["faire un pique-nique", "prendre le métro", "chercher un hôtel"],
+    correct: "faire un pique-nique",
+    analysis: "音频里说 <strong>nous ferons un pique-nique</strong>，所以他们打算野餐。",
+    gloss: FRENCH_GLOSS,
+    readingFallback: {
+      id: "reading-q11-listening",
+      type: "readingCloze9876",
+      section: "环节3 · 阅读理解 · 题11补做",
+      image: "assets/images/churros-night.webp",
+      stem: "请填空：",
+      gloss: FRENCH_GLOSS,
+      lookupPhrases: ["Le soleil se couche bientôt sur la Seine", "Même si le quai est plein", "nous achèterons des sandwichs", "nous ferons un pique-nique"],
+      segments: [
+        "Le soleil se couche bientôt sur la Seine. Même si le quai est ",
+        { answer: "plein" },
+        ", nous ",
+        { answer: "achèterons" },
+        " des sandwichs et nous ",
+        { answer: "ferons" },
+        " un pique-nique."
+      ],
+      blanks: [
+        { answer: "plein" },
+        { answer: "achèterons" },
+        { answer: "ferons" }
+      ],
+      options: ["plein", "achèterons", "ferons", "réserverons"]
     }
   }
 });
 
+const SPANISH_GLOSS = {
+  ...COURSE_GLOSS,
+  "a": "到；向",
+  "al": "到……（a + el）",
+  "con": "和；跟",
+  "de": "的；从",
+  "el": "阳性定冠词（这个/那个）",
+  "en": "在",
+  "la": "阴性定冠词（这个；那个）",
+  "La": "阴性定冠词（这个；那个）",
+  "los": "阳性复数定冠词（这些/那些）",
+  "mi": "我的",
+  "no": "不",
+  "y": "和",
+  "una": "一个；一份（阴性）",
+  "caseta": "节日里的临时棚位；Feria 的聚会小棚",
+  "una caseta": "一个棚位",
+  "la caseta": "那个节日棚位",
+  "de Marta": "Marta 的",
+  "marta": "Marta（人名）",
+  "La caseta de Marta": "Marta 的棚位",
+  "la caseta de Marta": "Marta 的节日棚位",
+  "la caseta azul": "蓝色棚位",
+  "caseta azul": "蓝色棚位",
+  "la caseta de la feria": "节日里的棚位",
+  "En la Feria de Abril": "在四月节上",
+  "Feria de Abril": "四月节",
+  "Feria": "节日集市",
+  "feria": "节日集市",
+  "La feria": "这个节日集市",
+  "en la feria": "在节日集市",
+  "Buscamos una caseta": "我们找一个棚位",
+  "Buscamos una caseta en la feria": "我们在节日集市找一个棚位",
+  "buscamos": "我们寻找",
+  "buscamos una caseta": "我们寻找一个棚位",
+  "para cenar": "为了吃晚饭",
+  "quedar": "约见；碰头",
+  "quedar con alguien": "quedar con + 某人：和某人见面/碰头",
+  "quedar con + 某人": "和某人见面/碰头",
+  "quedar con Marta": "和 Marta 碰头",
+  "quedamos": "我们碰头/约见",
+  "quedamos con Marta": "我们和 Marta 约好碰头",
+  "Quedamos con Marta": "我们和 Marta 约好碰头",
+  "vamos a quedar": "我们将要碰头",
+  "vamos a quedar con Marta": "我们会和 Marta 碰头",
+  "vamos a quedar con Marta allí": "我们会和 Marta 在那里碰头",
+  "vamos a quedar con ella allí": "我们会和她在那里碰头",
+  "vamos a quedar con ella en la caseta azul": "我们会和她在蓝色棚位碰头",
+  "con Marta": "和 Marta",
+  "con la caseta": "和棚位（不自然）",
+  "ella": "她",
+  "con ella": "和她",
+  "en la portada": "在入口大门处",
+  "a la portada": "到入口大门",
+  "portada": "Feria 的入口大门",
+  "la portada": "入口大门",
+  "Cuando": "当……的时候",
+  "cuando": "当……的时候",
+  "lleguemos": "我们到达（虚拟式）",
+  "llegamos": "我们到达（陈述式）",
+  "llegar": "到达（原形）",
+  "lleguemos a la feria": "等我们到 feria 的时候",
+  "lleguemos a la portada": "等我们到入口大门时",
+  "a la feria": "到节日集市",
+  "vamos a": "我们将要（做某事）",
+  "vamos": "我们会；我们要",
+  "vamos a buscar": "我们将要寻找",
+  "a buscar": "去找；来找",
+  "vamos a buscar una caseta": "我们将要寻找一个棚位",
+  "buscar": "寻找",
+  "buscar a Marta": "找 Marta",
+  "buscar comida": "找吃的",
+  "buscar una caseta": "寻找一个棚位",
+  "buscar la caseta": "找那个棚位",
+  "vamos a buscar la caseta": "我们会找那个棚位",
+  "Cuando lleguemos a la feria": "等我们到 feria 的时候",
+  "Cuando lleguemos a la feria, vamos a buscar la caseta": "等我们到节日集市时，我们会找那个棚位",
+  "termine": "结束（虚拟式）",
+  "termina": "结束（陈述式）",
+  "termine el concierto": "演出结束（虚拟式）",
+  "termina el concierto": "演出结束（陈述式）",
+  "el concierto": "这场演出",
+  "Cuando termine el concierto": "等演出结束时",
+  "empieza el concierto": "演出开始",
+  "la concierto": "错误：concierto 是阳性名词",
+  "vamos a comer": "我们会吃",
+  "comer": "吃",
+  "vamos a comer churros": "我们会吃 churros",
+  "comer churros": "吃西班牙油条",
+  "comemos": "我们吃（现在时）",
+  "churros": "西班牙油条",
+  "churro": "一根油条",
+  "para compartir": "用来分享",
+  "compartir": "分享",
+  "sacar una foto": "拍一张照片",
+  "sacar": "拍；拿出",
+  "una foto": "一张照片",
+  "vamos a sacar una foto": "我们会拍一张照片",
+  "La feria empieza esta noche": "节日今晚开始",
+  "empieza": "开始",
+  "esta noche": "今晚",
+  "Cuando lleguemos a la portada": "等我们到入口大门时",
+  "Después": "之后",
+  "Marta nos espera allí": "Marta 在那里等我们",
+  "nos": "我们（宾格/与格）",
+  "espera": "等待；等着",
+  "nos espera": "等我们",
+  "Después vamos a buscar": "之后我们会寻找",
+  "bailar": "跳舞",
+  "bailar sevillanas": "跳 sevillanas 舞",
+  "comprar churros": "买西班牙油条",
+  "Hay mucha gente": "有很多人",
+  "Hay mucha gente en la feria": "节日集市里有很多人",
+  "mucha gente": "很多人",
+  "cerca de": "在……附近",
+  "cerca del escenario": "在舞台附近",
+  "cerca de la caseta": "在棚位附近",
+  "del": "de + el：……的；离……",
+  "encontremos": "我们找到（虚拟式）",
+  "encontramos": "我们找到（陈述式）",
+  "encontremos a Marta": "等我们找到 Marta",
+  "Cuando encontremos a Marta": "等我们找到 Marta 时",
+  "Cuando encontremos la caseta": "等我们找到棚位时",
+  "Cuando encontremos la caseta azul": "等我们找到蓝色棚位时",
+  "llamar": "打电话；叫",
+  "vamos a llamar": "我们会打电话",
+  "vamos a llamar a Marta": "我们会给 Marta 打电话",
+  "llamar a Marta": "给 Marta 打电话",
+  "entrar": "进入",
+  "entrar juntos": "一起进去",
+  "vamos a entrar juntos": "我们会一起进去",
+  "Después vamos a entrar juntos": "之后我们会一起进去",
+  "No queremos": "我们不想",
+  "queremos": "我们想要",
+  "hacer": "做；进行",
+  "hacer la cola": "排队",
+  "hacer la cola dos veces": "排两次队",
+  "dos": "二；两",
+  "dos veces": "两次",
+  "veces": "次",
+  "volver": "返回；回来",
+  "volver a casa": "回家",
+  "casa": "家",
+  "esperar el autobús": "等公交车",
+  "un autobús": "一辆公交车",
+  "autobús": "公交车",
+  "El espectáculo": "演出",
+  "espectáculo": "演出",
+  "El espectáculo de sevillanas": "sevillanas 演出",
+  "sevillanas": "塞维利亚传统舞曲/舞蹈",
+  "está a punto de empezar": "马上就要开始",
+  "a punto de": "马上就要",
+  "empezar": "开始",
+  "Si nos quedamos aquí": "如果我们待在这里",
+  "nos quedamos": "我们待着；留下",
+  "vamos a perderlo": "我们会错过它",
+  "perderlo": "错过它",
+  "Cuando termine esta canción": "等这首歌结束时",
+  "Marta está esperando en la portada": "Marta 在入口大门处等着",
+  "está": "是；处于",
+  "está esperando": "正在等",
+  "esperando": "正在等",
+  "esta": "这",
+  "esta canción": "这首歌",
+  "canción": "歌",
+  "allí": "在那里",
+  "iremos": "我们会去",
+  "iremos juntos": "我们会一起去",
+  "Después iremos juntos": "之后我们会一起去",
+  "directamente": "直接地",
+  "al escenario": "到舞台",
+  "escenario": "舞台",
+  "directamente al escenario": "直接去舞台",
+  "comprar entradas": "买票",
+  "a la caseta": "到棚位",
+  "La caseta está cerca del escenario": "棚位在舞台附近",
+  "La caseta azul está cerca de la portada": "蓝色棚位在入口大门附近",
+  "cerca de la portada": "在入口大门附近",
+  "Tiene mesas libres y música": "有空桌子和音乐",
+  "música": "音乐",
+  "Marta está en el autobús": "Marta 在公交车上",
+  "está en el autobús": "在公交车上",
+  "Cuando llegue Marta": "等 Marta 到了以后",
+  "llegue": "到达（虚拟式）",
+  "llega": "到达（陈述式）",
+  "cenar": "吃晚饭",
+  "cenar juntos": "一起吃晚饭",
+  "Después vamos a cenar juntos": "之后我们会一起吃晚饭",
+  "Porque el espectáculo va a empezar": "因为演出要开始了",
+  "Porque la caseta está cerrada": "因为棚位关了",
+  "Porque necesitan comprar entradas": "因为他们需要买票",
+  "Mi hermana": "我妹妹/姐姐",
+  "hermana": "姐妹",
+  "lleva todo el día hablando de": "一整天都在说……",
+  "lleva todo el día": "一整天都在",
+  "hablando de": "谈论",
+  "los churros con chocolate": "配热巧克力的西班牙油条",
+  "Aunque": "即使",
+  "aunque": "即使",
+  "esté llena": "很满/很挤（虚拟式）",
+  "la feria esté llena": "节日集市很挤",
+  "Aunque la feria esté llena": "即使节日集市很挤",
+  "cuando encontremos una mesa libre": "等我们找到空桌子时",
+  "Cuando encontremos una mesa libre": "等我们找到空桌子时",
+  "una mesa libre": "一张空桌子",
+  "buscar una mesa libre": "找一张空桌子",
+  "mesa": "桌子",
+  "mesa libre": "空桌子",
+  "pidamos": "我们点餐（虚拟式）",
+  "vamos a pedir": "我们会点",
+  "vamos a pedir una ración para compartir": "我们会点一份来分享",
+  "pedir": "点餐；请求",
+  "para": "为了；用来",
+  "una ración": "一份",
+  "ración": "一份",
+  "una ración para compartir": "一份用来分享的",
+  "churros con chocolate": "西班牙油条配热巧克力",
+  "una tortilla": "一份土豆蛋饼",
+  "gazpacho": "冷汤",
+  "azul": "蓝色的",
+  "está llena": "很满/很挤",
+  "llena": "满的；挤的",
+  "tiene": "有",
+  "mesas": "桌子（复数）",
+  "libres": "空着的（复数）",
+  "mesas libres": "空桌子",
+  "La caseta azul tiene mesas libres": "蓝色棚位有空桌子",
+  "en la caseta": "在棚位",
+  "en la caseta azul": "在蓝色棚位",
+  "en el concierto": "在演出那里",
+  "foto": "照片",
+  "juntos": "一起",
+  "cola": "队伍",
+  "libre": "空着的"
+};
+
+Object.assign(Q, {
+	  q1: {
+	    type: "contextMeaning",
+	    section: "环节1 · 词汇学习 · 题1",
+	    phrase: "caseta",
+	    image: "assets/images/feria-portada.webp",
+	    sentence: "Buscamos una caseta en la feria.",
+	    options: ["节日里的聚会棚位", "公交车站"],
+	    correct: "节日里的聚会棚位",
+	    analysis: "<strong>caseta</strong> 在 Feria 里指节日里吃饭、跳舞、聚会的小棚位。<br><br>句意：我们在节日集市找一个棚位。"
+	  },
+	  q2: {
+	    type: "spelling",
+	    section: "环节1 · 词汇学习 · 题2",
+	    image: "assets/images/caseta-meeting.webp",
+	    fullPhrase: "una caseta",
+	    translation: "一个节日棚位",
+	    gloss: SPANISH_GLOSS,
+	    lookupUnits: ["una", "caseta"],
+	    fixedWord: "",
+	    chunks: ["una", "caseta"],
+	    options: ["una", "caseta"]
+	  },
+  q3: {
+    type: "contextMeaning",
+    section: "环节1 · 词汇学习 · 题3",
+    phrase: "Quedamos",
+    image: "assets/images/feria-portada.webp",
+    sentence: "Quedamos con Marta en la portada.",
+    options: ["（我们）约好碰头", "（我们）安静下来"],
+    correct: "（我们）约好碰头",
+    analysis: "<strong>Quedamos</strong> 是 <strong>quedar</strong> 的“我们”形式。<strong>quedar con + 某人</strong> = 和某人见面/碰头。<br><br>句意：我们和 Marta 约在入口大门处碰头。"
+  },
+	  q4: {
+	    type: "spelling",
+	    section: "环节1 · 词汇学习 · 题4",
+	    image: "assets/images/feria-portada.webp",
+	    fullPhrase: "quedamos con Marta",
+	    translation: "我们和 Marta 约好碰头",
+	    gloss: SPANISH_GLOSS,
+	    lookupUnits: ["quedamos", "con", "Marta"],
+	    fixedWord: "",
+	    chunks: ["quedamos", "con", "Marta"],
+	    options: ["quedamos", "con", "Marta"]
+	  },
+	  q5: {
+	    type: "singleBlankTranslation",
+	    section: "环节2 · 句式学习 · 题5",
+	    prompt: "等我们到入口大门的时候，我们就会去找那个棚位。",
+	    promptSegments: [
+	      { text: "等", lookup: "Cuando", group: "q5-cuando" },
+	      { text: "我们到", lookup: "lleguemos" },
+	      { text: "入口大门", lookup: "a la portada" },
+	      { text: "的时候", lookup: "Cuando", group: "q5-cuando" },
+	      "，",
+	      { text: "我们就会去", lookup: "vamos a" },
+	      { text: "找", lookup: "buscar" },
+	      { text: "那个棚位", lookup: "la caseta" },
+	      "。"
+	    ],
+	    stem: "请翻译：",
+	    sentenceStart: "Cuando",
+	    sentenceStartLookupUnits: ["Cuando"],
+	    sentenceEnd: "a la portada, vamos a buscar la caseta.",
+	    blank: { zh: "将来我们到达", answer: "lleguemos" },
+	    fullSentence: "Cuando lleguemos a la portada, vamos a buscar la caseta.",
+	    gloss: SPANISH_GLOSS,
+	    lookupUnits: ["Cuando", "lleguemos", "a", "la portada", "vamos a", "buscar", "la caseta"],
+	    options: ["lleguemos", "llegar"],
+	    correct: "lleguemos"
+	  },
+	  exp1: {
+	    type: "explanation",
+	    tab: "语法讲解",
+	    html: "<strong style=\"color:#4576F0\">Cuando + 虚拟式现在时, vamos a + 动词原形</strong> = 将来某事发生的时候，接下来计划做什么<br><br>1. <strong style=\"color:#4576F0\">Cuando</strong> 引导的部分说的是“未来还没发生的事”，后面的动词用<strong style=\"color:#4576F0\">虚拟式现在时</strong>。<br>2. 后面说明计划的部分，用 <strong style=\"color:#4576F0\">vamos a + 动词原形</strong>。<br>3. 虚拟式现在时的规则变位通常用 yo 的陈述式现在时，去掉词尾 -o，再加虚拟式词尾。<br><br>例句：Cuando lleguemos a la portada, vamos a buscar la caseta.<br>等我们到入口大门的时候，我们会找那个棚位。"
+	  },
+	  q6: {
+	    type: "twoOption",
+	    section: "环节2 · 句式学习 · 题6",
+	    prompt: "等我们到入口大门的时候，我们就会去找那个棚位。",
+	    promptSegments: [
+	      { text: "等", lookup: "Cuando", group: "q6-cuando" },
+	      { text: "我们到", lookup: "lleguemos" },
+	      { text: "入口大门", lookup: "a la portada" },
+	      { text: "的时候", lookup: "Cuando", group: "q6-cuando" },
+	      "，",
+	      { text: "我们就会去", lookup: "vamos a" },
+	      { text: "找", lookup: "buscar" },
+	      { text: "那个棚位", lookup: "la caseta" },
+	      "。"
+	    ],
+	    fullSentence: "Cuando lleguemos a la portada, vamos a buscar la caseta.",
+	    gloss: SPANISH_GLOSS,
+	    lookupUnits: ["Cuando", "lleguemos", "a", "la portada", "vamos a", "buscar", "la caseta"],
+	    groups: [
+	      { zh: "等……的时候", options: ["Cuando", "Porque"], correct: "Cuando" },
+	      { zh: "我们到达（虚拟式）", options: ["lleguemos", "llegamos"], correct: "lleguemos" },
+	      { zh: "到入口大门", options: ["a la portada", "a la caseta"], correct: "a la portada" },
+	      { zh: "我们将要找", options: ["vamos a buscar", "buscamos"], correct: "vamos a buscar" },
+	      { zh: "那个棚位", options: ["la caseta", "la portada"], correct: "la caseta" }
+	    ]
+	  },
+	  q7: {
+	    type: "twoOption",
+	    section: "环节2 · 句式学习 · 题7",
+	    prompt: "等演出结束的时候，我们会和 Marta 在棚位碰头。",
+	    promptSegments: [
+	      { text: "等", lookup: "Cuando", group: "q7-cuando" },
+	      { text: "演出", lookup: "el concierto" },
+	      { text: "结束", lookup: "termine" },
+	      { text: "的时候", lookup: "Cuando", group: "q7-cuando" },
+	      "，",
+	      { text: "我们会", lookup: "vamos a" },
+	      { text: "和", lookup: "con" },
+	      { text: "Marta", lookup: "Marta" },
+	      { text: "在", lookup: "en" },
+	      { text: "棚位", lookup: "la caseta" },
+	      { text: "碰头", lookup: "quedar" },
+	      "。"
+	    ],
+	    fullSentence: "Cuando termine el concierto, vamos a quedar con Marta en la caseta.",
+	    gloss: SPANISH_GLOSS,
+	    lookupUnits: ["Cuando", "termine", "el concierto", "vamos a", "quedar", "con", "Marta", "en", "la caseta"],
+	    groups: [
+	      { zh: "等……的时候", options: ["Cuando", "Porque"], correct: "Cuando" },
+	      { zh: "演出结束（虚拟式）", options: ["termine el concierto", "termina el concierto"], correct: "termine el concierto" },
+	      { zh: "我们会碰头", options: ["vamos a quedar", "vamos a comer"], correct: "vamos a quedar" },
+	      { zh: "和 Marta", options: ["con Marta", "con la caseta"], correct: "con Marta" },
+	      { zh: "在棚位", options: ["en la caseta", "en la portada"], correct: "en la caseta" }
+	    ]
+	  },
+	  q8: {
+	    type: "listeningChoiceTranscript",
+	    section: "环节3 · 听力理解 · 题8",
+	    audioText: "La feria empieza esta noche. Cuando lleguemos a la portada, vamos a buscar una caseta. Marta nos espera allí.",
+	    translation: "节日今晚开始。等我们到入口大门时，我们会找一个棚位。Marta 在那里等我们。",
+	    transcriptLookupPhrases: ["La feria", "empieza", "esta noche", "Cuando", "lleguemos", "a la portada", "vamos a", "buscar", "una caseta", "Marta", "nos espera", "allí"],
+	    question: "他们到入口大门后会先找什么？",
+	    options: ["Marta", "churros", "una caseta"],
+	    correct: "una caseta",
+	    analysis: "原文直接说 Cuando lleguemos a la portada, vamos a buscar una caseta，所以他们到入口大门后会先找一个棚位。",
+	    gloss: SPANISH_GLOSS,
+	    readingFallback: {
+      id: "reading-q8-listening",
+      type: "readingCloze9876",
+      section: "环节3 · 阅读理解 · 题8补做",
+      image: "assets/images/feria-portada.webp",
+      stem: "请填空：",
+      gloss: SPANISH_GLOSS,
+	      lookupPhrases: ["La feria", "empieza", "esta noche", "Cuando", "lleguemos", "a la portada", "vamos a", "buscar", "una caseta", "Marta", "nos espera", "allí"],
+	      segments: [
+	        "La feria empieza esta noche. Cuando ",
+	        { answer: "lleguemos" },
+	        " a la portada, vamos a ",
+	        { answer: "buscar" },
+	        " una ",
+	        { answer: "caseta" },
+	        ". Marta nos espera allí."
+	      ],
+	      blanks: [
+	        { answer: "lleguemos" },
+	        { answer: "buscar" },
+	        { answer: "caseta" }
+	      ],
+	      options: ["lleguemos", "buscar", "caseta", "llegamos"]
+	    }
+	  },
+	  q10: {
+	    type: "listeningChoiceTranscript",
+	    section: "环节3 · 听力理解 · 题10",
+	    audioText: "Marta está esperando en la portada. Cuando termine esta canción, vamos a quedar con ella allí. Después iremos juntos a la caseta.",
+	    translation: "Marta 正在入口大门处等。等这首歌结束时，我们会和她在那里碰头。之后我们会一起去棚位。",
+	    transcriptLookupPhrases: ["Marta", "está esperando", "en la portada", "Cuando", "termine", "esta canción", "vamos a", "quedar", "con ella", "allí", "Después", "iremos juntos", "a", "la caseta"],
+	    question: "这首歌结束后，他们会先在哪里见面？",
+	    options: ["portada", "caseta", "escenario"],
+	    correct: "portada",
+	    analysis: "音频里先说 Marta está esperando en la portada，后面说 vamos a quedar con ella allí。ella 指 Marta，allí 指入口大门，所以答案是 portada。",
+	    gloss: SPANISH_GLOSS,
+	    readingFallback: {
+      id: "reading-q10-listening",
+      type: "readingCloze9876",
+      section: "环节3 · 阅读理解 · 题10补做",
+      image: "assets/images/sevillanas-stage.webp",
+      stem: "请填空：",
+      gloss: SPANISH_GLOSS,
+	      lookupPhrases: ["Marta", "está esperando", "en la portada", "Cuando", "termine", "esta canción", "vamos a", "quedar", "con ella", "allí", "Después", "iremos juntos", "a", "la caseta"],
+	      segments: [
+	        "Marta está esperando en la portada. Cuando ",
+	        { answer: "termine" },
+	        " esta canción, vamos a ",
+	        { answer: "quedar" },
+	        " con ella allí. Después iremos juntos a la ",
+	        { answer: "caseta" },
+	        "."
+	      ],
+	      blanks: [
+	        { answer: "termine" },
+	        { answer: "quedar" },
+	        { answer: "caseta" }
+	      ],
+	      options: ["termine", "quedar", "caseta", "termina"]
+	    }
+	  }
+});
+
+delete Q.exp2;
+delete Q.q9;
+delete Q.q11;
+
 function buildSteps(version) {
-  return [Q.q1, Q.q2, Q.q3, Q.q4, Q.q5, Q.exp1, Q.q6, Q.q7, Q.q8, Q.q9];
+  return [Q.q1, Q.q2, Q.q3, Q.q4, Q.q5, Q.exp1, Q.q6, Q.q7, Q.q8, Q.q10];
 }
 
 
