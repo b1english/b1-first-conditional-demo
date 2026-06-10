@@ -3,251 +3,147 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Unit 1 旅行x条件句｜四关课程表格脚本</title>
+  <title>Unit 1 旅行x条件句｜四关课程可视化脚本</title>
   <style>
-    :root {
-      color-scheme: light;
-      --text: #1f2937;
-      --muted: #667085;
-      --line: #d8dee8;
-      --soft: #f6f8fb;
-      --blue: #2563eb;
-      --green: #eef8f1;
-      --yellow: #fff7dc;
-    }
+    :root { color-scheme: light; --text:#1f2937; --muted:#667085; --line:#d8dee8; --soft:#f6f8fb; --blue:#2563eb; --wrong:#c35b5b; --wrong-bg:#fff1f1; --blue-bg:#eef4ff; }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      color: var(--text);
-      background: #ffffff;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 15px;
-      line-height: 1.55;
-    }
-    header {
-      padding: 28px 24px 18px;
-      border-bottom: 1px solid var(--line);
-      background: #ffffff;
-    }
-    h1 {
-      margin: 0 0 8px;
-      font-size: 26px;
-      line-height: 1.25;
-      font-weight: 600;
-    }
-    .summary {
-      margin: 0;
-      color: var(--muted);
-      max-width: 900px;
-    }
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 5;
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 10px 24px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255,255,255,.96);
-    }
-    nav a {
-      flex: 0 0 auto;
-      color: var(--blue);
-      text-decoration: none;
-      border: 1px solid #c9d8ff;
-      border-radius: 999px;
-      padding: 6px 12px;
-      background: #f5f8ff;
-      font-size: 14px;
-    }
+    body { margin: 0; color: var(--text); background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 1.55; font-weight: 400; }
+    header { padding: 28px 24px 18px; border-bottom: 1px solid var(--line); background: #fff; }
+    h1 { margin: 0 0 8px; font-size: 26px; line-height: 1.25; font-weight: 600; }
+    .summary { margin: 0; color: var(--muted); max-width: 960px; }
+    nav { position: sticky; top: 0; z-index: 5; display: flex; gap: 8px; overflow-x: auto; padding: 10px 24px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.96); }
+    nav a { flex: 0 0 auto; color: var(--blue); text-decoration: none; border: 1px solid #c9d8ff; border-radius: 999px; padding: 6px 12px; background: #f5f8ff; font-size: 14px; }
     main { padding: 8px 24px 40px; }
-    .level { margin: 24px 0 36px; }
-    h2 {
-      margin: 0 0 12px;
-      font-size: 21px;
-      font-weight: 600;
-    }
-    .table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-    }
-    table {
-      width: 100%;
-      min-width: 1120px;
-      border-collapse: collapse;
-    }
-    th, td {
-      border-bottom: 1px solid var(--line);
-      border-right: 1px solid var(--line);
-      padding: 10px 12px;
-      vertical-align: top;
-      text-align: left;
-      font-weight: 400;
-    }
-    th {
-      position: sticky;
-      top: 49px;
-      z-index: 2;
-      background: var(--soft);
-      color: #111827;
-      font-weight: 600;
-      white-space: nowrap;
-    }
+    .level { margin: 24px 0 36px; scroll-margin-top: 64px; }
+    h2 { margin: 0 0 12px; font-size: 21px; font-weight: 600; }
+    .table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+    table { width: 100%; min-width: 1420px; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); padding: 10px 12px; vertical-align: top; text-align: left; font-weight: 400; }
+    th { background: var(--soft); color: #111827; font-weight: 600; white-space: nowrap; }
     tr:last-child td { border-bottom: 0; }
     th:last-child, td:last-child { border-right: 0; }
     tbody tr:nth-child(even) td { background: #fcfdff; }
     .col-0 { width: 54px; text-align: center; color: var(--muted); }
     .col-1 { width: 112px; }
     .col-2 { width: 230px; color: #344054; }
-    .col-3 { width: 300px; }
-    .col-4 { width: 210px; }
-    .col-5 { width: 320px; }
-    .blank {
-      color: var(--blue);
-      font-weight: 400;
-      letter-spacing: 1px;
-      white-space: nowrap;
-      border-bottom: 1px solid var(--blue);
-    }
-    code {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--yellow);
-      border: 1px solid #f1dfa2;
-      border-radius: 4px;
-      padding: 1px 4px;
-    }
-    .note {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    @media (max-width: 720px) {
-      header { padding: 22px 16px 14px; }
-      h1 { font-size: 22px; }
-      nav { padding: 9px 16px; }
-      main { padding: 6px 16px 28px; }
-      h2 { font-size: 19px; }
-      table { min-width: 980px; }
-      th, td { padding: 9px 10px; }
-    }
-    @media print {
-      nav { display: none; }
-      header, main { padding-left: 0; padding-right: 0; }
-      .table-wrap { overflow: visible; border-radius: 0; }
-      table { min-width: 0; font-size: 11px; }
-      th { position: static; }
-    }
+    .col-3 { width: 260px; }
+    .col-4 { width: 230px; }
+    .col-5 { width: 260px; }
+    .col-6 { width: 210px; }
+    .col-7 { width: 300px; }
+    .blank { color: var(--blue); font-weight: 400; letter-spacing: 1px; white-space: nowrap; border-bottom: 1px solid var(--blue); }
+    .opt-correct { display: inline-block; color: var(--blue); background: var(--blue-bg); font-weight: 600; padding: 1px 4px; border-radius: 4px; margin: 1px 0; }
+    .opt-wrong { display: inline-block; color: var(--wrong); background: var(--wrong-bg); padding: 1px 4px; border-radius: 4px; margin: 1px 0; }
+    .option-group { margin: 0 0 8px; }
+    .option-group:last-child { margin-bottom: 0; }
+    .group-label { color: var(--muted); font-size: 13px; }
+    .muted { color: var(--muted); font-size: 13px; }
+    .note { margin-top: 18px; color: var(--muted); font-size: 13px; }
+    @media (max-width: 720px) { header { padding: 22px 16px 14px; } h1 { font-size: 22px; } nav { padding: 9px 16px; } main { padding: 6px 16px 28px; } h2 { font-size: 19px; } table { min-width: 1280px; } th, td { padding: 9px 10px; } }
+    @media print { nav { display: none; } header, main { padding-left: 0; padding-right: 0; } .table-wrap { overflow: visible; border-radius: 0; } table { min-width: 0; font-size: 10px; } }
   </style>
 </head>
 <body>
   <header>
-    <h1>Unit 1 旅行x条件句｜四关课程表格脚本</h1>
-    <p class="summary">用于课程内容审阅的可视化版本。图片以文字描述呈现，挖空部分用蓝色下划线占位符标出。</p>
+    <h1>Unit 1 旅行x条件句｜四关课程可视化脚本</h1>
+    <p class="summary">用于课程内容审阅的可视化版本。题干列展示挖空或具体问题；答案与解析单独列出；正确选项为蓝色加粗，错误选项为浅红色。</p>
   </header>
   <nav aria-label="关卡导航"><a href="#level-1">关卡1｜词汇学习1</a><a href="#level-2">关卡2｜句子学习1</a><a href="#level-3">关卡3｜词汇学习2</a><a href="#level-4">关卡4｜句子学习2</a></nav>
   <main>
-    
     <section class="level" id="level-1">
       <h2>关卡1｜词汇学习1</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>题号</th><th>题型</th><th>图片内容</th><th>题面</th><th>题干/任务</th><th>选项/组件</th></tr>
+            <tr><th>题号</th><th>题型</th><th>图片内容</th><th>题面</th><th>题干</th><th>选项/组件</th><th>答案</th><th>解析</th></tr>
           </thead>
           <tbody>
-            <tr><td class="col-0">1</td><td class="col-1">语境词义选择</td><td class="col-2">酒店前台场景：旅客拿着手机咨询办理入住/预订房间。</td><td class="col-3">I want to book a room.</td><td class="col-4">“book”在这里的意思是：</td><td class="col-5">预定 / 读书<br>正确：预定<br>解析：book 表示“预订（房间、票或服务）”。<br>句意：我想预订一个房间。</td></tr>
-            <tr><td class="col-0">2</td><td class="col-1">词汇拼写</td><td class="col-2">酒店前台场景：旅客拿着手机咨询办理入住/预订房间。</td><td class="col-3">预订一个房间<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：book a room）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：book / a / room<br>查词：book / a / room</td></tr>
-            <tr><td class="col-0">3</td><td class="col-1">词汇拼写</td><td class="col-2">购票场景：手机购票界面显示预订两张门票。</td><td class="col-3">预订两张门票<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：book two tickets）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：book / two / tickets<br>查词：book / two / tickets</td></tr>
-            <tr><td class="col-0">4</td><td class="col-1">语境词义选择</td><td class="col-2">左右拼图手机特写：左侧景区门票原价$20并有“请输入优惠码”输入框；右侧输入优惠码后价格变为$10。</td><td class="col-3">Save money with this code.</td><td class="col-4">“save”在这里的意思是：</td><td class="col-5">节省 / 花费<br>正确：节省<br>解析：save 表示“节省（金钱或时间）”。<br>句意：用这个优惠码省钱。</td></tr>
-            <tr><td class="col-0">5</td><td class="col-1">词汇拼写</td><td class="col-2">左右拼图手机特写：左侧景区门票原价$20并有“请输入优惠码”输入框；右侧输入优惠码后价格变为$10。</td><td class="col-3">节省钱<br><span class="blank">____</span> <span class="blank">____</span>（答案：save money）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：save / money<br>查词：save / money</td></tr>
-            <tr><td class="col-0">6</td><td class="col-1">词汇拼写</td><td class="col-2">交通枢纽场景：慢队伍与快速通道对比，表现选择更快方式来节省时间。</td><td class="col-3">节省时间<br><span class="blank">____</span> <span class="blank">____</span>（答案：save time）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：save / time<br>查词：save / time</td></tr>
-            <tr><td class="col-0">7</td><td class="col-1">语境词义选择</td><td class="col-2">当地集市场景：游客在市场入口看到特色美食摊位，表现想尝试当地食物。</td><td class="col-3">Let's try out local food.</td><td class="col-4">“try out”在这里的意思是：</td><td class="col-5">尝试 / 扔掉<br>正确：尝试<br>解析：try out 表示“试试看、体验一下”。<br>句意：我们尝试一下当地食物吧。</td></tr>
-            <tr><td class="col-0">8</td><td class="col-1">词汇拼写</td><td class="col-2">当地集市场景：游客在市场入口看到特色美食摊位，表现想尝试当地食物。</td><td class="col-3">尝试当地食物<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：try out local food）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：try / out / local / food<br>查词：try out / local / food</td></tr>
-            <tr><td class="col-0">9</td><td class="col-1">词汇拼写</td><td class="col-2">海边/泳池场景：旅客准备下水尝试游泳。</td><td class="col-3">尝试游泳<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：try out swimming）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：try / out / swimming<br>查词：try out / swimming</td></tr>
-            <tr><td class="col-0">10</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们今晚将要预订一个房间。<br>目标句：We will book a room tonight.</td><td class="col-4">按顺序为每个中文组块选择正确英文。</td><td class="col-5">第1空「我们将会」：We will / I can（正确：We will）<br>第2空「预订」：book / save（正确：book）<br>第3空「一个房间」：a room / a ticket（正确：a room）<br>第4空「今晚」：tonight / tomorrow（正确：tonight）</td></tr>
-            <tr><td class="col-0">11</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们将会节省一些钱。<br>目标句：We will save some money.</td><td class="col-4">按顺序为每个中文组块选择正确英文。</td><td class="col-5">第1空「我们将会」：We will / I can（正确：We will）<br>第2空「节省」：save / try out（正确：save）<br>第3空「一些钱」：some money / local food（正确：some money）</td></tr>
-            <tr><td class="col-0">12</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们将会试试当地的食物。<br>目标句：We will try out local food.</td><td class="col-4">按顺序为每个中文组块选择正确英文。</td><td class="col-5">第1空「我们将会」：We will / I can（正确：We will）<br>第2空「试试」：try out / book（正确：try out）<br>第3空「当地的食物」：local food / some money（正确：local food）</td></tr>
-            <tr><td class="col-0">13</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们将会预订两张票。<br>目标句：We will book two tickets.</td><td class="col-4">默认录音口翻；点击“现在不做口语题”后进入选词拼句。</td><td class="col-5">补做组块：We will / book / save / try out / two tickets / a room<br>目标块：We will / book / two tickets</td></tr>
-            <tr><td class="col-0">14</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们将会节省时间。<br>目标句：We will save time.</td><td class="col-4">默认录音口翻；点击“现在不做口语题”后进入选词拼句。</td><td class="col-5">补做组块：We will / save / book / try out / time / money<br>目标块：We will / save / time</td></tr>
-            <tr><td class="col-0">15</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们将会尝试游泳。<br>目标句：We will try out swimming.</td><td class="col-4">默认录音口翻；点击“现在不做口语题”后进入选词拼句。</td><td class="col-5">补做组块：We will / try out / book / save / swimming / local food<br>目标块：We will / try out / swimming</td></tr>
+            <tr><td class="col-0">1</td><td class="col-1">语境词义选择</td><td class="col-2">酒店前台场景：旅客拿着手机咨询办理入住/预订房间。</td><td class="col-3">I want to book a room.</td><td class="col-4">“book”在这里的意思是：</td><td class="col-5"><span class="opt-correct">预定</span><br><span class="opt-wrong">读书</span></td><td class="col-6">预定</td><td class="col-7">book 表示“预订（房间、票或服务）”。句意：我想预订一个房间。</td></tr>
+            <tr><td class="col-0">2</td><td class="col-1">词汇拼写</td><td class="col-2">酒店前台场景：旅客拿着手机咨询办理入住/预订房间。</td><td class="col-3">预订一个房间</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">book</span><br><span class="opt-correct">a</span><br><span class="opt-correct">room</span></td><td class="col-6">book a room</td><td class="col-7">查词：book / a / room</td></tr>
+            <tr><td class="col-0">3</td><td class="col-1">词汇拼写</td><td class="col-2">购票场景：手机购票界面显示预订两张门票。</td><td class="col-3">预订两张门票</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">book</span><br><span class="opt-correct">two</span><br><span class="opt-correct">tickets</span></td><td class="col-6">book two tickets</td><td class="col-7">查词：book / two / tickets</td></tr>
+            <tr><td class="col-0">4</td><td class="col-1">语境词义选择</td><td class="col-2">左右拼图手机特写：左侧景区门票原价$20并有“请输入优惠码”输入框；右侧输入优惠码后价格变为$10。</td><td class="col-3">Save money with this code.</td><td class="col-4">“save”在这里的意思是：</td><td class="col-5"><span class="opt-correct">节省</span><br><span class="opt-wrong">花费</span></td><td class="col-6">节省</td><td class="col-7">save 表示“节省（金钱或时间）”。句意：用这个优惠码省钱。</td></tr>
+            <tr><td class="col-0">5</td><td class="col-1">词汇拼写</td><td class="col-2">左右拼图手机特写：左侧景区门票原价$20并有“请输入优惠码”输入框；右侧输入优惠码后价格变为$10。</td><td class="col-3">节省钱</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">save</span><br><span class="opt-correct">money</span></td><td class="col-6">save money</td><td class="col-7">查词：save / money</td></tr>
+            <tr><td class="col-0">6</td><td class="col-1">词汇拼写</td><td class="col-2">交通枢纽场景：慢队伍与快速通道对比，表现选择更快方式来节省时间。</td><td class="col-3">节省时间</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">save</span><br><span class="opt-correct">time</span></td><td class="col-6">save time</td><td class="col-7">查词：save / time</td></tr>
+            <tr><td class="col-0">7</td><td class="col-1">语境词义选择</td><td class="col-2">当地集市场景：游客在市场入口看到特色美食摊位，表现想尝试当地食物。</td><td class="col-3">Let's try out local food.</td><td class="col-4">“try out”在这里的意思是：</td><td class="col-5"><span class="opt-correct">尝试</span><br><span class="opt-wrong">扔掉</span></td><td class="col-6">尝试</td><td class="col-7">try out 表示“试试看、体验一下”。句意：我们尝试一下当地食物吧。</td></tr>
+            <tr><td class="col-0">8</td><td class="col-1">词汇拼写</td><td class="col-2">当地集市场景：游客在市场入口看到特色美食摊位，表现想尝试当地食物。</td><td class="col-3">尝试当地食物</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">try</span><br><span class="opt-correct">out</span><br><span class="opt-correct">local</span><br><span class="opt-correct">food</span></td><td class="col-6">try out local food</td><td class="col-7">查词：try out / local / food</td></tr>
+            <tr><td class="col-0">9</td><td class="col-1">词汇拼写</td><td class="col-2">海边/泳池场景：旅客准备下水尝试游泳。</td><td class="col-3">尝试游泳</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">try</span><br><span class="opt-correct">out</span><br><span class="opt-correct">swimming</span></td><td class="col-6">try out swimming</td><td class="col-7">查词：try out / swimming</td></tr>
+            <tr><td class="col-0">10</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们今晚将要预订一个房间。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span><br><span class="muted">目标句：We will book a room tonight.</span></td><td class="col-5"><div class="option-group"><span class="group-label">第1空「我们将会」</span><br><span class="opt-correct">We will</span><br><span class="opt-wrong">I can</span></div><div class="option-group"><span class="group-label">第2空「预订」</span><br><span class="opt-correct">book</span><br><span class="opt-wrong">save</span></div><div class="option-group"><span class="group-label">第3空「一个房间」</span><br><span class="opt-correct">a room</span><br><span class="opt-wrong">a ticket</span></div><div class="option-group"><span class="group-label">第4空「今晚」</span><br><span class="opt-correct">tonight</span><br><span class="opt-wrong">tomorrow</span></div></td><td class="col-6">We will book a room tonight.</td><td class="col-7">查词：We / will / book / a room / tonight</td></tr>
+            <tr><td class="col-0">11</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们将会节省一些钱。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span><br><span class="muted">目标句：We will save some money.</span></td><td class="col-5"><div class="option-group"><span class="group-label">第1空「我们将会」</span><br><span class="opt-correct">We will</span><br><span class="opt-wrong">I can</span></div><div class="option-group"><span class="group-label">第2空「节省」</span><br><span class="opt-correct">save</span><br><span class="opt-wrong">try out</span></div><div class="option-group"><span class="group-label">第3空「一些钱」</span><br><span class="opt-correct">some money</span><br><span class="opt-wrong">local food</span></div></td><td class="col-6">We will save some money.</td><td class="col-7">查词：We / will / save / some / money</td></tr>
+            <tr><td class="col-0">12</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们将会试试当地的食物。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span><br><span class="muted">目标句：We will try out local food.</span></td><td class="col-5"><div class="option-group"><span class="group-label">第1空「我们将会」</span><br><span class="opt-correct">We will</span><br><span class="opt-wrong">I can</span></div><div class="option-group"><span class="group-label">第2空「试试」</span><br><span class="opt-correct">try out</span><br><span class="opt-wrong">book</span></div><div class="option-group"><span class="group-label">第3空「当地的食物」</span><br><span class="opt-correct">local food</span><br><span class="opt-wrong">some money</span></div></td><td class="col-6">We will try out local food.</td><td class="col-7">查词：We / will / try out / local food</td></tr>
+            <tr><td class="col-0">13</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们将会预订两张票。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">We will</span><br><span class="opt-correct">book</span><br><span class="opt-wrong">save</span><br><span class="opt-wrong">try out</span><br><span class="opt-correct">two tickets</span><br><span class="opt-wrong">a room</span></td><td class="col-6">We will book two tickets.</td><td class="col-7">目标块：We will / book / two tickets</td></tr>
+            <tr><td class="col-0">14</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们将会节省时间。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">We will</span><br><span class="opt-correct">save</span><br><span class="opt-wrong">book</span><br><span class="opt-wrong">try out</span><br><span class="opt-correct">time</span><br><span class="opt-wrong">money</span></td><td class="col-6">We will save time.</td><td class="col-7">目标块：We will / save / time</td></tr>
+            <tr><td class="col-0">15</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们将会尝试游泳。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">We will</span><br><span class="opt-correct">try out</span><br><span class="opt-wrong">book</span><br><span class="opt-wrong">save</span><br><span class="opt-correct">swimming</span><br><span class="opt-wrong">local food</span></td><td class="col-6">We will try out swimming.</td><td class="col-7">目标块：We will / try out / swimming</td></tr>
           </tbody>
         </table>
       </div>
     </section>
-
-    <section class="level" id="level-2">
+<section class="level" id="level-2">
       <h2>关卡2｜句子学习1</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>题号</th><th>题型</th><th>图片内容</th><th>题面</th><th>题干/任务</th><th>选项/组件</th></tr>
+            <tr><th>题号</th><th>题型</th><th>图片内容</th><th>题面</th><th>题干</th><th>选项/组件</th><th>答案</th><th>解析</th></tr>
           </thead>
           <tbody>
-            <tr><td class="col-0">1</td><td class="col-1">语法曝光</td><td class="col-2">—</td><td class="col-3">If ..., ... will ...<br>如果（某个条件发生），就会（产生某个结果）。</td><td class="col-4">观察 If 条件句结构，听规则发音。</td><td class="col-5">音频按钮：常速/慢速；无作答选项。</td></tr>
-            <tr><td class="col-0">2</td><td class="col-1">语法9876</td><td class="col-2">—</td><td class="col-3">如果我们坐公交车，我们就会省钱。<br>If <span class="blank">____</span>, we <span class="blank">____</span> money.</td><td class="col-4">根据中文提示拼出条件部分和结果部分。</td><td class="col-5">选项：we take a bus / will save<br>含语法词汇讲解</td></tr>
-            <tr><td class="col-0">3</td><td class="col-1">语法9876</td><td class="col-2">—</td><td class="col-3">如果我们去旅行，我们将会预订两张票。<br>If <span class="blank">____</span>, we <span class="blank">____</span> two tickets.</td><td class="col-4">根据中文提示拼出条件部分和结果部分。</td><td class="col-5">选项：we take a trip / will book</td></tr>
-            <tr><td class="col-0">4</td><td class="col-1">常规9876拼句</td><td class="col-2">—</td><td class="col-3">如果他坐公交车，他将会省钱。<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>, he will save money.</td><td class="col-4">只挖空前半句 if 条件部分，后半句固定。</td><td class="col-5">组块：If / he / takes / a bus / will take<br>正确块：If / he / takes / a bus</td></tr>
-            <tr><td class="col-0">5</td><td class="col-1">常规9876拼句</td><td class="col-2">—</td><td class="col-3">如果市场开门，我们将会尝试当地的食物。<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>, we will try out local food.</td><td class="col-4">只挖空前半句 if 条件部分，后半句固定。</td><td class="col-5">组块：If / the market / opens / will open<br>正确块：If / the market / opens</td></tr>
-            <tr><td class="col-0">6</td><td class="col-1">听力选择</td><td class="col-2">—</td><td class="col-3">听音频/看原文：If our flight arrives late, we will book a room near the airport.<br>中文：如果我们的航班晚到，我们将会预订机场附近的一个房间。</td><td class="col-4">What will we book?</td><td class="col-5">选项：a room / a flight / an airport<br>正确：a room<br>解析：关键句是 we will book a room near the airport，所以航班晚到时会订机场附近的房间。</td></tr>
-            <tr><td class="col-0">7</td><td class="col-1">听力选择</td><td class="col-2">—</td><td class="col-3">听音频/看原文：If the weather stays warm, we will try out swimming in the sea.<br>中文：如果天气保持温暖，我们将会尝试在海里游泳。</td><td class="col-4">What will we try out?</td><td class="col-5">选项：swimming / local food / tickets<br>正确：swimming<br>解析：音频里说 we will try out swimming in the sea，所以他们会尝试在海里游泳。</td></tr>
+            <tr><td class="col-0">1</td><td class="col-1">语法曝光</td><td class="col-2">—</td><td class="col-3">If ..., ... will ...<br>如果（某个条件发生），就会（产生某个结果）。</td><td class="col-4">—</td><td class="col-5">常速音频按钮<br>慢速音频按钮</td><td class="col-6">无作答答案</td><td class="col-7">观察 If 条件句结构，并听规则发音。</td></tr>
+            <tr><td class="col-0">2</td><td class="col-1">语法9876</td><td class="col-2">—</td><td class="col-3">如果我们坐公交车，我们就会省钱。</td><td class="col-4">If <span class="blank">____</span>, we <span class="blank">____</span> money.</td><td class="col-5"><span class="opt-correct">we take a bus</span><br><span class="opt-correct">will save</span></td><td class="col-6">If we take a bus, we will save money.</td><td class="col-7">If ..., ... will ... = 如果（条件发生），就会（随之产生某个结果）。<br>if 后面说条件，用一般现在时。<br>后面说结果，用 will + 动词原形。</td></tr>
+            <tr><td class="col-0">3</td><td class="col-1">语法9876</td><td class="col-2">—</td><td class="col-3">如果我们去旅行，我们将会预订两张票。</td><td class="col-4">If <span class="blank">____</span>, we <span class="blank">____</span> two tickets.</td><td class="col-5"><span class="opt-correct">we take a trip</span><br><span class="opt-correct">will book</span></td><td class="col-6">If we take a trip, we will book two tickets.</td><td class="col-7">查词：If / we / take a trip / we / will / book / two tickets</td></tr>
+            <tr><td class="col-0">4</td><td class="col-1">常规9876拼句</td><td class="col-2">—</td><td class="col-3">如果他坐公交车，他将会省钱。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>, he will save money.</td><td class="col-5"><span class="opt-correct">If</span><br><span class="opt-correct">he</span><br><span class="opt-correct">takes</span><br><span class="opt-correct">a bus</span><br><span class="opt-wrong">will take</span></td><td class="col-6">If he takes a bus, he will save money.</td><td class="col-7">正确块：If he takes a bus<br>查词：If / he / takes / a bus / he / will / save money</td></tr>
+            <tr><td class="col-0">5</td><td class="col-1">常规9876拼句</td><td class="col-2">—</td><td class="col-3">如果市场开门，我们将会尝试当地的食物。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>, we will try out local food.</td><td class="col-5"><span class="opt-correct">If</span><br><span class="opt-correct">the market</span><br><span class="opt-correct">opens</span><br><span class="opt-wrong">will open</span></td><td class="col-6">If the market opens, we will try out local food.</td><td class="col-7">正确块：If the market opens<br>查词：If / the market / opens / we / will / try out / local food</td></tr>
+            <tr><td class="col-0">6</td><td class="col-1">听力选择</td><td class="col-2">—</td><td class="col-3">听音频/看原文：If our flight arrives late, we will book a room near the airport.<br>中文：如果我们的航班晚到，我们将会预订机场附近的一个房间。</td><td class="col-4">What will we book?</td><td class="col-5"><span class="opt-correct">a room</span><br><span class="opt-wrong">a flight</span><br><span class="opt-wrong">an airport</span></td><td class="col-6">a room</td><td class="col-7">关键句是 we will book a room near the airport，所以航班晚到时会订机场附近的房间。</td></tr>
+            <tr><td class="col-0">7</td><td class="col-1">听力选择</td><td class="col-2">—</td><td class="col-3">听音频/看原文：If the weather stays warm, we will try out swimming in the sea.<br>中文：如果天气保持温暖，我们将会尝试在海里游泳。</td><td class="col-4">What will we try out?</td><td class="col-5"><span class="opt-correct">swimming</span><br><span class="opt-wrong">local food</span><br><span class="opt-wrong">tickets</span></td><td class="col-6">swimming</td><td class="col-7">音频里说 we will try out swimming in the sea，所以他们会尝试在海里游泳。</td></tr>
           </tbody>
         </table>
       </div>
     </section>
-
-    <section class="level" id="level-3">
+<section class="level" id="level-3">
       <h2>关卡3｜词汇学习2</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>题号</th><th>题型</th><th>图片内容</th><th>题面</th><th>题干/任务</th><th>选项/组件</th></tr>
+            <tr><th>题号</th><th>题型</th><th>图片内容</th><th>题面</th><th>题干</th><th>选项/组件</th><th>答案</th><th>解析</th></tr>
           </thead>
           <tbody>
-            <tr><td class="col-0">1</td><td class="col-1">语境词义选择</td><td class="col-2">手机行程单特写：提醒提前办理值机，表现不要错过航班。</td><td class="col-3">Don't miss the flight.</td><td class="col-4">“miss”在这里的意思是：</td><td class="col-5">错过 / 想念<br>正确：错过<br>解析：miss 表示“错过”。<br>句意：不要错过航班。</td></tr>
-            <tr><td class="col-0">2</td><td class="col-1">词汇拼写</td><td class="col-2">手机行程单特写：提醒提前办理值机，表现不要错过航班。</td><td class="col-3">错过航班<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：miss the flight）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：miss / the / flight<br>查词：miss / the flight</td></tr>
-            <tr><td class="col-0">3</td><td class="col-1">词汇拼写</td><td class="col-2">夜晚公交站场景：末班车即将离开，表现可能错过末班车。</td><td class="col-3">错过末班车<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：miss the last bus）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：miss / the / last / bus<br>查词：miss / the last bus</td></tr>
-            <tr><td class="col-0">4</td><td class="col-1">语境词义选择</td><td class="col-2">暴风雨天气下，两位旅客查看酒店预约行程单；红色叉号在人物头边气泡中，表示取消预订。</td><td class="col-3">We should cancel the booking.</td><td class="col-4">“cancel”在这里的意思是：</td><td class="col-5">取消 / 确认<br>正确：取消<br>解析：cancel 表示“取消”。<br>句意：我们应该取消这个预订。</td></tr>
-            <tr><td class="col-0">5</td><td class="col-1">词汇拼写</td><td class="col-2">暴风雨天气下，两位旅客查看酒店预约行程单；红色叉号在人物头边气泡中，表示取消预订。</td><td class="col-3">取消预定<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：cancel the booking）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：cancel / the / booking<br>查词：cancel / the booking</td></tr>
-            <tr><td class="col-0">6</td><td class="col-1">词汇拼写</td><td class="col-2">旅行计划桌面场景：地图、日历和行李旁出现红叉，窗外恶劣天气，表示取消行程。</td><td class="col-3">取消行程<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：cancel the trip）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：cancel / the / trip<br>查词：cancel / the trip</td></tr>
-            <tr><td class="col-0">7</td><td class="col-1">语境词义选择</td><td class="col-2">美食摊/集市场景：人们排队买食物。</td><td class="col-3">Let's line up for the food.</td><td class="col-4">“line up”在这里的意思是：</td><td class="col-5">排队等候 / 把线拉直<br>正确：排队等候<br>解析：line up 表示“排队等候”。<br>句意：我们排队买食物吧。</td></tr>
-            <tr><td class="col-0">8</td><td class="col-1">词汇拼写</td><td class="col-2">美食摊/集市场景：人们排队买食物。</td><td class="col-3">排队买食物<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：line up for the food）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：line / up / for / the / food<br>查词：line up for / the food</td></tr>
-            <tr><td class="col-0">9</td><td class="col-1">词汇拼写</td><td class="col-2">交通出行场景：旅客在出租车等候区排队等出租车。</td><td class="col-3">排队等出租车<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>（答案：line up for a taxi）</td><td class="col-4">请翻译：按顺序点击组块完成英文短语。</td><td class="col-5">组块：line / up / for / a / taxi<br>查词：line up for / a taxi</td></tr>
-            <tr><td class="col-0">10</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们或许会错过航班。<br>目标句：We may miss the flight.</td><td class="col-4">按顺序为每个中文组块选择正确英文。</td><td class="col-5">第1空「我们或许会」：We may / I will（正确：We may）<br>第2空「错过」：miss / cancel（正确：miss）<br>第3空「这个航班」：the flight / the food（正确：the flight）</td></tr>
-            <tr><td class="col-0">11</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们可以在中午之前取消预订。<br>目标句：We can cancel the booking by noon.</td><td class="col-4">按顺序为每个中文组块选择正确英文。</td><td class="col-5">第1空「我们可以」：We can / I will（正确：We can）<br>第2空「取消」：cancel / line up for（正确：cancel）<br>第3空「这个预订」：the booking / a taxi（正确：the booking）<br>第4空「在中午之前」：by noon / afternoon（正确：by noon）</td></tr>
-            <tr><td class="col-0">12</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们可以在这里排队等食物。<br>目标句：We can line up for food here.</td><td class="col-4">按顺序为每个中文组块选择正确英文。</td><td class="col-5">第1空「我们可以」：We can / I will（正确：We can）<br>第2空「排队等」：line up for / miss（正确：line up for）<br>第3空「食物」：food / the trip（正确：food）<br>第4空「在这里」：here / where（正确：here）</td></tr>
-            <tr><td class="col-0">13</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们可能会错过末班车。<br>目标句：We may miss the last bus.</td><td class="col-4">默认录音口翻；点击“现在不做口语题”后进入选词拼句。</td><td class="col-5">补做组块：We may / miss / cancel / line up for / the last bus / the flight<br>目标块：We may / miss / the last bus</td></tr>
-            <tr><td class="col-0">14</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们可以取消这次行程。<br>目标句：We can cancel the trip.</td><td class="col-4">默认录音口翻；点击“现在不做口语题”后进入选词拼句。</td><td class="col-5">补做组块：We can / cancel / miss / line up for / the trip / the ticket<br>目标块：We can / cancel / the trip</td></tr>
-            <tr><td class="col-0">15</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们可能会排队等一辆出租车。<br>目标句：We may line up for a taxi.</td><td class="col-4">默认录音口翻；点击“现在不做口语题”后进入选词拼句。</td><td class="col-5">补做组块：We may / line up for / miss / cancel / a taxi / the food<br>目标块：We may / line up for / a taxi</td></tr>
+            <tr><td class="col-0">1</td><td class="col-1">语境词义选择</td><td class="col-2">手机行程单特写：提醒提前办理值机，表现不要错过航班。</td><td class="col-3">Don't miss the flight.</td><td class="col-4">“miss”在这里的意思是：</td><td class="col-5"><span class="opt-correct">错过</span><br><span class="opt-wrong">想念</span></td><td class="col-6">错过</td><td class="col-7">miss 表示“错过”。句意：不要错过航班。</td></tr>
+            <tr><td class="col-0">2</td><td class="col-1">词汇拼写</td><td class="col-2">手机行程单特写：提醒提前办理值机，表现不要错过航班。</td><td class="col-3">错过航班</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">miss</span><br><span class="opt-correct">the</span><br><span class="opt-correct">flight</span></td><td class="col-6">miss the flight</td><td class="col-7">查词：miss / the flight</td></tr>
+            <tr><td class="col-0">3</td><td class="col-1">词汇拼写</td><td class="col-2">夜晚公交站场景：末班车即将离开，表现可能错过末班车。</td><td class="col-3">错过末班车</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">miss</span><br><span class="opt-correct">the</span><br><span class="opt-correct">last</span><br><span class="opt-correct">bus</span></td><td class="col-6">miss the last bus</td><td class="col-7">查词：miss / the last bus</td></tr>
+            <tr><td class="col-0">4</td><td class="col-1">语境词义选择</td><td class="col-2">暴风雨天气下，两位旅客查看酒店预约行程单；红色叉号在人物头边气泡中，表示取消预订。</td><td class="col-3">We should cancel the booking.</td><td class="col-4">“cancel”在这里的意思是：</td><td class="col-5"><span class="opt-correct">取消</span><br><span class="opt-wrong">确认</span></td><td class="col-6">取消</td><td class="col-7">cancel 表示“取消”。句意：我们应该取消这个预订。</td></tr>
+            <tr><td class="col-0">5</td><td class="col-1">词汇拼写</td><td class="col-2">暴风雨天气下，两位旅客查看酒店预约行程单；红色叉号在人物头边气泡中，表示取消预订。</td><td class="col-3">取消预定</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">cancel</span><br><span class="opt-correct">the</span><br><span class="opt-correct">booking</span></td><td class="col-6">cancel the booking</td><td class="col-7">查词：cancel / the booking</td></tr>
+            <tr><td class="col-0">6</td><td class="col-1">词汇拼写</td><td class="col-2">旅行计划桌面场景：地图、日历和行李旁出现红叉，窗外恶劣天气，表示取消行程。</td><td class="col-3">取消行程</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">cancel</span><br><span class="opt-correct">the</span><br><span class="opt-correct">trip</span></td><td class="col-6">cancel the trip</td><td class="col-7">查词：cancel / the trip</td></tr>
+            <tr><td class="col-0">7</td><td class="col-1">语境词义选择</td><td class="col-2">美食摊/集市场景：人们排队买食物。</td><td class="col-3">Let's line up for the food.</td><td class="col-4">“line up”在这里的意思是：</td><td class="col-5"><span class="opt-correct">排队等候</span><br><span class="opt-wrong">把线拉直</span></td><td class="col-6">排队等候</td><td class="col-7">line up 表示“排队等候”。句意：我们排队买食物吧。</td></tr>
+            <tr><td class="col-0">8</td><td class="col-1">词汇拼写</td><td class="col-2">美食摊/集市场景：人们排队买食物。</td><td class="col-3">排队买食物</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">line</span><br><span class="opt-correct">up</span><br><span class="opt-correct">for</span><br><span class="opt-correct">the</span><br><span class="opt-correct">food</span></td><td class="col-6">line up for the food</td><td class="col-7">查词：line up for / the food</td></tr>
+            <tr><td class="col-0">9</td><td class="col-1">词汇拼写</td><td class="col-2">交通出行场景：旅客在出租车等候区排队等出租车。</td><td class="col-3">排队等出租车</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">line</span><br><span class="opt-correct">up</span><br><span class="opt-correct">for</span><br><span class="opt-correct">a</span><br><span class="opt-correct">taxi</span></td><td class="col-6">line up for a taxi</td><td class="col-7">查词：line up for / a taxi</td></tr>
+            <tr><td class="col-0">10</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们或许会错过航班。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span><br><span class="muted">目标句：We may miss the flight.</span></td><td class="col-5"><div class="option-group"><span class="group-label">第1空「我们或许会」</span><br><span class="opt-correct">We may</span><br><span class="opt-wrong">I will</span></div><div class="option-group"><span class="group-label">第2空「错过」</span><br><span class="opt-correct">miss</span><br><span class="opt-wrong">cancel</span></div><div class="option-group"><span class="group-label">第3空「这个航班」</span><br><span class="opt-correct">the flight</span><br><span class="opt-wrong">the food</span></div></td><td class="col-6">We may miss the flight.</td><td class="col-7">查词：We / may / miss / the flight</td></tr>
+            <tr><td class="col-0">11</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们可以在中午之前取消预订。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span><br><span class="muted">目标句：We can cancel the booking by noon.</span></td><td class="col-5"><div class="option-group"><span class="group-label">第1空「我们可以」</span><br><span class="opt-correct">We can</span><br><span class="opt-wrong">I will</span></div><div class="option-group"><span class="group-label">第2空「取消」</span><br><span class="opt-correct">cancel</span><br><span class="opt-wrong">line up for</span></div><div class="option-group"><span class="group-label">第3空「这个预订」</span><br><span class="opt-correct">the booking</span><br><span class="opt-wrong">a taxi</span></div><div class="option-group"><span class="group-label">第4空「在中午之前」</span><br><span class="opt-correct">by noon</span><br><span class="opt-wrong">afternoon</span></div></td><td class="col-6">We can cancel the booking by noon.</td><td class="col-7">查词：We / can / cancel / the booking / by noon</td></tr>
+            <tr><td class="col-0">12</td><td class="col-1">2222顺序选块</td><td class="col-2">—</td><td class="col-3">我们可以在这里排队等食物。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span><br><span class="muted">目标句：We can line up for food here.</span></td><td class="col-5"><div class="option-group"><span class="group-label">第1空「我们可以」</span><br><span class="opt-correct">We can</span><br><span class="opt-wrong">I will</span></div><div class="option-group"><span class="group-label">第2空「排队等」</span><br><span class="opt-correct">line up for</span><br><span class="opt-wrong">miss</span></div><div class="option-group"><span class="group-label">第3空「食物」</span><br><span class="opt-correct">food</span><br><span class="opt-wrong">the trip</span></div><div class="option-group"><span class="group-label">第4空「在这里」</span><br><span class="opt-correct">here</span><br><span class="opt-wrong">where</span></div></td><td class="col-6">We can line up for food here.</td><td class="col-7">查词：We / can / line up for / food / here</td></tr>
+            <tr><td class="col-0">13</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们可能会错过末班车。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">We may</span><br><span class="opt-correct">miss</span><br><span class="opt-wrong">cancel</span><br><span class="opt-wrong">line up for</span><br><span class="opt-correct">the last bus</span><br><span class="opt-wrong">the flight</span></td><td class="col-6">We may miss the last bus.</td><td class="col-7">目标块：We may / miss / the last bus</td></tr>
+            <tr><td class="col-0">14</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们可以取消这次行程。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">We can</span><br><span class="opt-correct">cancel</span><br><span class="opt-wrong">miss</span><br><span class="opt-wrong">line up for</span><br><span class="opt-correct">the trip</span><br><span class="opt-wrong">the ticket</span></td><td class="col-6">We can cancel the trip.</td><td class="col-7">目标块：We can / cancel / the trip</td></tr>
+            <tr><td class="col-0">15</td><td class="col-1">常规9876口翻</td><td class="col-2">—</td><td class="col-3">我们可能会排队等一辆出租车。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span></td><td class="col-5"><span class="opt-correct">We may</span><br><span class="opt-correct">line up for</span><br><span class="opt-wrong">miss</span><br><span class="opt-wrong">cancel</span><br><span class="opt-correct">a taxi</span><br><span class="opt-wrong">the food</span></td><td class="col-6">We may line up for a taxi.</td><td class="col-7">目标块：We may / line up for / a taxi</td></tr>
           </tbody>
         </table>
       </div>
     </section>
-
-    <section class="level" id="level-4">
+<section class="level" id="level-4">
       <h2>关卡4｜句子学习2</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>题号</th><th>题型</th><th>图片内容</th><th>题面</th><th>题干/任务</th><th>选项/组件</th></tr>
+            <tr><th>题号</th><th>题型</th><th>图片内容</th><th>题面</th><th>题干</th><th>选项/组件</th><th>答案</th><th>解析</th></tr>
           </thead>
           <tbody>
-            <tr><td class="col-0">1</td><td class="col-1">语法曝光</td><td class="col-2">—</td><td class="col-3">If ..., ... can/may ...<br>如果（某个条件发生），<br>可以/可能（产生某个结果）。</td><td class="col-4">观察 If 条件句结构，听规则发音。</td><td class="col-5">音频按钮：常速/慢速；无作答选项。</td></tr>
-            <tr><td class="col-0">2</td><td class="col-1">语法9876</td><td class="col-2">—</td><td class="col-3">如果下雨，我们可以取消预订。<br>If <span class="blank">____</span>, we <span class="blank">____</span> the booking.</td><td class="col-4">根据中文提示拼出条件部分和结果部分。</td><td class="col-5">选项：it rains / can cancel<br>含语法词汇讲解</td></tr>
-            <tr><td class="col-0">3</td><td class="col-1">语法9876</td><td class="col-2">—</td><td class="col-3">如果下雪，我们可能会错过航班。<br>If <span class="blank">____</span>, we <span class="blank">____</span> the flight.</td><td class="col-4">根据中文提示拼出条件部分和结果部分。</td><td class="col-5">选项：it snows / may miss<br>含语法词汇讲解</td></tr>
-            <tr><td class="col-0">4</td><td class="col-1">常规9876拼句</td><td class="col-2">—</td><td class="col-3">如果暴风雨来了，我们可以免费取消这次行程。<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>, we can cancel the trip for free.</td><td class="col-4">只挖空前半句 if 条件部分，后半句固定。</td><td class="col-5">组块：If / the storm / comes / will come<br>正确块：If / the storm / comes</td></tr>
-            <tr><td class="col-0">5</td><td class="col-1">常规9876拼句</td><td class="col-2">—</td><td class="col-3">如果你喜欢那家咖啡馆，我们可以在那里排队等食物。<br><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>, we may line up for food there.</td><td class="col-4">只挖空前半句 if 条件部分，后半句固定。</td><td class="col-5">组块：If / you / like / that cafe / may like<br>正确块：If / you / like / that cafe</td></tr>
-            <tr><td class="col-0">6</td><td class="col-1">听力选择</td><td class="col-2">—</td><td class="col-3">听音频/看原文：If you take too many pictures, we may miss the last bus.<br>中文：如果你拍太多照片，我们可能会错过末班车。</td><td class="col-4">What may we miss?</td><td class="col-5">选项：the last bus / the flight / many pictures<br>正确：the last bus<br>解析：关键句是 we may miss the last bus，所以拍太多照片可能会错过末班车。</td></tr>
-            <tr><td class="col-0">7</td><td class="col-1">听力选择</td><td class="col-2">—</td><td class="col-3">听音频/看原文：If the bus service stops, we may line up for a taxi instead.<br>中文：如果公交服务停止，我们可能会改为排队等出租车。</td><td class="col-4">What may we line up for?</td><td class="col-5">选项：a taxi / a bus / food<br>正确：a taxi<br>解析：音频里说 we may line up for a taxi instead，所以公交服务停止时可能会改为排队等出租车。</td></tr>
+            <tr><td class="col-0">1</td><td class="col-1">语法曝光</td><td class="col-2">—</td><td class="col-3">If ..., ... can/may ...<br>如果（某个条件发生），<br>可以/可能（产生某个结果）。</td><td class="col-4">—</td><td class="col-5">常速音频按钮<br>慢速音频按钮</td><td class="col-6">无作答答案</td><td class="col-7">观察 If 条件句结构，并听规则发音。</td></tr>
+            <tr><td class="col-0">2</td><td class="col-1">语法9876</td><td class="col-2">—</td><td class="col-3">如果下雨，我们可以取消预订。</td><td class="col-4">If <span class="blank">____</span>, we <span class="blank">____</span> the booking.</td><td class="col-5"><span class="opt-correct">it rains</span><br><span class="opt-correct">can cancel</span></td><td class="col-6">If it rains, we can cancel the booking.</td><td class="col-7">If ..., ... can ... = 如果（条件发生），就可以/能够（产生某个结果）。<br>if 后面说条件，用一般现在时。<br>结果部分可以用情态动词。can 表示“可以；能够”，后面接动词原形。</td></tr>
+            <tr><td class="col-0">3</td><td class="col-1">语法9876</td><td class="col-2">—</td><td class="col-3">如果下雪，我们可能会错过航班。</td><td class="col-4">If <span class="blank">____</span>, we <span class="blank">____</span> the flight.</td><td class="col-5"><span class="opt-correct">it snows</span><br><span class="opt-correct">may miss</span></td><td class="col-6">If it snows, we may miss the flight.</td><td class="col-7">If ..., ... may ... = 如果（条件发生），就可能（产生某个结果）。<br>if 后面说条件，用一般现在时。<br>结果部分可以用情态动词。may 表示“或许会；可能”，后面接动词原形。</td></tr>
+            <tr><td class="col-0">4</td><td class="col-1">常规9876拼句</td><td class="col-2">—</td><td class="col-3">如果暴风雨来了，我们可以免费取消这次行程。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>, we can cancel the trip for free.</td><td class="col-5"><span class="opt-correct">If</span><br><span class="opt-correct">the storm</span><br><span class="opt-correct">comes</span><br><span class="opt-wrong">will come</span></td><td class="col-6">If the storm comes, we can cancel the trip for free.</td><td class="col-7">正确块：If the storm comes<br>查词：If / the storm / comes / we / can / cancel / the trip / for free</td></tr>
+            <tr><td class="col-0">5</td><td class="col-1">常规9876拼句</td><td class="col-2">—</td><td class="col-3">如果你喜欢那家咖啡馆，我们可以在那里排队等食物。</td><td class="col-4"><span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span> <span class="blank">____</span>, we may line up for food there.</td><td class="col-5"><span class="opt-correct">If</span><br><span class="opt-correct">you</span><br><span class="opt-correct">like</span><br><span class="opt-correct">that cafe</span><br><span class="opt-wrong">may like</span></td><td class="col-6">If you like that cafe, we may line up for food there.</td><td class="col-7">正确块：If you like that cafe<br>查词：If / you / like / that cafe / we / may / line up for / food / there</td></tr>
+            <tr><td class="col-0">6</td><td class="col-1">听力选择</td><td class="col-2">—</td><td class="col-3">听音频/看原文：If you take too many pictures, we may miss the last bus.<br>中文：如果你拍太多照片，我们可能会错过末班车。</td><td class="col-4">What may we miss?</td><td class="col-5"><span class="opt-correct">the last bus</span><br><span class="opt-wrong">the flight</span><br><span class="opt-wrong">many pictures</span></td><td class="col-6">the last bus</td><td class="col-7">关键句是 we may miss the last bus，所以拍太多照片可能会错过末班车。</td></tr>
+            <tr><td class="col-0">7</td><td class="col-1">听力选择</td><td class="col-2">—</td><td class="col-3">听音频/看原文：If the bus service stops, we may line up for a taxi instead.<br>中文：如果公交服务停止，我们可能会改为排队等出租车。</td><td class="col-4">What may we line up for?</td><td class="col-5"><span class="opt-correct">a taxi</span><br><span class="opt-wrong">a bus</span><br><span class="opt-wrong">food</span></td><td class="col-6">a taxi</td><td class="col-7">音频里说 we may line up for a taxi instead，所以公交服务停止时可能会改为排队等出租车。</td></tr>
           </tbody>
         </table>
       </div>
     </section>
-    <p class="note">生成来源：index-v10-course-script-table.md</p>
+    <p class="note">生成来源：index-v10.html</p>
   </main>
 </body>
 </html>
