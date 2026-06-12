@@ -3912,15 +3912,25 @@ body {
   height: var(--bar-height, 30px);
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(90deg, #4576F0 var(--bar-fill-percent, 0%), #E6E9EE 0);
+  background: #E6E9EE;
   padding: 0;
   transform-origin: center;
   transition: height 0.12s linear;
+}
+.spec-listening-bar.played {
+  background: #4576F0;
+}
+.spec-listening-wave.playing .spec-listening-bar {
+  background: linear-gradient(90deg, #4576F0 var(--bar-fill-percent, 0%), #E6E9EE 0);
 }
 .spec-listening-bar.active-wave {
   animation: none;
 }
 .spec-listening-wave.done .spec-listening-bar {
+  background: #4576F0;
+}
+.spec-screen.submitted .spec-listening-bar,
+.spec-screen.submitted .spec-listening-wave.playing .spec-listening-bar {
   background: #4576F0;
 }
 .spec-listening-slow {
@@ -4516,6 +4526,81 @@ body {
   opacity: 0.72;
   transform: scale(1.03);
 }
+.spec-listening-inline-sentence {
+  width: 361px;
+  min-height: 150px;
+  padding: 10px 0 2px;
+  color: #283044;
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 2.25;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 6px 8px;
+}
+.spec-listening-word {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: flex-end;
+  white-space: nowrap;
+}
+.spec-listening-word-punct {
+  margin-left: 1px;
+}
+.spec-listening-word-slot {
+  min-width: max(54px, calc(var(--slot-chars, 4) * 12px + 18px));
+  height: 48px;
+  border: 0;
+  border-bottom: 2px solid #2525DE;
+  border-radius: 0;
+  background: transparent;
+  color: #283044;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.spec-listening-word-slot.empty.active {
+  border-bottom-width: 3px;
+  background: rgba(37, 95, 241, 0.08);
+}
+.spec-listening-word-slot.filled {
+  border-bottom-style: solid;
+  background: #FFFFFF;
+}
+.spec-listening-word-slot.filled.selected {
+  border-color: #B2C5F7;
+}
+.spec-listening-word-slot.filled.correct {
+  border-color: #10B981;
+  color: #10B981;
+}
+.spec-listening-word-slot.filled.wrong {
+  border-color: #EF4444;
+  color: #EF4444;
+}
+.spec-listening-word-slot.filled.wrong.shake {
+  animation: spec-listening-wrong-shake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+.spec-listening-word-slot.filled.locked {
+  border-color: transparent;
+  background: transparent;
+  color: #283044;
+  cursor: default;
+}
+@keyframes spec-listening-wrong-shake {
+  0%, 100% { transform: translateX(0); }
+  18% { transform: translateX(-5px); }
+  36% { transform: translateX(5px); }
+  54% { transform: translateX(-4px); }
+  72% { transform: translateX(4px); }
+}
 .spec-listening-9876-screen .spec-content {
   bottom: 120px;
 }
@@ -5000,13 +5085,13 @@ body {
   gap: 3px;
 }
 .spec-grammar-card-line-en {
-  color: #444764;
-  font-size: 18px;
-  font-weight: 600;
+  color: #283044;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.2;
 }
 .spec-grammar-card-line-zh {
-  color: #283044;
+  color: #8C93A3;
   font-size: 12px;
   font-weight: 400;
   line-height: 1.25;
@@ -5035,7 +5120,7 @@ body {
   left: var(--grammar-content-left);
   width: 361px;
   min-height: 318px;
-  padding: 28px 24px 24px;
+  padding: 28px 16px 24px;
   border: 6px solid #BCBCBC;
   border-radius: 24px;
   background: #FFFFFF;
@@ -5063,6 +5148,7 @@ body {
   top: auto;
   width: 100%;
   height: auto;
+  padding-top: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -5077,13 +5163,13 @@ body {
   width: 100%;
   color: #444764;
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
-  line-height: 1.32;
+  line-height: 1.5;
   letter-spacing: 0;
   text-align: center;
   white-space: normal;
-  padding: 0 8px;
+  padding: 0;
   box-sizing: border-box;
 }
 .spec-grammar-concept-term-blue {
@@ -5100,11 +5186,11 @@ body {
   top: auto;
   min-height: 0;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 0;
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 400;
-  line-height: 1.42;
+  line-height: 1.5;
   letter-spacing: 0;
   text-align: center;
   white-space: normal;
@@ -5209,7 +5295,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 14px;
+  padding: 8px 6px;
 }
 .spec-grammar-topic-text {
   color: #444764;
@@ -5218,6 +5304,11 @@ body {
   font-weight: 400;
   line-height: 28px;
   text-align: center;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+.spec-grammar-topic-text .spec-chinese-punctuation-group {
+  white-space: nowrap;
 }
 .spec-grammar-builder-screen .spec-lookup-token,
 .spec-grammar-exposure-screen .spec-lookup-token,
@@ -6579,7 +6670,10 @@ function _specScheduleAudio(callback, delay = 0) {
 }
 function _specStopCurrentAudio() {
   if (_specActiveAudio) {
+    _specActiveAudio._specStopped = true;
     _specActiveAudio.pause();
+    _specActiveAudio.onerror = null;
+    _specActiveAudio.onended = null;
     _specActiveAudio = null;
   }
   _specCancelSpeech();
@@ -6599,6 +6693,11 @@ function _specSpeakFallback(text, slow = false) {
   utterance.lang = 'en-US';
   utterance.rate = slow ? 0.62 : 0.9;
   window.speechSynthesis.speak(utterance);
+}
+function _specSpeakFallbackOnce(audio, text, slow = false) {
+  if (!audio || audio._specStopped || _specActiveAudio !== audio || audio._specFallbackSpoken) return;
+  audio._specFallbackSpoken = true;
+  _specSpeakFallback(text, slow);
 }
 function _audioPath(text, slow = false, ext = 'm4a') {
   return `assets/audio/${slow ? 'slow' : 'normal'}/${_specSlug(text)}.${ext}`;
@@ -6640,23 +6739,23 @@ function _specPlayAudio(text, slow = false) {
     if (_specTryNextAudioSource(audio)) {
       audio.play().catch(nextError => {
         _specAudioFailure(text, nextError);
-        _specSpeakFallback(text, slow);
+        _specSpeakFallbackOnce(audio, text, slow);
       });
       return;
     }
     _specAudioFailure(text, error);
-    _specSpeakFallback(text, slow);
+    _specSpeakFallbackOnce(audio, text, slow);
   };
   audio.play().catch(error => {
     if (_specTryNextAudioSource(audio)) {
       audio.play().catch(nextError => {
         _specAudioFailure(text, nextError);
-        _specSpeakFallback(text, slow);
+        _specSpeakFallbackOnce(audio, text, slow);
       });
       return;
     }
     _specAudioFailure(text, error);
-    _specSpeakFallback(text, slow);
+    _specSpeakFallbackOnce(audio, text, slow);
   });
   return audio;
 }
@@ -6674,15 +6773,15 @@ function _specPlayAudioWithDone(text, slow = false, onDone = () => {}) {
   audio.onended = finish;
   audio.onerror = error => {
     if (_specTryNextAudioSource(audio)) {
-      audio.play().catch(nextError => {
-        _specAudioFailure(text, nextError);
-        _specSpeakFallback(text, slow);
-        finish();
-      });
+        audio.play().catch(nextError => {
+          _specAudioFailure(text, nextError);
+          _specSpeakFallbackOnce(audio, text, slow);
+          finish();
+        });
       return;
     }
     _specAudioFailure(text, error);
-    _specSpeakFallback(text, slow);
+    _specSpeakFallbackOnce(audio, text, slow);
     finish();
   };
   return audio;
@@ -6695,7 +6794,7 @@ function _specDirectAudio(src, text, slow = false) {
   audio.onerror = error => {
     if (_specTryNextAudioSource(audio)) return;
     _specAudioFailure(text, error);
-    _specSpeakFallback(text, slow);
+    _specSpeakFallbackOnce(audio, text, slow);
   };
   return audio;
 }
@@ -7404,8 +7503,7 @@ function hasLevelContent(level) {
   return level >= 1 && level <= 4;
 }
 function isLevelUnlocked(level) {
-  if (level > 1 && state.devPreview) return true;
-  return level <= state.unlockedLevel;
+  return hasLevelContent(level);
 }
 function showEntryToast(message) {
   const toast = document.querySelector('[data-entry-toast]');
@@ -7416,23 +7514,21 @@ function showEntryToast(message) {
   showEntryToast.timer = window.setTimeout(() => toast.classList.remove('show'), 1800);
 }
 function updateLessonEntryLocks() {
-  state.unlockedLevel = readUnlockedLevel();
-  const progressSteps = Math.max(0, Math.min(3, state.unlockedLevel - 1));
-  document.querySelector('.demo-lesson-entry-list')?.style.setProperty('--path-progress', `${progressSteps * 33.333}%`);
+  state.unlockedLevel = 4;
+  document.querySelector('.demo-lesson-entry-list')?.style.setProperty('--path-progress', '100%');
   document.querySelectorAll('[data-level]').forEach(button => {
     const level = Number(button.dataset.level);
     const unlocked = isLevelUnlocked(level);
-    const preview = level > 1 && state.devPreview && level > state.unlockedLevel;
     button.classList.toggle('locked', !unlocked);
-    button.classList.toggle('preview-available', preview);
+    button.classList.remove('preview-available');
     button.setAttribute('aria-disabled', unlocked ? 'false' : 'true');
     const action = button.querySelector('.demo-lesson-action');
-    if (action) action.textContent = unlocked ? String(level) : '锁';
+    if (action) action.textContent = String(level);
   });
   const previewButton = document.querySelector('[data-preview-toggle]');
   if (previewButton) {
-    previewButton.classList.toggle('on', state.devPreview);
-    previewButton.textContent = `开发预览：第2-4关${state.devPreview ? '开启' : '关闭'}`;
+    previewButton.classList.add('on');
+    previewButton.textContent = '所有关卡已解锁';
   }
 }
 function showEntry() {
@@ -7674,9 +7770,10 @@ function _specExplanationBlockHTML(block) {
   return `<${tag} class="${className}">${content}</${tag}>`;
 }
 function _grammarCardHTML(text = 'If · 如果') {
+  const textWithBreaksHTML = value => _specEscape(value).replace(/\n/g, '<br>');
   const lineHTML = line => String(line || '').split(/(\bIf\b|\bwill\b|\bcan\b|\bmay\b)/g).filter(Boolean).map(part => /^(If|will|can|may)$/.test(part)
     ? `<span class="spec-grammar-card-key">${_specEscape(part)}</span>`
-    : _specEscape(part)
+    : textWithBreaksHTML(part)
   ).join('');
   const zhHTML = data => {
     if (Array.isArray(data?.zhParts)) {
@@ -7736,13 +7833,24 @@ function _grammarConceptCardHTML(card = {}) {
   </section>`;
 }
 function _specGrammarLookupSegmentsHTML(segments = []) {
-  return segments.map(segment => {
-    if (typeof segment === 'string') return _specEscape(segment);
-    const text = segment?.text || '';
-    const lookup = segment?.lookup;
-    if (!lookup) return _specEscape(text);
-    return _specLookupTokenHTML(text, lookup, segment?.group || '', 'spec-grammar-dotted-token');
-  }).join('');
+  const parts = [];
+  const punctuationPattern = /^[，。！？、；：,.!?;:]+$/;
+  segments.forEach(segment => {
+    const html = typeof segment === 'string'
+      ? _specEscape(segment)
+      : (() => {
+          const text = segment?.text || '';
+          const lookup = segment?.lookup;
+          if (!lookup) return _specEscape(text);
+          return _specLookupTokenHTML(text, lookup, segment?.group || '', 'spec-grammar-dotted-token');
+        })();
+    if (typeof segment === 'string' && punctuationPattern.test(segment) && parts.length) {
+      parts[parts.length - 1] = `<span class="spec-chinese-punctuation-group">${parts[parts.length - 1]}${html}</span>`;
+    } else {
+      parts.push(html);
+    }
+  });
+  return parts.join('');
 }
 function _specGrammarSlotWidth(text, minWidth = 56) {
   return Math.max(minWidth, Math.min(180, String(text || '').length * 9 + 24));
@@ -7794,6 +7902,17 @@ function _specGrammarExplanationHTML(explanation) {
   return `<section class="spec-explanation-card" aria-label="${_specEscape(data.tab)}"><div class="spec-explanation-tab">${_specEscape(data.tab)}</div><div class="spec-explanation-panel">${blockHTML}</div></section>`;
 }
 function renderGrammarExposure(container, data) {
+  if (data.cardOnly) {
+    _specShell(container, {
+      exerciseId: data.id,
+      progress: stepProgress(),
+      screenClass: 'spec-grammar-exposure-screen',
+      showContinue: true,
+      sceneHTML: _grammarCardHTML(data.grammarText),
+      bodyHTML: ''
+    });
+    return;
+  }
   if (data.conceptCard) {
     _specShell(container, {
       exerciseId: data.id,
@@ -9008,22 +9127,15 @@ function renderReadingCloze9876(container, data) {
 function renderListening9876(container, data) {
   const waveCount = 30;
   const staticWaveHeight = 30;
-  const answers = data.chunks?.map(chunk => chunk.answer) || data.words || [];
-  const optionOrder = _shuffle((data.options || []).map((label, index) => ({ label, index })));
-  const selected = [];
+  const blankIndices = Array.isArray(data.blankIndices) && data.blankIndices.length
+    ? data.blankIndices
+    : (data.words || []).map((_, index) => index);
+  const wordIndexToSlot = new Map(blankIndices.map((wordIndex, slotIndex) => [wordIndex, slotIndex]));
+  const answers = blankIndices.map(index => data.words?.[index] || '');
+  const optionOrder = _shuffleNotSame((data.options || []).map((label, index) => ({ label, index })), item => item.label);
+  const sentenceWords = buildSentenceWords();
+  const slotStates = answers.map(() => null);
   const used = new Set();
-  const dragState = {
-    timer: null,
-    active: false,
-    sourceType: null,
-    sourceIndex: null,
-    optionIndex: null,
-    sourceLabel: '',
-    insertIndex: null,
-    suppressClick: false,
-    pointerId: null,
-    ghost: null
-  };
   const playback = {
     state: 'idle',
     progress: 0,
@@ -9038,28 +9150,25 @@ function renderListening9876(container, data) {
   let submitted = false;
   let completeReady = false;
   let fullPlayed = false;
+  let activeSlot = 0;
+  let wrongAttempts = 0;
+  let revealComplete = false;
+  let shakeWrong = false;
   let autoTimer = null;
   let feedbackTimer = null;
-  function estimateWidth(label) {
-    return Math.min(170, Math.max(62, String(label || '').length * 8 + 22));
-  }
-  function estimateRows(labels) {
-    let rows = 1;
-    let width = 0;
-    labels.forEach(label => {
-      const itemWidth = estimateWidth(label);
-      const nextWidth = width ? width + 10 + itemWidth : itemWidth;
-      if (nextWidth > 361) {
-        rows += 1;
-        width = itemWidth;
-      } else {
-        width = nextWidth;
-      }
+  let retryTimer = null;
+  function buildSentenceWords() {
+    const source = String(data.fullSentence || '');
+    let cursor = 0;
+    return (data.words || []).map(word => {
+      const label = String(word || '');
+      const start = source.indexOf(label, cursor);
+      const end = start >= 0 ? start + label.length : cursor;
+      cursor = Math.max(cursor, end);
+      const punctuation = source.slice(cursor).match(/^[^\p{L}\p{N}\s]+/u)?.[0] || '';
+      if (punctuation) cursor += punctuation.length;
+      return { label, punctuation };
     });
-    return rows;
-  }
-  function currentUnderlineRows() {
-    return Math.max(2, estimateRows(selected.map(item => item.label)));
   }
   function activeWaveIndex(progress) {
     return Math.max(0, Math.min(waveCount - 1, Math.round(progress * (waveCount - 1))));
@@ -9081,12 +9190,33 @@ function renderListening9876(container, data) {
       playback.audio = null;
     }
   }
-  function isAllCorrect() {
-    return selected.length === answers.length && selected.every((item, index) => item.label === answers[index]);
+  function allFilled() {
+    return slotStates.every(Boolean);
   }
-  function resultState(item, index) {
-    if (!submitted) return 'selected';
-    return item.label === answers[index] ? 'correct' : 'wrong';
+  function isAllCorrect() {
+    return allFilled() && slotStates.every((slot, index) => slot?.text === answers[index]);
+  }
+  function firstEmptySlot() {
+    return slotStates.findIndex(slot => !slot);
+  }
+  function nextEmptyAfter(index) {
+    for (let i = index + 1; i < slotStates.length; i += 1) {
+      if (!slotStates[i]) return i;
+    }
+    return firstEmptySlot();
+  }
+  function activeEmptySlot() {
+    if (activeSlot >= 0 && !slotStates[activeSlot]) return activeSlot;
+    return firstEmptySlot();
+  }
+  function resultState(slot, index) {
+    if (!slot) return 'empty';
+    if (submitted) {
+      const correct = slot.text === answers[index];
+      return correct ? 'correct' : `wrong${shakeWrong ? ' shake' : ''}`;
+    }
+    if (slot.locked) return 'correct locked';
+    return 'selected';
   }
   function listeningWaveHTML() {
     const done = playback.state === 'done';
@@ -9106,29 +9236,40 @@ function renderListening9876(container, data) {
   function sceneHTML() {
     return `<section class="spec-listening-card-wrap" aria-label="听力题面"><div class="spec-listening-card"><div class="spec-listening-main"><div class="spec-listening-audio-row">${audioPairHTML()}${listeningWaveHTML()}</div></div></div></section>`;
   }
-  function filledPillHTML(item, index) {
-    const dragClass = dragState.active && dragState.sourceType === 'filled' && dragState.sourceIndex === index ? ' dragging' : '';
-    return `<button class="spec-pill ${resultState(item, index)}${dragClass}" type="button" data-filled-index="${index}" data-filled-key="${item.optionIndex}">${_specEscape(item.label)}</button>`;
-  }
   function optionPillHTML(option) {
-    const isActiveDrag = dragState.active && dragState.sourceType === 'option' && dragState.optionIndex === option.index;
-    const state = used.has(option.index) || isActiveDrag ? 'hollow' : '';
-    const dragClass = isActiveDrag ? ' dragging' : '';
-    return `<button class="spec-pill ${state}${dragClass}" type="button" data-option-index="${option.index}">${_specEscape(option.label)}</button>`;
+    const state = used.has(option.index) ? 'hollow' : '';
+    return `<button class="spec-pill ${state}" type="button" data-option-index="${option.index}">${_specEscape(option.label)}</button>`;
+  }
+  function sentenceWordHTML(word, wordIndex) {
+    const slotIndex = wordIndexToSlot.get(wordIndex);
+    if (slotIndex == null) {
+      return `<span class="spec-listening-word">${_specEscape(word.label)}${word.punctuation ? `<span class="spec-listening-word-punct">${_specEscape(word.punctuation)}</span>` : ''}</span>`;
+    }
+    const slot = slotStates[slotIndex];
+    const chars = Math.max(2, String(answers[slotIndex] || '').length);
+    const punctuation = word.punctuation ? `<span class="spec-listening-word-punct">${_specEscape(word.punctuation)}</span>` : '';
+    if (!slot) {
+      const active = !submitted && slotIndex === activeEmptySlot();
+      return `<span class="spec-listening-word"><button class="spec-listening-word-slot empty ${active ? 'active' : ''}" type="button" data-listening-slot="${slotIndex}" style="--slot-chars:${chars}" aria-label="选择第${slotIndex + 1}个空"></button>${punctuation}</span>`;
+    }
+    const state = resultState(slot, slotIndex);
+    const removable = !submitted && !slot.locked;
+    const tag = removable ? 'button' : 'span';
+    const attrs = removable ? ` type="button" data-filled-slot="${slotIndex}"` : '';
+    return `<span class="spec-listening-word"><${tag} class="spec-listening-word-slot filled ${state}"${attrs} style="--slot-chars:${chars}">${_specEscape(slot.text)}</${tag}>${punctuation}</span>`;
   }
   function bodyHTML() {
-    if (submitted && isAllCorrect() && completeReady) {
+    if (submitted && completeReady && (isAllCorrect() || revealComplete)) {
       return `<div class="spec-main-stack">${_specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || answers)}</div>`;
     }
-    const rows = currentUnderlineRows();
-    return `<div class="spec-main-stack"><p class="spec-context-stem">${_specEscape(data.stem || '听音频，按顺序拼出句子：')}</p><div class="spec-listening-area"><div class="spec-listening-lines" style="--rows:${rows}">${Array.from({ length: rows }, () => '<div class="spec-listening-line"></div>').join('')}<div class="spec-listening-filled ${dragState.active ? 'is-reordering' : ''}">${selected.map(filledPillHTML).join('')}</div></div>${submitted ? '' : `<div class="spec-option-pool">${optionOrder.map(optionPillHTML).join('')}</div>`}</div></div>`;
+    return `<div class="spec-main-stack"><p class="spec-context-stem">${_specEscape(data.stem || '听音频，拼出下划线上的单词：')}</p><div class="spec-listening-area"><div class="spec-listening-inline-sentence">${sentenceWords.map(sentenceWordHTML).join('')}</div>${submitted ? '' : `<div class="spec-option-pool">${optionOrder.map(optionPillHTML).join('')}</div>`}</div></div>`;
   }
   function bottomHTML() {
     if (submitted) {
-      if (isAllCorrect()) return `<button class="spec-listening-submit" type="button" data-listening-submit ${!completeReady ? 'disabled' : ''}>继续</button>`;
-      return `<button class="spec-listening-submit retry" type="button" data-listening-retry>再试一次</button>`;
+      if (isAllCorrect() || revealComplete) return `<button class="spec-listening-submit" type="button" data-listening-submit ${!completeReady ? 'disabled' : ''}>继续</button>`;
+      return '';
     }
-    return `<div class="spec-listening-skip-row"><button class="spec-repeat-skip-text" type="button" data-listening-skip>现在不做听力题</button></div><button class="spec-listening-submit" type="button" data-listening-submit ${selected.length === 0 ? 'disabled' : ''}>发送</button>`;
+    return `<div class="spec-listening-skip-row"><button class="spec-repeat-skip-text" type="button" data-listening-skip>现在不做听力题</button></div>`;
   }
   function listeningAnalysisHTML() {
     return `<section class="spec-context-analysis" aria-label="解析"><img class="spec-context-robot" src="${SPEC_ASSETS.robot}" alt=""><div class="spec-context-analysis-text"><strong>音频内容：</strong><br>${_specEnglishLookupHTML(data.fullSentence, data.gloss || {}, data.lookupUnits || answers)}</div></section>`;
@@ -9147,7 +9288,7 @@ function renderListening9876(container, data) {
     });
     bindEvents();
     updateWaveDOM();
-    if (submitted && isAllCorrect() && completeReady && !fullPlayed) {
+    if (submitted && completeReady && (isAllCorrect() || revealComplete) && !fullPlayed) {
       fullPlayed = true;
       _playSoon(data.fullSentence, 300);
     }
@@ -9217,7 +9358,7 @@ function renderListening9876(container, data) {
         return;
       }
       _specAudioFailure(data.audioText, error);
-      _specSpeakFallback(data.audioText, slow);
+      _specSpeakFallbackOnce(audio, data.audioText, slow);
     };
     audio.onerror = fail;
     audio.play?.().catch(fail);
@@ -9227,263 +9368,119 @@ function renderListening9876(container, data) {
   function optionByIndex(optionIndex) {
     return optionOrder.find(item => item.index === optionIndex);
   }
-  function snapshotFilledRects() {
-    const rects = new Map();
-    container.querySelectorAll('[data-filled-key]').forEach(item => rects.set(item.dataset.filledKey, item.getBoundingClientRect()));
-    return rects;
-  }
-  function animateFilledFrom(before) {
-    requestAnimationFrame(() => {
-      container.querySelectorAll('[data-filled-key]').forEach(item => {
-        const prev = before.get(item.dataset.filledKey);
-        if (!prev) return;
-        const next = item.getBoundingClientRect();
-        const dx = prev.left - next.left;
-        const dy = prev.top - next.top;
-        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return;
-        item.style.transition = 'none';
-        item.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
-        item.getBoundingClientRect();
-        requestAnimationFrame(() => {
-          item.style.transition = '';
-          item.style.transform = '';
-        });
-      });
+  function resetForRetry(replayAudio = false) {
+    slotStates.forEach((slot, index) => {
+      if (!slot) return;
+      if (slot.text === answers[index]) {
+        slot.locked = true;
+        return;
+      }
+      used.delete(slot.optionIndex);
+      slotStates[index] = null;
     });
-  }
-  function renderWithFlip(before = snapshotFilledRects()) {
+    submitted = false;
+    completeReady = false;
+    fullPlayed = false;
+    revealComplete = false;
+    shakeWrong = false;
+    activeSlot = firstEmptySlot();
+    clearTimeout(feedbackTimer);
+    clearTimeout(retryTimer);
+    if (replayAudio) {
+      clearTimeout(autoTimer);
+      startAudio(false, 0);
+      return;
+    }
     render();
-    animateFilledFrom(before);
   }
-  function removeSelected(index) {
-    const before = snapshotFilledRects();
-    const [item] = selected.splice(index, 1);
-    if (item) used.delete(item.optionIndex);
-    renderWithFlip(before);
+  function submitAnswer() {
+    if (!allFilled() || submitted) return;
+    submitted = true;
+    const correctNow = isAllCorrect();
+    recordAttempt(data, correctNow);
+    clearTimeout(feedbackTimer);
+    clearTimeout(retryTimer);
+    shakeWrong = false;
+    revealComplete = false;
+    if (correctNow) {
+      feedbackTimer = setTimeout(() => {
+        completeReady = true;
+        render();
+      }, 620);
+    } else {
+      wrongAttempts += 1;
+      if (wrongAttempts >= 3) {
+        feedbackTimer = setTimeout(() => {
+          revealComplete = true;
+          completeReady = true;
+          render();
+        }, 1000);
+      } else {
+        feedbackTimer = setTimeout(() => {
+          shakeWrong = true;
+          render();
+          retryTimer = setTimeout(() => resetForRetry(true), 450);
+        }, 1500);
+      }
+    }
+    render();
   }
-  function addOptionAt(optionIndex, insertIndex = selected.length) {
+  function addOptionToActiveSlot(optionIndex) {
     if (used.has(optionIndex)) return false;
     const option = optionByIndex(optionIndex);
     if (!option) return false;
-    const before = snapshotFilledRects();
-    const index = Math.max(0, Math.min(insertIndex, selected.length));
-    selected.splice(index, 0, { label: option.label, optionIndex: option.index });
+    const slotIndex = activeEmptySlot();
+    if (slotIndex < 0) return false;
+    slotStates[slotIndex] = { text: option.label, optionIndex: option.index, locked: false };
     used.add(option.index);
-    renderWithFlip(before);
+    activeSlot = nextEmptyAfter(slotIndex);
+    if (allFilled()) submitAnswer();
+    else render();
     return true;
   }
-  function moveSelected(from, to) {
-    if (from < 0 || from >= selected.length) return;
-    const before = snapshotFilledRects();
-    let insertIndex = Math.max(0, Math.min(to, selected.length));
-    if (from < insertIndex) insertIndex -= 1;
-    if (from === insertIndex) return;
-    const [item] = selected.splice(from, 1);
-    selected.splice(insertIndex, 0, item);
-    dragState.sourceIndex = insertIndex;
-    renderWithFlip(before);
-  }
-  function pointerTarget(event) {
-    return document.elementFromPoint?.(event.clientX, event.clientY);
-  }
-  function isPointerInLines(event) {
-    const target = pointerTarget(event);
-    if (target?.closest?.('.spec-listening-lines') && container.contains(target.closest('.spec-listening-lines'))) return true;
-    const lines = container.querySelector('.spec-listening-lines');
-    if (!lines) return false;
-    const rect = lines.getBoundingClientRect();
-    return event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
-  }
-  function targetIndexFromPointer(event) {
-    const target = pointerTarget(event)?.closest?.('[data-filled-index]');
-    if (target && container.contains(target)) {
-      const rect = target.getBoundingClientRect();
-      const index = Number(target.dataset.filledIndex);
-      const after = event.clientY > rect.top + rect.height / 2 || event.clientX > rect.left + rect.width / 2;
-      return after ? index + 1 : index;
-    }
-    const items = [...container.querySelectorAll('[data-filled-index]')];
-    for (const item of items) {
-      const rect = item.getBoundingClientRect();
-      const index = Number(item.dataset.filledIndex);
-      if (event.clientY < rect.top + rect.height / 2) return index;
-      if (event.clientY <= rect.bottom && event.clientX < rect.left + rect.width / 2) return index;
-    }
-    return selected.length;
-  }
-  function clearDragTimer() {
-    if (dragState.timer) clearTimeout(dragState.timer);
-    dragState.timer = null;
-  }
-  function updateDragGhost(event) {
-    if (!dragState.ghost) return;
-    dragState.ghost.style.transform = `translate3d(${event.clientX + 8}px, ${event.clientY - 30}px, 0)`;
-  }
-  function createDragGhost(label, event) {
-    removeDragGhost();
-    const ghost = document.createElement('div');
-    ghost.className = 'spec-drag-ghost';
-    ghost.textContent = label;
-    document.body.appendChild(ghost);
-    dragState.ghost = ghost;
-    updateDragGhost(event);
-  }
-  function removeDragGhost() {
-    if (dragState.ghost) dragState.ghost.remove();
-    dragState.ghost = null;
-  }
-  function isDragPointer(event) {
-    return dragState.pointerId == null || event.pointerId == null || event.pointerId === dragState.pointerId;
-  }
-  function handleDocumentDragMove(event) {
-    if (!dragState.active || !isDragPointer(event)) return;
-    event.preventDefault();
-    updateDragGhost(event);
-    const targetIndex = targetIndexFromPointer(event);
-    dragState.insertIndex = targetIndex;
-    if (dragState.sourceType === 'filled') moveSelected(dragState.sourceIndex, targetIndex);
-  }
-  function handleDocumentDragEnd(event) {
-    if (!isDragPointer(event)) return;
-    endDrag(event);
-  }
-  function bindDocumentDrag(event) {
-    document.removeEventListener('pointermove', handleDocumentDragMove);
-    document.removeEventListener('pointerup', handleDocumentDragEnd);
-    document.removeEventListener('pointercancel', handleDocumentDragEnd);
-    dragState.pointerId = event.pointerId ?? null;
-    document.addEventListener('pointermove', handleDocumentDragMove, { passive: false });
-    document.addEventListener('pointerup', handleDocumentDragEnd);
-    document.addEventListener('pointercancel', handleDocumentDragEnd);
-  }
-  function unbindDocumentDrag() {
-    document.removeEventListener('pointermove', handleDocumentDragMove);
-    document.removeEventListener('pointerup', handleDocumentDragEnd);
-    document.removeEventListener('pointercancel', handleDocumentDragEnd);
-    dragState.pointerId = null;
-  }
-  function endDrag(event) {
-    clearDragTimer();
-    const wasActive = dragState.active;
-    const sourceType = dragState.sourceType;
-    const optionIndex = dragState.optionIndex;
-    const insertIndex = event ? targetIndexFromPointer(event) : dragState.insertIndex ?? selected.length;
-    const shouldDropOption = wasActive && sourceType === 'option' && optionIndex != null && event && isPointerInLines(event);
-    removeDragGhost();
-    dragState.active = false;
-    dragState.sourceType = null;
-    dragState.sourceIndex = null;
-    dragState.optionIndex = null;
-    dragState.sourceLabel = '';
-    dragState.insertIndex = null;
-    unbindDocumentDrag();
-    if (wasActive) {
-      dragState.suppressClick = true;
-      if (shouldDropOption) addOptionAt(optionIndex, insertIndex);
-      else render();
-      setTimeout(() => { dragState.suppressClick = false; }, 0);
-    }
+  function removeSlot(slotIndex) {
+    const slot = slotStates[slotIndex];
+    if (!slot || slot.locked) return;
+    used.delete(slot.optionIndex);
+    slotStates[slotIndex] = null;
+    activeSlot = slotIndex;
+    render();
   }
   function bindEvents() {
     container.querySelectorAll('[data-listen-play]').forEach(btn => btn.addEventListener('click', () => startAudio(btn.dataset.listenPlay === 'slow', 0)));
     container.querySelectorAll('[data-wave-index]').forEach(btn => btn.addEventListener('click', () => startAudio(playback.slow, Number(btn.dataset.waveIndex) / Math.max(1, waveCount - 1))));
-    container.querySelectorAll('.spec-option-pool .spec-pill').forEach(btn => {
-      btn.addEventListener('pointerdown', event => {
-        if (submitted || btn.classList.contains('hollow')) return;
-        const optionIndex = Number(btn.dataset.optionIndex);
-        const option = optionByIndex(optionIndex);
-        if (!option) return;
-        clearDragTimer();
-        dragState.sourceType = 'option';
-        dragState.optionIndex = optionIndex;
-        dragState.sourceLabel = option.label;
-        dragState.insertIndex = selected.length;
-        bindDocumentDrag(event);
-        dragState.timer = setTimeout(() => {
-          dragState.active = true;
-          dragState.suppressClick = true;
-          btn.setPointerCapture?.(event.pointerId);
-          createDragGhost(option.label, event);
-          render();
-        }, 300);
-      });
-      btn.addEventListener('pointerup', endDrag);
-      btn.addEventListener('pointercancel', endDrag);
-      btn.addEventListener('click', () => {
-        if (dragState.suppressClick) {
-          dragState.suppressClick = false;
-          return;
-        }
-        if (submitted || btn.classList.contains('hollow')) return;
-        addOptionAt(Number(btn.dataset.optionIndex));
-      });
-    });
-    container.querySelectorAll('[data-filled-index]').forEach(btn => {
-      btn.addEventListener('pointerdown', event => {
-        if (submitted) return;
-        const index = Number(btn.dataset.filledIndex);
-        clearDragTimer();
-        dragState.sourceType = 'filled';
-        dragState.sourceIndex = index;
-        dragState.optionIndex = null;
-        dragState.sourceLabel = selected[index]?.label || '';
-        dragState.insertIndex = index;
-        bindDocumentDrag(event);
-        dragState.timer = setTimeout(() => {
-          dragState.active = true;
-          dragState.sourceType = 'filled';
-          dragState.sourceIndex = index;
-          dragState.suppressClick = true;
-          btn.setPointerCapture?.(event.pointerId);
-          render();
-        }, 300);
-      });
-      btn.addEventListener('pointerup', endDrag);
-      btn.addEventListener('pointercancel', endDrag);
-      btn.addEventListener('click', () => {
-        if (submitted) return;
-        if (dragState.suppressClick) {
-          dragState.suppressClick = false;
-          return;
-        }
-        removeSelected(Number(btn.dataset.filledIndex));
-      });
-    });
+    container.querySelectorAll('[data-listening-slot]').forEach(btn => btn.addEventListener('click', () => {
+      if (submitted) return;
+      activeSlot = Number(btn.dataset.listeningSlot);
+      render();
+    }));
+    container.querySelectorAll('[data-filled-slot]').forEach(btn => btn.addEventListener('click', () => {
+      if (submitted) return;
+      removeSlot(Number(btn.dataset.filledSlot));
+    }));
+    container.querySelectorAll('.spec-option-pool .spec-pill').forEach(btn => btn.addEventListener('click', () => {
+      if (submitted || btn.classList.contains('hollow')) return;
+      addOptionToActiveSlot(Number(btn.dataset.optionIndex));
+    }));
     container.querySelector('[data-listening-submit]')?.addEventListener('click', () => {
-      if (!submitted && selected.length === 0) return;
       if (submitted) {
-        if (!isAllCorrect() || !completeReady) return;
+        if (!completeReady || (!isAllCorrect() && !revealComplete)) return;
         stopPlayback();
         clearTimeout(autoTimer);
         clearTimeout(feedbackTimer);
+        clearTimeout(retryTimer);
         completeExercise(data.id);
         return;
       }
-      submitted = true;
-      const correctNow = isAllCorrect();
-      recordAttempt(data, correctNow);
-      clearTimeout(feedbackTimer);
-      if (correctNow) {
-        feedbackTimer = setTimeout(() => {
-          completeReady = true;
-          render();
-        }, 620);
-      }
-      render();
     });
     container.querySelector('[data-listening-retry]')?.addEventListener('click', () => {
-      selected.splice(0, selected.length);
-      used.clear();
-      submitted = false;
-      completeReady = false;
-      fullPlayed = false;
-      clearTimeout(feedbackTimer);
-      render();
+      resetForRetry(true);
     });
     container.querySelector('[data-listening-skip]')?.addEventListener('click', () => {
       stopPlayback();
       clearTimeout(autoTimer);
       clearTimeout(feedbackTimer);
+      clearTimeout(retryTimer);
       if (data.fallback) {
         _specStopAllAudio();
         renderRegular9876Oral(container, data.fallback);
@@ -9725,7 +9722,7 @@ function renderListeningBase(container, data, config = {}) {
       playback.state = 'idle';
       playback.progress = 0;
       updateWaveDOM(item.key);
-      _specSpeakFallback(item.audioText, slow);
+      _specSpeakFallbackOnce(audio, item.audioText, slow);
     };
     const startWave = () => {
       if (audioEpoch !== _specAudioEpoch) return;
@@ -11705,12 +11702,14 @@ const V10_GRAMMAR_CARD_CAN_MAY = {
   ]
 };
 function grammarExposureStep(id, section, term, noteParts) {
+  const useGrammarCard = term && typeof term === 'object';
   return {
     id,
     type: "grammarExposure",
     section,
     grammarText: term,
-    conceptCard: { term, audioText: term, noteParts },
+    cardOnly: useGrammarCard,
+    conceptCard: useGrammarCard ? null : { term, audioText: term, noteParts },
     question: "",
     topicSegments: [],
     note: ""
@@ -11787,38 +11786,20 @@ function listeningStep(config) {
   }
   return step;
 }
-const V11_WILL_EXPLANATION_HTML = "<strong style=\"color:#4576F0\">第一条件句：主将从现</strong><br><br>if 后面说未来可能发生的条件，<strong style=\"color:#4576F0\">if 从句</strong>用<strong style=\"color:#4576F0\">一般现在时</strong>。<br><br><strong style=\"color:#4576F0\">主句</strong>说明结果，用 <strong style=\"color:#4576F0\">will + 动词原形</strong>。<br><br>例如：If we <strong style=\"color:#4576F0\">take</strong> a bus, we <strong style=\"color:#4576F0\">will save</strong> money.";
-const V11_CAN_MAY_EXPLANATION_HTML = "<strong style=\"color:#4576F0\">第一条件句：主情从现</strong><br><br>if 从句用<strong style=\"color:#4576F0\">一般现在时</strong>。<br><br>主句可以用 <strong style=\"color:#4576F0\">can / may + 动词原形</strong>，表示“可以”或“可能”产生某个结果。<br><br>例如：If we <strong style=\"color:#4576F0\">miss</strong> the bus, we <strong style=\"color:#4576F0\">may take</strong> a taxi.";
+const V11_BLUE_BOLD = 'style="color:#4576F0;font-weight:700"';
+const V11_WILL_EXPLANATION_HTML = `第一条件句时态规则：<br>例句：If we <strong ${V11_BLUE_BOLD}>take</strong> a bus, we <strong ${V11_BLUE_BOLD}>will save</strong> money.<br><br>If后用<strong ${V11_BLUE_BOLD}>一般现在时</strong>：<br>如用 we <strong ${V11_BLUE_BOLD}>take</strong>，不用 we will take`;
+const V11_CAN_MAY_EXPLANATION_HTML = `第一条件句时态规则：<br>例句：If the museum closes, you <strong ${V11_BLUE_BOLD}>can</strong> cancel the trip.<br><br>If后用一般现在时。<br><br>描述结果，可以用<strong ${V11_BLUE_BOLD}>情态动词</strong>：<br>如：用 <strong ${V11_BLUE_BOLD}>can</strong> 表示“能够；可以”；<br>用 <strong ${V11_BLUE_BOLD}>may</strong> 表示“可能；或许”。`;
 const V11_GRAMMAR_CARD_WILL = {
-  en: "主将从现：If ..., ... will ...",
-  zhParts: [
-    { text: "if从句" },
-    { text: "一般现在时", tone: "key" },
-    { text: "；主句" },
-    { text: "一般将来时", tone: "key" },
-    { text: "（will+动词原形）" }
-  ]
+  en: "第一条件句时态规则：\nIf ..., ... will ...",
+  zh: "（如果……，就将会……）"
 };
 const V11_GRAMMAR_CARD_CAN_MAY = {
-  en: "主情从现：If ..., ... can/may ...",
-  zhParts: [
-    { text: "if从句" },
-    { text: "一般现在时", tone: "key" },
-    { text: "；主句" },
-    { text: "情态动词", tone: "key" },
-    { text: "（如can/may）+动词原形" }
-  ]
+  en: "第一条件句时态规则：\nIf ..., ... can/may ...",
+  zh: "（如果……，就可以/可能……）"
 };
 function v11GrammarRuleNoteParts(mode) {
-  const result = mode === "will" ? "主句：will + 动词原形" : "主句：can/may + 动词原形";
-  const slogan = mode === "will" ? "主将从现" : "主情从现";
   return [
-    { text: "第一条件句：", tone: "main" },
-    { text: slogan, tone: "key" },
-    { break: true },
-    { text: "if从句：一般现在时", tone: "muted" },
-    { break: true },
-    { text: result, tone: "muted" }
+    { text: mode === "will" ? "（如果……，就将会……）" : "（如果……，就可以/可能……）", tone: "muted" }
   ];
 }
 function conditionTwoOptionStep(config) {
@@ -11841,14 +11822,18 @@ function conditionTwoOptionStep(config) {
   };
 }
 function listening9876Step(config) {
+  const blankIndices = Array.isArray(config.blankIndices) && config.blankIndices.length
+    ? config.blankIndices
+    : config.words.map((_, index) => index);
+  const answerWords = blankIndices.map(index => config.words[index]);
   const fallback = regular9876SelectStep(
     `${config.id}_fallback`,
     `${config.section} · 补做`,
     topicLookupSegments(config.zhSegments, config.enSegments, config.punctuation || {}),
     config.fullSentence,
-    config.words.map(word => ({ zh: "", answer: word })),
-    [...config.words, ...config.distractors],
-    config.words
+    answerWords.map(word => ({ zh: "", answer: word })),
+    [...answerWords, ...config.distractors],
+    config.lookupUnits || config.words
   );
   fallback.forceBoardExpand = true;
   return {
@@ -11857,9 +11842,10 @@ function listening9876Step(config) {
     section: config.section,
     audioText: config.fullSentence,
     fullSentence: config.fullSentence,
-    stem: "听音频，按顺序拼出句子：",
+    stem: "听音频，拼出下划线上的单词：",
     words: config.words,
-    options: [...config.words, ...config.distractors],
+    blankIndices,
+    options: [...answerWords, ...config.distractors],
     gloss: V10_GLOSS,
     lookupUnits: config.lookupUnits,
     fallback
@@ -11883,7 +11869,8 @@ const V11_LEVEL2_CORE = [
     resultAnswer: "will save",
     resultDistractor: "save",
     words: ["If", "we", "take", "a", "bus", "we", "will", "save", "money"],
-    distractors: ["will", "make", "safe", "the", "many"]
+    blankIndices: [0, 1, 2, 3, 4],
+    distractors: ["car", "taxi"]
   },
   {
     key: "market_food",
@@ -11902,7 +11889,8 @@ const V11_LEVEL2_CORE = [
     resultAnswer: "will try out",
     resultDistractor: "try out",
     words: ["If", "they", "visit", "the", "market", "they", "will", "try", "out", "local", "food"],
-    distractors: ["will", "visits", "marked", "low", "cold"]
+    blankIndices: [6, 7, 8, 9, 10],
+    distractors: ["to", "snacks"]
   },
   {
     key: "discount_double_room",
@@ -11921,7 +11909,8 @@ const V11_LEVEL2_CORE = [
     resultAnswer: "will book",
     resultDistractor: "books",
     words: ["If", "he", "gets", "a", "discount", "he", "will", "book", "a", "double", "room"],
-    distractors: ["will", "get", "this", "count", "bubble"]
+    blankIndices: [0, 1, 2, 3, 4],
+    distractors: ["this", "count"]
   }
 ];
 const V11_LEVEL4_CORE = [
@@ -11942,7 +11931,8 @@ const V11_LEVEL4_CORE = [
     resultAnswer: "can cancel",
     resultDistractor: "cancel",
     words: ["If", "the", "museum", "closes", "you", "can", "cancel", "the", "trip"],
-    distractors: ["may", "will", "close", "canceled", "trick"]
+    blankIndices: [4, 5, 6, 7, 8],
+    distractors: ["flight", "booking"]
   },
   {
     key: "snowstorm_miss_flight",
@@ -11961,7 +11951,8 @@ const V11_LEVEL4_CORE = [
     resultAnswer: "may miss",
     resultDistractor: "miss",
     words: ["If", "the", "snowstorm", "comes", "we", "may", "miss", "the", "flight"],
-    distractors: ["can", "will", "come", "store", "missed"]
+    blankIndices: [4, 5, 6, 7, 8],
+    distractors: ["bus", "train"]
   },
   {
     key: "service_taxi",
@@ -11980,7 +11971,8 @@ const V11_LEVEL4_CORE = [
     resultAnswer: "may line up",
     resultDistractor: "line up",
     words: ["If", "the", "bus", "service", "stops", "they", "may", "line", "up", "for", "a", "taxi"],
-    distractors: ["can", "will", "stop", "serve", "us"]
+    blankIndices: [0, 1, 2, 3, 4],
+    distractors: ["services", "ends"]
   }
 ];
 
@@ -12167,7 +12159,7 @@ const COURSE_V10_LEVEL_2 = [
   grammarExposureStep(
     "l2_q1_grammar_exposure",
     "第2关 · 语法曝光 · 题1",
-    "If ..., ... will ...",
+    "第一条件句时态规则：\nIf ..., ... will ...",
     v11GrammarRuleNoteParts("will")
   ),
   ...V11_LEVEL2_CORE.map((item, index) => conditionTwoOptionStep({
@@ -12179,32 +12171,32 @@ const COURSE_V10_LEVEL_2 = [
   { id: "l2_exp_first_conditional_will", type: "explanation", tab: "语法词汇讲解", html: V11_WILL_EXPLANATION_HTML },
   ...V11_LEVEL2_CORE.map((item, index) => listening9876Step({
     ...item,
-    id: `l2_q${index + 6}_listening_9876_${item.key}`,
-    section: `第2关 · 听力9876 · 题${index + 6}`
+    id: `l2_q${index + 5}_listening_9876_${item.key}`,
+    section: `第2关 · 听力9876 · 题${index + 5}`
   })),
   listeningStep({
-    id: "l2_q9_listening_late_flight_room",
-    section: "第2关 · 听力选择 · 题9",
+    id: "l2_q8_listening_late_flight_room",
+    section: "第2关 · 听力选择 · 题8",
     audioText: "If our flight arrives late, we will book a room near the airport.",
     translation: "如果我们的航班晚到，我们将会预订机场附近的一个房间。",
     lookupPhrases: ["our flight", "arrives late", "will book", "a room", "near the airport"],
-    question: "What will we book?",
-    options: ["a room", "a flight", "an airport"],
-    correct: "a room",
-    analysis: "关键句是 we will book a room near the airport，所以航班晚到时会订机场附近的房间。",
+    question: "Why will they book a room?",
+    options: ["Their flight arrives late.", "They arrive near the airport.", "They book a flight."],
+    correct: "Their flight arrives late.",
+    analysis: "关键句是 If our flight arrives late, we will book a room near the airport. 所以他们订房间的原因是航班晚到。",
     image: IMG.bookRoom,
     allowListeningSkip: false
   }),
   listeningStep({
-    id: "l2_q10_listening_warm_swimming",
-    section: "第2关 · 听力选择 · 题10",
+    id: "l2_q9_listening_warm_swimming",
+    section: "第2关 · 听力选择 · 题9",
     audioText: "If the weather stays warm, we will try out swimming in the sea.",
     translation: "如果天气保持温暖，我们将会尝试在海里游泳。",
     lookupPhrases: ["the weather", "stays warm", "will try out", "swimming", "in the sea"],
-    question: "What will we try out?",
-    options: ["swimming", "the weather", "the sea"],
-    correct: "swimming",
-    analysis: "音频里说 we will try out swimming in the sea，所以他们会尝试在海里游泳。",
+    question: "What will they do?",
+    options: ["swim in the sea", "stay warm", "try out fishing"],
+    correct: "swim in the sea",
+    analysis: "音频里说 we will try out swimming in the sea，所以他们会去海里游泳。",
     image: IMG.swimming,
     allowListeningSkip: false
   })
@@ -12393,7 +12385,7 @@ const COURSE_V10_LEVEL_4 = [
   grammarExposureStep(
     "l4_q1_grammar_exposure",
     "第4关 · 语法曝光 · 题1",
-    "If ..., ... can/may ...",
+    "第一条件句时态规则：\nIf ..., ... can/may ...",
     v11GrammarRuleNoteParts("canMay")
   ),
   ...V11_LEVEL4_CORE.map((item, index) => conditionTwoOptionStep({
@@ -12405,31 +12397,31 @@ const COURSE_V10_LEVEL_4 = [
   { id: "l4_exp_first_conditional_can_may", type: "explanation", tab: "语法词汇讲解", html: V11_CAN_MAY_EXPLANATION_HTML },
   ...V11_LEVEL4_CORE.map((item, index) => listening9876Step({
     ...item,
-    id: `l4_q${index + 6}_listening_9876_${item.key}`,
-    section: `第4关 · 听力9876 · 题${index + 6}`
+    id: `l4_q${index + 5}_listening_9876_${item.key}`,
+    section: `第4关 · 听力9876 · 题${index + 5}`
   })),
   listeningStep({
-    id: "l4_q9_listening_pictures_bus",
-    section: "第4关 · 听力选择 · 题9",
+    id: "l4_q8_listening_pictures_bus",
+    section: "第4关 · 听力选择 · 题8",
     audioText: "If you take too many pictures, we may miss the last bus.",
     translation: "如果你拍太多照片，我们可能会错过末班车。",
     lookupPhrases: ["you", "take", "too many pictures", "may miss", "the last bus"],
-    question: "What may we miss?",
-    options: ["the last bus", "the flight", "many pictures"],
-    correct: "the last bus",
-    analysis: "关键句是 we may miss the last bus，所以拍太多照片可能会错过末班车。",
+    question: "What may happen to them?",
+    options: ["miss the last bus", "take too many pictures", "miss the car"],
+    correct: "miss the last bus",
+    analysis: "关键句是 we may miss the last bus，所以他们可能会错过末班车。",
     image: IMG.missFlight,
     allowListeningSkip: false
   }),
   listeningStep({
-    id: "l4_q10_listening_last_bus_station_taxi",
-    section: "第4关 · 听力选择 · 题10",
+    id: "l4_q9_listening_last_bus_station_taxi",
+    section: "第4关 · 听力选择 · 题9",
     audioText: "If we miss the last bus, we can line up for a taxi next to the station.",
     translation: "如果我们错过末班车，我们可以在车站旁边排队等出租车。",
     lookupPhrases: ["miss the last bus", "can line up for", "a taxi", "next to the station"],
-    question: "What can they line up for?",
-    options: ["the last bus", "a taxi", "the station"],
-    correct: "a taxi",
+    question: "What can they do?",
+    options: ["line up for a taxi", "run to the station", "line up for the last bus"],
+    correct: "line up for a taxi",
     analysis: "音频里说 we can line up for a taxi next to the station，所以他们可以排队等出租车。",
     image: IMG.taxi,
     allowListeningSkip: false
