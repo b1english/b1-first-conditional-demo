@@ -5954,11 +5954,13 @@ body.demo-body {
   position: absolute;
   left: 42px;
   top: 36px;
-  width: var(--path-progress, 0%);
+  width: calc(100% - 84px);
   height: 8px;
   border-radius: 999px;
   background: linear-gradient(90deg, #4576F0 0%, #26B98F 100%);
-  transition: width 240ms ease;
+  transform: scaleX(var(--path-progress, 0));
+  transform-origin: left center;
+  transition: transform 240ms ease;
 }
 .demo-lesson-card {
   position: relative;
@@ -6243,7 +6245,7 @@ body.demo-body {
   <main id="entryView" class="demo-entry">
     <div>
       <h1 class="demo-entry-title">Unit 1 旅行x条件句</h1>
-      <p class="demo-entry-subtitle">按顺序解锁 4 个关卡</p>
+      <p class="demo-entry-subtitle">选择 4 个关卡开始学习</p>
     </div>
     <div class="demo-lesson-entry-list" aria-label="课程入口">
       <button class="demo-lesson-card" type="button" data-level="1">
@@ -6263,8 +6265,7 @@ body.demo-body {
         <span class="demo-lesson-action" aria-hidden="true">锁</span>
       </button>
     </div>
-    <p class="demo-path-note">按顺序完成 4 个关卡，逐步掌握旅行场景表达。</p>
-    <button class="demo-dev-preview" type="button" data-preview-toggle>开发预览：第2-4关关闭</button>
+    <p class="demo-path-note">任选关卡练习，逐步掌握旅行场景表达。</p>
     <div class="demo-toast" data-entry-toast role="status" aria-live="polite"></div>
   </main>
   <main id="courseView" class="demo-course hidden"><div id="stage"></div></main>
@@ -7515,7 +7516,7 @@ function showEntryToast(message) {
 }
 function updateLessonEntryLocks() {
   state.unlockedLevel = 4;
-  document.querySelector('.demo-lesson-entry-list')?.style.setProperty('--path-progress', '100%');
+  document.querySelector('.demo-lesson-entry-list')?.style.setProperty('--path-progress', '1');
   document.querySelectorAll('[data-level]').forEach(button => {
     const level = Number(button.dataset.level);
     const unlocked = isLevelUnlocked(level);
@@ -7525,11 +7526,6 @@ function updateLessonEntryLocks() {
     const action = button.querySelector('.demo-lesson-action');
     if (action) action.textContent = String(level);
   });
-  const previewButton = document.querySelector('[data-preview-toggle]');
-  if (previewButton) {
-    previewButton.classList.add('on');
-    previewButton.textContent = '所有关卡已解锁';
-  }
 }
 function showEntry() {
   _specStopAllAudio();
@@ -12442,11 +12438,6 @@ function buildSteps(version) {
 document.querySelectorAll('[data-level]').forEach(btn => btn.addEventListener('click', () => {
   startCourse(versionFromLevel(Number(btn.dataset.level)));
 }));
-document.querySelector('[data-preview-toggle]')?.addEventListener('click', () => {
-  state.devPreview = !state.devPreview;
-  updateLessonEntryLocks();
-  showEntryToast(state.devPreview ? '已开启第 3 关开发预览。' : '已关闭第 3 关开发预览。');
-});
 window.addEventListener('resize', updateDemoScale);
 window.visualViewport?.addEventListener('resize', updateDemoScale);
 window.visualViewport?.addEventListener('scroll', updateDemoScale);
