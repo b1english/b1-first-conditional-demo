@@ -9258,7 +9258,7 @@ function renderListening9876(container, data) {
     if (submitted && completeReady && (isAllCorrect() || revealComplete)) {
       return `<div class="spec-main-stack">${_specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || answers)}</div>`;
     }
-    return `<div class="spec-main-stack"><p class="spec-context-stem">${_specEscape(data.stem || '听音频，拼出下划线上的单词：')}</p><div class="spec-listening-area"><div class="spec-listening-inline-sentence">${sentenceWords.map(sentenceWordHTML).join('')}</div>${submitted ? '' : `<div class="spec-option-pool">${optionOrder.map(optionPillHTML).join('')}</div>`}</div></div>`;
+    return `<div class="spec-main-stack"><p class="spec-context-stem">${_specEscape(data.stem || '听音频，补全句子：')}</p><div class="spec-listening-area"><div class="spec-listening-inline-sentence">${sentenceWords.map(sentenceWordHTML).join('')}</div>${submitted ? '' : `<div class="spec-option-pool">${optionOrder.map(optionPillHTML).join('')}</div>`}</div></div>`;
   }
   function bottomHTML() {
     if (submitted) {
@@ -11838,7 +11838,7 @@ function listening9876Step(config) {
     section: config.section,
     audioText: config.fullSentence,
     fullSentence: config.fullSentence,
-    stem: "听音频，拼出下划线上的单词：",
+    stem: "听音频，补全句子：",
     words: config.words,
     blankIndices,
     options: [...answerWords, ...config.distractors],
@@ -11866,7 +11866,7 @@ const V11_LEVEL2_CORE = [
     resultDistractor: "save",
     words: ["If", "we", "take", "a", "bus", "we", "will", "save", "money"],
     blankIndices: [0, 1, 2, 3, 4],
-    distractors: ["car", "taxi"]
+    distractors: ["car", "the"]
   },
   {
     key: "market_food",
@@ -12171,21 +12171,8 @@ const COURSE_V10_LEVEL_2 = [
     section: `第2关 · 听力9876 · 题${index + 5}`
   })),
   listeningStep({
-    id: "l2_q8_listening_late_flight_room",
+    id: "l2_q8_listening_warm_swimming",
     section: "第2关 · 听力选择 · 题8",
-    audioText: "If our flight arrives late, we will book a room near the airport.",
-    translation: "如果我们的航班晚到，我们将会预订机场附近的一个房间。",
-    lookupPhrases: ["our flight", "arrives late", "will book", "a room", "near the airport"],
-    question: "Why will they book a room?",
-    options: ["Their flight arrives late.", "They arrive near the airport.", "They book a flight."],
-    correct: "Their flight arrives late.",
-    analysis: "关键句是 If our flight arrives late, we will book a room near the airport. 所以他们订房间的原因是航班晚到。",
-    image: IMG.bookRoom,
-    allowListeningSkip: false
-  }),
-  listeningStep({
-    id: "l2_q9_listening_warm_swimming",
-    section: "第2关 · 听力选择 · 题9",
     audioText: "If the weather stays warm, we will try out swimming in the sea.",
     translation: "如果天气保持温暖，我们将会尝试在海里游泳。",
     lookupPhrases: ["the weather", "stays warm", "will try out", "swimming", "in the sea"],
@@ -12194,6 +12181,19 @@ const COURSE_V10_LEVEL_2 = [
     correct: "swim in the sea",
     analysis: "音频里说 we will try out swimming in the sea，所以他们会去海里游泳。",
     image: IMG.swimming,
+    allowListeningSkip: false
+  }),
+  listeningStep({
+    id: "l2_q9_listening_late_flight_room",
+    section: "第2关 · 听力选择 · 题9",
+    audioText: "If our flight arrives late, we will book a room near the airport.",
+    translation: "如果我们的航班晚到，我们将会预订机场附近的一个房间。",
+    lookupPhrases: ["our flight", "arrives late", "will book", "a room", "near the airport"],
+    question: "When will they book a room?",
+    options: ["when they arrive near the airport", "when they book a flight", "when their flight arrives late"],
+    correct: "when their flight arrives late",
+    analysis: "关键句是 If our flight arrives late, we will book a room near the airport. 所以他们会在航班晚到时订房间。",
+    image: IMG.bookRoom,
     allowListeningSkip: false
   })
 ];
