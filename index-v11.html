@@ -8481,6 +8481,13 @@ function renderScenario(container, data) {
   };
   const completeSentenceHTML = (answer = defaultAnswer) => _specCompleteSentenceHTML(answer.fullSentence, data.gloss || {}, true, answer.lookupUnits || []);
   const reviewHTML = (resultSlots, answer = defaultAnswer) => `<div class="spec-select-review">${completeSentenceHTML(answer)}${_specSlotsHTML(resultSlots.map(item => ({ zh: '', answer: item.text })), resultSlots, data.chunks.length, { showHints: false, submitted: true })}</div>`;
+  const submitSelectAnswer = () => {
+    if (!allFilled() || submitted) return;
+    submitted = true;
+    recordAttempt(data, allCorrect());
+    if (allCorrect()) setTimeout(() => { completeReady = true; render(); }, 520);
+    render();
+  };
   const render = () => {
     if (mode === 'record') return renderRecord();
     const answer = matchedAnswer();
@@ -8495,7 +8502,7 @@ function renderScenario(container, data) {
       progress: stepProgress(),
       screenClass: 'spec-deferred-select-screen',
       bodyHTML: `<div class="spec-main-stack">${_specModeToggleHTML(mode)}${topic}${completeHTML || review || _specSlotsHTML(data.chunks, visibleStates, Math.max(0,currentSlot()), { showHints: !data.hasHint || selectHint, canRemove: true, submitted })}${submitted ? '' : `<div class="spec-option-pool">${poolHTML}</div>`}</div>`,
-      bottomHTML: submitted ? (correct ? `<button class="spec-listening-submit" type="button" data-next-scenario ${!completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit retry" type="button" data-retry-scenario>再试一次</button>`) : `<button class="spec-listening-submit" type="button" data-submit ${!allFilled() ? 'disabled' : ''}>发送</button>`,
+      bottomHTML: submitted ? (correct ? `<button class="spec-listening-submit" type="button" data-next-scenario ${!completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit retry" type="button" data-retry-scenario>再试一次</button>`) : '',
       bottomClass: 'listening'
     });
     if (correct && completeReady && !fullPlayed) {
@@ -8516,13 +8523,6 @@ function renderScenario(container, data) {
       fullPlayed = false;
       render();
     });
-    container.querySelector('[data-submit]')?.addEventListener('click', () => {
-      if (!allFilled()) return;
-      submitted = true;
-      recordAttempt(data, allCorrect());
-      if (allCorrect()) setTimeout(() => { completeReady = true; render(); }, 520);
-      render();
-    });
     if (!submitted) {
       container.querySelectorAll('.spec-pill').forEach(btn => btn.addEventListener('click', () => {
         const scrollTop = _captureContentScroll(container);
@@ -8534,8 +8534,11 @@ function renderScenario(container, data) {
         _specPlayAudio(item.label, false);
         slotStates[empty] = { state: 'selected', text: item.label, optionIndex: idx };
         used.add(idx);
-        render();
-        _restoreContentScroll(container, scrollTop);
+        if (allFilled()) submitSelectAnswer();
+        else {
+          render();
+          _restoreContentScroll(container, scrollTop);
+        }
       }));
       container.querySelectorAll('[data-slot-remove]').forEach(btn => btn.addEventListener('click', () => {
         const scrollTop = _captureContentScroll(container);
@@ -8737,6 +8740,11 @@ function renderRegular9876Oral(container, data) {
   let fullPlayed = false;
   const punctuation = _specChunkPunctuation(data.fullSentence, data.chunks);
   const correctChunks = data.chunks.map(chunk => chunk.answer);
+  const sentenceClozeWords = Array.isArray(data.sentenceWords) ? data.sentenceWords : null;
+  const sentenceClozeBlankIndices = Array.isArray(data.blankIndices) ? data.blankIndices : null;
+  const sentenceClozeWordIndexToSlot = sentenceClozeWords && sentenceClozeBlankIndices
+    ? new Map(sentenceClozeBlankIndices.map((wordIndex, slotIndex) => [wordIndex, slotIndex]))
+    : null;
   function buildOptionItems() {
     return _shuffleNotSame(data.options.map((label,index) => ({ label, index })), item => item.label);
   }
@@ -8745,12 +8753,45 @@ function renderRegular9876Oral(container, data) {
   const currentSlot = () => slotStates.findIndex(slot => !slot);
   const topicHTML = () => _specTopicCardHTML(_specChineseLookupHTML(data.promptSegments || []), false, true);
   const completeSentenceHTML = () => _specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || []);
+  const sentenceClozeTokens = () => {
+    if (!sentenceClozeWords) return [];
+    const source = String(data.fullSentence || '');
+    let cursor = 0;
+    return sentenceClozeWords.map(word => {
+      const label = String(word || '');
+      const start = source.indexOf(label, cursor);
+      const prefix = start >= 0 ? source.slice(cursor, start) : '';
+      const end = start >= 0 ? start + label.length : cursor;
+      cursor = Math.max(cursor, end);
+      return { label, prefix };
+    });
+  };
+  const sentenceClozeTail = tokens => _specEscape(String(data.fullSentence || '').slice(tokens.reduce((cursor, word) => cursor + String(word.prefix || '').length + String(word.label || '').length, 0)));
   const visibleStates = () => slotStates.map((slot,index) => {
     if (!slot) return null;
     if (!submitted) return { ...slot, state: 'selected' };
     return { ...slot, state: slot.text === correctChunks[index] ? 'correct' : 'wrong', trailingPunctuation: data.fixedTail ? '' : punctuation[index] || '' };
   });
   const reviewHTML = states => `<div class="spec-select-review">${completeSentenceHTML()}${_specSlotsHTML(states.map(item => ({ zh: '', answer: item?.text || '' })), states, data.chunks.length, { showHints: false, submitted: true })}</div>`;
+  const sentenceClozeHTML = states => {
+    if (!sentenceClozeWordIndexToSlot) return '';
+    const tokens = sentenceClozeTokens();
+    const html = tokens.map((word, wordIndex) => {
+      const prefix = _specEscape(word.prefix || '');
+      const slotIndex = sentenceClozeWordIndexToSlot.get(wordIndex);
+      if (slotIndex == null) return `${prefix}<span class="spec-listening-word">${_specEscape(word.label)}</span>`;
+      const slot = states[slotIndex];
+      const chars = Math.max(2, String(correctChunks[slotIndex] || '').length);
+      if (!slot) {
+        return `${prefix}<span class="spec-listening-word"><button class="spec-listening-word-slot empty ${slotIndex === currentSlot() ? 'active' : ''}" type="button" style="--slot-chars:${chars}" aria-label="第${slotIndex + 1}个空"></button></span>`;
+      }
+      const removable = !submitted;
+      const tag = removable ? 'button' : 'span';
+      const attrs = removable ? ` type="button" data-slot-remove="${slotIndex}"` : '';
+      return `${prefix}<span class="spec-listening-word"><${tag} class="spec-listening-word-slot filled ${slot.state}"${attrs} style="--slot-chars:${chars}">${_specEscape(slot.text)}</${tag}></span>`;
+    }).join('');
+    return `<div class="spec-listening-inline-sentence">${html}${sentenceClozeTail(tokens)}</div>`;
+  };
   const recordChunkStates = () => {
     const feedback = Array.isArray(data.recordFeedback) ? data.recordFeedback : [];
     return correctChunks.map(text => {
@@ -8818,6 +8859,14 @@ function renderRegular9876Oral(container, data) {
       render();
     }));
   };
+  const submitSelectAnswer = () => {
+    if (!allFilled() || submitted) return;
+    const correctNow = allCorrect();
+    submitted = true;
+    recordAttempt(data, correctNow);
+    if (correctNow) setTimeout(() => { completeReady = true; render(); }, 520);
+    render();
+  };
   const renderSelect = () => {
     const correct = submitted && allCorrect();
     const states = visibleStates();
@@ -8826,14 +8875,14 @@ function renderRegular9876Oral(container, data) {
     const slotHTML = _specSlotsHTML(data.chunks, states, Math.max(0,currentSlot()), { showHints: false, canRemove: true, submitted, endPunctuation: data.fixedTail ? ',' : '' });
     const clozeHTML = data.fixedTail
       ? `<div class="spec-regular-cloze-row">${slotHTML}<span class="spec-regular-cloze-fixed">${_specEscape(data.fixedTail)}</span></div>`
-      : slotHTML;
+      : sentenceClozeWordIndexToSlot ? sentenceClozeHTML(states) : slotHTML;
     const poolHTML = optionItems.map(item => _specPillHTML(item.label, item.index, used.has(item.index) ? 'hollow' : '')).join('');
     _specShell(container, {
       exerciseId: data.id,
       progress: stepProgress(),
       screenClass: 'spec-deferred-select-screen spec-regular-9876-select-screen',
       bodyHTML: `<div class="spec-main-stack">${topicHTML()}${completeHTML || review || clozeHTML}${submitted ? '' : `<div class="spec-option-pool">${poolHTML}</div>`}</div>`,
-      bottomHTML: submitted ? (correct ? `<button class="spec-listening-submit" type="button" data-regular-select-next ${!completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit retry" type="button" data-regular-select-retry>再试一次</button>`) : `<button class="spec-listening-submit" type="button" data-regular-select-submit ${!allFilled() ? 'disabled' : ''}>发送</button>`,
+      bottomHTML: submitted ? (correct ? `<button class="spec-listening-submit" type="button" data-regular-select-next ${!completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit retry" type="button" data-regular-select-retry>再试一次</button>`) : '',
       bottomClass: 'listening',
       forceBoardExpand: Boolean(data.forceBoardExpand)
     });
@@ -8851,14 +8900,6 @@ function renderRegular9876Oral(container, data) {
       optionItems = buildOptionItems();
       render();
     });
-    container.querySelector('[data-regular-select-submit]')?.addEventListener('click', () => {
-      if (!allFilled()) return;
-      const correctNow = allCorrect();
-      submitted = true;
-      recordAttempt(data, correctNow);
-      if (correctNow) setTimeout(() => { completeReady = true; render(); }, 520);
-      render();
-    });
     if (!submitted) {
       container.querySelectorAll('.spec-pill').forEach(btn => btn.addEventListener('click', () => {
         const idx = Number(btn.dataset.index);
@@ -8869,7 +8910,8 @@ function renderRegular9876Oral(container, data) {
         _specPlayAudio(item.label, false);
         slotStates[empty] = { state: 'selected', text: item.label, optionIndex: idx };
         used.add(idx);
-        render();
+        if (allFilled()) submitSelectAnswer();
+        else render();
       }));
       container.querySelectorAll('[data-slot-remove]').forEach(btn => btn.addEventListener('click', () => {
         const idx = Number(btn.dataset.slotRemove);
@@ -8909,6 +8951,14 @@ function renderFallbackScenario(container, data) {
   });
   const completeSentenceHTML = () => _specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || []);
   const reviewHTML = states => `<div class="spec-select-review">${completeSentenceHTML()}${_specSlotsHTML(states.map(item => ({ zh: '', answer: item?.text || '' })), states, data.chunks.length, { showHints: false, submitted: true })}</div>`;
+  const submitFallbackAnswer = () => {
+    if (!allFilled() || submitted) return;
+    submitted = true;
+    const correctNow = allCorrect();
+    recordAttempt(data, correctNow);
+    if (correctNow) setTimeout(() => { completeReady = true; render(); }, 520);
+    render();
+  };
   const render = () => {
     const correct = submitted && allCorrect();
     const states = visibleStates();
@@ -8926,7 +8976,7 @@ function renderFallbackScenario(container, data) {
       screenClass: `spec-deferred-select-screen spec-fallback-screen spec-resizable-screen ${data.yellowTopic ? 'spec-oral-fallback-screen' : ''}`,
       boardHandleHTML: `<button class="spec-board-resize-handle" type="button" data-board-resize aria-label="展开或收起题板"></button>`,
       bodyHTML: `<div class="spec-main-stack">${topic}${completeHTML || review || _specSlotsHTML(data.chunks, states, Math.max(0,currentSlot()), { showHints: hintVisible, canRemove: true, submitted })}${submitted ? '' : `<div class="spec-option-pool">${poolHTML}</div>`}</div>`,
-      bottomHTML: submitted ? (correct ? `<button class="spec-listening-submit" type="button" data-fallback-next ${!completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit retry" type="button" data-fallback-retry>再试一次</button>`) : `<button class="spec-listening-submit" type="button" data-fallback-submit ${!allFilled() ? 'disabled' : ''}>发送</button>`,
+      bottomHTML: submitted ? (correct ? `<button class="spec-listening-submit" type="button" data-fallback-next ${!completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit retry" type="button" data-fallback-retry>再试一次</button>`) : '',
       bottomClass: 'listening'
     });
     _bindResizableBoard(container, boardResizeState);
@@ -8957,14 +9007,6 @@ function renderFallbackScenario(container, data) {
       optionItems = buildOptionItems();
       render();
     });
-    container.querySelector('[data-fallback-submit]')?.addEventListener('click', () => {
-      if (!allFilled()) return;
-      submitted = true;
-      const correctNow = allCorrect();
-      recordAttempt(data, correctNow);
-      if (correctNow) setTimeout(() => { completeReady = true; render(); }, 520);
-      render();
-    });
     if (!submitted) {
       container.querySelectorAll('.spec-pill').forEach(btn => btn.addEventListener('click', () => {
         const scrollTop = _captureContentScroll(container);
@@ -8976,8 +9018,11 @@ function renderFallbackScenario(container, data) {
         _specPlayAudio(item.label, false);
         slotStates[empty] = { state: 'selected', text: item.label, optionIndex: idx };
         used.add(idx);
-        render();
-        _restoreContentScroll(container, scrollTop);
+        if (allFilled()) submitFallbackAnswer();
+        else {
+          render();
+          _restoreContentScroll(container, scrollTop);
+        }
       }));
       container.querySelectorAll('[data-slot-remove]').forEach(btn => btn.addEventListener('click', () => {
         const scrollTop = _captureContentScroll(container);
@@ -9049,6 +9094,12 @@ function renderReadingCloze9876(container, data) {
       return `<${tag} class="spec-reading-blank filled ${state}${lookupClass}"${attrs}${lookupAttrs}>${_specEscape(slot.text)}</${tag}>`;
     }).join('');
   };
+  const submitReadingAnswer = () => {
+    if (!allFilled() || submitted) return;
+    submitted = true;
+    recordAttempt(data, allCorrect());
+    render();
+  };
   const render = () => {
     const correct = submitted && allCorrect();
     const optionsHTML = optionItems.map(item => _specPillHTML(item.label, item.index, used.has(item.index) ? 'hollow' : '')).join('');
@@ -9059,7 +9110,7 @@ function renderReadingCloze9876(container, data) {
       sceneHTML: sceneHTML(),
       boardHandleHTML: `<button class="spec-board-resize-handle" type="button" data-board-resize aria-label="展开或收起题板"></button>`,
       bodyHTML: `<div class="spec-main-stack"><p class="spec-context-stem">${_specEscape(data.stem || '请填空：')}</p><section class="spec-reading-card" aria-label="阅读填空"><div class="spec-reading-text ${correct && completeReady ? 'final' : ''}">${readingTextHTML()}</div></section>${submitted ? '' : `<div class="spec-option-pool">${optionsHTML}</div>`}</div>`,
-      bottomHTML: submitted ? (correct ? `<button class="spec-listening-submit" type="button" data-reading-next ${!completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit retry" type="button" data-reading-retry>再试一次</button>`) : `<button class="spec-listening-submit" type="button" data-reading-submit ${!allFilled() ? 'disabled' : ''}>发送</button>`,
+      bottomHTML: submitted ? (correct ? `<button class="spec-listening-submit" type="button" data-reading-next ${!completeReady ? 'disabled' : ''}>继续</button>` : `<button class="spec-listening-submit retry" type="button" data-reading-retry>再试一次</button>`) : '',
       bottomClass: 'listening'
     });
     _bindResizableBoard(container, boardResizeState);
@@ -9080,12 +9131,6 @@ function renderReadingCloze9876(container, data) {
       optionItems = buildOptionItems();
       render();
     });
-    container.querySelector('[data-reading-submit]')?.addEventListener('click', () => {
-      if (!allFilled()) return;
-      submitted = true;
-      recordAttempt(data, allCorrect());
-      render();
-    });
     if (!submitted) {
       container.querySelectorAll('[data-reading-blank]').forEach(btn => btn.addEventListener('click', () => {
         activeBlank = Number(btn.dataset.readingBlank);
@@ -9102,8 +9147,11 @@ function renderReadingCloze9876(container, data) {
         slotStates[empty] = { text: item.label, optionIndex: idx };
         used.add(idx);
         activeBlank = nextEmptyAfter(empty);
-        render();
-        _restoreContentScroll(container, scrollTop);
+        if (allFilled()) submitReadingAnswer();
+        else {
+          render();
+          _restoreContentScroll(container, scrollTop);
+        }
       }));
       container.querySelectorAll('[data-reading-remove]').forEach(btn => btn.addEventListener('click', () => {
         const scrollTop = _captureContentScroll(container);
@@ -9159,11 +9207,10 @@ function renderListening9876(container, data) {
     return (data.words || []).map(word => {
       const label = String(word || '');
       const start = source.indexOf(label, cursor);
+      const prefix = start >= 0 ? source.slice(cursor, start) : '';
       const end = start >= 0 ? start + label.length : cursor;
       cursor = Math.max(cursor, end);
-      const punctuation = source.slice(cursor).match(/^[^\p{L}\p{N}\s]+/u)?.[0] || '';
-      if (punctuation) cursor += punctuation.length;
-      return { label, punctuation };
+      return { label, prefix };
     });
   }
   function activeWaveIndex(progress) {
@@ -9238,27 +9285,28 @@ function renderListening9876(container, data) {
   }
   function sentenceWordHTML(word, wordIndex) {
     const slotIndex = wordIndexToSlot.get(wordIndex);
+    const prefix = _specEscape(word.prefix || '');
     if (slotIndex == null) {
-      return `<span class="spec-listening-word">${_specEscape(word.label)}${word.punctuation ? `<span class="spec-listening-word-punct">${_specEscape(word.punctuation)}</span>` : ''}</span>`;
+      return `${prefix}<span class="spec-listening-word">${_specEscape(word.label)}</span>`;
     }
     const slot = slotStates[slotIndex];
     const chars = Math.max(2, String(answers[slotIndex] || '').length);
-    const punctuation = word.punctuation ? `<span class="spec-listening-word-punct">${_specEscape(word.punctuation)}</span>` : '';
     if (!slot) {
       const active = !submitted && slotIndex === activeEmptySlot();
-      return `<span class="spec-listening-word"><button class="spec-listening-word-slot empty ${active ? 'active' : ''}" type="button" data-listening-slot="${slotIndex}" style="--slot-chars:${chars}" aria-label="选择第${slotIndex + 1}个空"></button>${punctuation}</span>`;
+      return `${prefix}<span class="spec-listening-word"><button class="spec-listening-word-slot empty ${active ? 'active' : ''}" type="button" data-listening-slot="${slotIndex}" style="--slot-chars:${chars}" aria-label="选择第${slotIndex + 1}个空"></button></span>`;
     }
     const state = resultState(slot, slotIndex);
     const removable = !submitted && !slot.locked;
     const tag = removable ? 'button' : 'span';
     const attrs = removable ? ` type="button" data-filled-slot="${slotIndex}"` : '';
-    return `<span class="spec-listening-word"><${tag} class="spec-listening-word-slot filled ${state}"${attrs} style="--slot-chars:${chars}">${_specEscape(slot.text)}</${tag}>${punctuation}</span>`;
+    return `${prefix}<span class="spec-listening-word"><${tag} class="spec-listening-word-slot filled ${state}"${attrs} style="--slot-chars:${chars}">${_specEscape(slot.text)}</${tag}></span>`;
   }
   function bodyHTML() {
     if (submitted && completeReady && (isAllCorrect() || revealComplete)) {
       return `<div class="spec-main-stack">${_specCompleteSentenceHTML(data.fullSentence, data.gloss || {}, true, data.lookupUnits || answers)}</div>`;
     }
-    return `<div class="spec-main-stack"><p class="spec-context-stem">${_specEscape(data.stem || '听音频，补全句子：')}</p><div class="spec-listening-area"><div class="spec-listening-inline-sentence">${sentenceWords.map(sentenceWordHTML).join('')}</div>${submitted ? '' : `<div class="spec-option-pool">${optionOrder.map(optionPillHTML).join('')}</div>`}</div></div>`;
+    const sentenceTail = _specEscape(String(data.fullSentence || '').slice(sentenceWords.reduce((cursor, word) => cursor + String(word.prefix || '').length + String(word.label || '').length, 0)));
+    return `<div class="spec-main-stack"><p class="spec-context-stem">${_specEscape(data.stem || '听音频，补全句子：')}</p><div class="spec-listening-area"><div class="spec-listening-inline-sentence">${sentenceWords.map(sentenceWordHTML).join('')}${sentenceTail}</div>${submitted ? '' : `<div class="spec-option-pool">${optionOrder.map(optionPillHTML).join('')}</div>`}</div></div>`;
   }
   function bottomHTML() {
     if (submitted) {
@@ -11832,6 +11880,8 @@ function listening9876Step(config) {
     config.lookupUnits || config.words
   );
   fallback.forceBoardExpand = true;
+  fallback.sentenceWords = config.words;
+  fallback.blankIndices = blankIndices;
   return {
     id: config.id,
     type: "listening9876",
