@@ -1,0 +1,27 @@
+{
+  "type": "design",
+  "designSystems": [],
+  "primaryDesignSystem": null,
+  "assets": {
+    "v11 word sentence prototype": {
+      "versions": [
+        {
+          "path": "index.html",
+          "createdAt": "2026-06-15T06:22:42.336Z",
+          "status": "needs-review"
+        }
+      ]
+    },
+    "v11 词组关 / 句子关原型": {
+      "versions": [
+        {
+          "path": "index.html",
+          "createdAt": "2026-06-16T14:13:46.776Z",
+          "status": "needs-review"
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-06-15T06:22:42.348Z",
+  "updatedAt": "2026-06-16T14:13:46.784Z"
+}
