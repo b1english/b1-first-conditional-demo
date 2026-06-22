@@ -2860,12 +2860,6 @@ body {
   line-height: 1.2;
   font-weight: 700;
 }
-.spec-context-card .spec-audio-pair {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 2;
-}
 .spec-context-example {
   min-height: calc(2 * 16px * 1.35 + 20px);
   padding: 10px 12px;
@@ -2878,10 +2872,35 @@ body {
   line-height: 1.35;
   font-weight: 400;
 }
+.spec-context-example.with-audio {
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+}
+.spec-context-example.with-audio .spec-audio-pair {
+  position: static;
+  flex: 0 0 auto;
+  gap: 7px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.spec-context-example.with-audio .spec-audio-btn,
+.spec-context-example.with-audio .spec-audio-btn img {
+  width: 24px;
+  height: 24px;
+}
+.spec-context-example.with-audio .spec-audio-separator {
+  height: 20px;
+}
 .spec-context-example-text {
   width: 100%;
   max-width: 252px;
   text-align: left;
+}
+.spec-context-example.with-audio .spec-context-example-text {
+  max-width: none;
+  flex: 1 1 auto;
 }
 .spec-vocab-spelling-card .spec-context-example-text {
   text-align: center;
@@ -3643,9 +3662,34 @@ body {
 }
 .spec-regular-9876-oral-screen .spec-repeat-record-area {
   height: 252px;
+  --oral-control-shift-y: 112px;
+}
+.spec-regular-9876-oral-screen.spec-regular-oral-idle .spec-content,
+.spec-regular-9876-oral-screen.spec-regular-oral-recording .spec-content {
+  bottom: 10px;
+}
+.spec-regular-9876-oral-screen .spec-repeat-record-area.idle-swapped {
+  height: 204px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 22px;
+  padding-top: 28px;
+  transform: translateY(var(--oral-control-shift-y));
+}
+.spec-regular-9876-oral-screen .spec-repeat-record-area.recording-lowered {
+  transform: translateY(var(--oral-control-shift-y));
 }
 .spec-regular-9876-oral-screen .spec-repeat-record-zone {
   top: 118px;
+}
+.spec-regular-9876-oral-screen .spec-repeat-record-area.idle-swapped .spec-repeat-record-zone {
+  position: static;
+  transform: none;
+}
+.spec-regular-9876-oral-screen .spec-repeat-record-area.idle-swapped .spec-repeat-skip-text {
+  margin: 0;
 }
 .spec-regular-9876-oral-screen .spec-repeat-wave-floating {
   top: 18px;
@@ -3705,6 +3749,18 @@ body {
 }
 .spec-listening-choice-stack .spec-stem {
   line-height: 1.58;
+}
+.spec-listening-choice-answer-line {
+  width: 361px;
+  height: 63px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -4px;
+  margin-bottom: 2px;
+}
+.spec-listening-choice-answer-line.filling .spec-context-underline {
+  border-bottom: 0;
 }
 .spec-listening-tight-stem .spec-listening-choice-stack .spec-stem {
   line-height: 1.58;
@@ -7781,8 +7837,10 @@ function renderCurrentStep() {
   }
   RENDERERS[step.type](stage, step);
 }
-function imageScene(data, labelText, extraClass = '') {
-  return `<section class="spec-word-card spec-context-card demo-image-card ${extraClass}" aria-label="例句图片">${_specAudioHTML(data.sentence || data.fullPhrase)}<div class="spec-word-art">${_specImageHTML(data.image)}</div><div class="spec-context-example"><div class="spec-context-example-text">${labelText}</div></div></section>`;
+function imageScene(data, labelText, extraClass = '', options = {}) {
+  const audioText = data.sentence || data.fullPhrase;
+  const audioHTML = options.hideSceneAudio ? '' : _specAudioHTML(audioText);
+  return `<section class="spec-word-card spec-context-card demo-image-card ${extraClass}" aria-label="例句图片"><div class="spec-word-art">${_specImageHTML(data.image)}</div><div class="spec-context-example ${audioHTML ? 'with-audio' : ''}">${audioHTML}<div class="spec-context-example-text">${labelText}</div></div></section>`;
 }
 function renderContextMeaning(container, data) {
   let answerState = 'idle';
@@ -7820,7 +7878,7 @@ function renderSpelling(container, data) {
     const done = allFilled && completeReady;
     const poolHTML = optionItems.map(item => _specPillHTML(item.label, item.index, used.has(item.index) || wrongIndex === item.index ? 'hollow' : '')).join('');
     const slotHTML = `<div class="spec-spelling-line">${_specAudioHTML(data.fullPhrase)}<div class="spec-spelling-slots">${data.chunks.map((chunk,index) => { const slot = slotStates[index]; return `<div class="spec-spelling-slot ${!slot && index === current ? 'active' : ''}">${slot ? `<div class="spec-slot-token ${slot.state}">${_specEscape(slot.text)}</div>` : '<div class="spec-spelling-slot-line"></div>'}</div>`; }).join('')}</div></div>`;
-    _specShell(container, { exerciseId: data.id, progress: stepProgress(), showContinue: done, sceneHTML: imageScene({ ...data, sentence: data.fullPhrase }, _specEscape(data.translation), 'demo-vocab-card'), bodyHTML: `<div class="spec-main-stack"><p class="spec-stem">请翻译：</p>${done ? _specCompleteSentenceHTML(data.fullPhrase, data.gloss || {}, true, data.lookupUnits || []) : slotHTML}${allFilled ? '' : `<div class="spec-option-pool">${poolHTML}</div>`}</div>` });
+    _specShell(container, { exerciseId: data.id, progress: stepProgress(), showContinue: done, sceneHTML: imageScene({ ...data, sentence: data.fullPhrase }, _specEscape(data.translation), 'demo-vocab-card', { hideSceneAudio: true }), bodyHTML: `<div class="spec-main-stack"><p class="spec-stem">请翻译：</p>${done ? _specCompleteSentenceHTML(data.fullPhrase, data.gloss || {}, true, data.lookupUnits || []) : slotHTML}${allFilled ? '' : `<div class="spec-option-pool">${poolHTML}</div>`}</div>` });
     if (!initialFullPlayed) {
       initialFullPlayed = true;
       _playSoon(data.fullPhrase, 420);
@@ -8946,7 +9004,7 @@ function renderOralTranslation(container, data) {
 }
 function renderRegular9876Oral(container, data) {
   let mode = data.startMode || 'record';
-  let recordState = 'idle';
+  let recordState = data.prototypeRecordState || 'idle';
   let optionItems = buildOptionItems();
   const slotStates = data.chunks.map(() => null);
   const used = new Set();
@@ -9063,7 +9121,7 @@ function renderRegular9876Oral(container, data) {
   };
   const recordCenterHTML = () => {
     if (recordState === 'recording') {
-      return `<div class="spec-repeat-record-area">
+      return `<div class="spec-repeat-record-area recording-lowered">
         <div class="spec-repeat-wave-floating"><div class="spec-record-wave" aria-label="录音中"><span style="--bar-height:42px"></span><span style="--bar-height:68px"></span><span style="--bar-height:110px"></span><span style="--bar-height:68px"></span><span style="--bar-height:42px"></span></div></div>
         <div class="spec-repeat-record-zone"><button class="spec-record-main spec-repeat-record-main" type="button" data-regular-oral-record="stop" aria-label="停止录音"><img src="${SPEC_ASSETS.recordStop}" alt=""></button><div class="spec-record-prompt">点击结束</div></div>
       </div>`;
@@ -9072,10 +9130,10 @@ function renderRegular9876Oral(container, data) {
       return `<div class="spec-repeat-record-area spec-repeat-record-scoring"><div class="spec-record-scoring-spinner" aria-label="评分中"></div></div>`;
     }
     if (recordState === 'done') return `<div class="spec-record-panel done"><p class="demo-record-feedback-title">口语回答反馈：</p>${recordSentenceFeedbackHTML()}</div>`;
-    return `<div class="spec-repeat-record-area"><div class="spec-repeat-record-zone"><button class="spec-record-main spec-repeat-record-main" type="button" data-regular-oral-record="start" aria-label="开始录音"><img src="${SPEC_ASSETS.recordStart}" alt=""></button><div class="spec-record-prompt">点击录音</div></div></div>`;
+    return `<div class="spec-repeat-record-area idle-swapped"><button class="spec-repeat-skip-text" type="button" data-regular-oral-record="defer">现在不做口语题</button><div class="spec-repeat-record-zone"><button class="spec-record-main spec-repeat-record-main" type="button" data-regular-oral-record="start" aria-label="开始录音"><img src="${SPEC_ASSETS.recordStart}" alt=""></button><div class="spec-record-prompt">点击录音</div></div></div>`;
   };
   const recordBottomHTML = () => {
-    if (recordState === 'idle') return `<button class="spec-repeat-skip-text" type="button" data-regular-oral-record="defer">现在不做口语题</button>`;
+    if (recordState === 'idle') return '';
     if (recordState !== 'done') return '';
     if (recordAllCorrect()) return `<button class="spec-continue" type="button" data-regular-oral-next>发送</button>`;
     return `<div class="spec-record-actions stacked"><button class="spec-repeat-skip-text" type="button" data-regular-oral-record="defer">现在不做口语题</button><button class="spec-record-retry-wide" type="button" data-regular-oral-record="retry"><span class="spec-record-retry-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M8 22h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>点击重录</button></div>`;
@@ -9095,7 +9153,7 @@ function renderRegular9876Oral(container, data) {
     _specShell(container, {
       exerciseId: data.id,
       progress: stepProgress(),
-      screenClass: 'spec-regular-9876-oral-screen',
+      screenClass: `spec-regular-9876-oral-screen spec-regular-oral-${recordState}`,
       bodyHTML: `<div class="spec-main-stack spec-repeat-stack"><p class="spec-stem">请翻译：</p>${topicHTML()}${recordCenterHTML()}</div>`,
       bottomHTML: recordBottomHTML(),
       bottomClass: recordState === 'done' && recordAllCorrect() ? '' : `repeat ${recordState}`,
@@ -9948,7 +10006,9 @@ function renderListeningBase(container, data, config = {}) {
   };
   const dialogueSceneHTML = () => `<section class="spec-dialogue-listening-scroller" aria-label="对话听力题面"><div class="spec-dialogue-listening-track">${dialogueTurns.slice(0, Math.max(1, visibleDialogueCount)).map(dialogueTurnHTML).join('')}</div></section>`;
   const sceneHTML = () => config.sceneMode === 'dialogue' ? dialogueSceneHTML() : listeningCardHTML(audioItems[0]);
-  const bodyHTML = () => `<div class="spec-main-stack spec-meaning-stack spec-listening-choice-stack"><p class="spec-stem">${_listeningQuestionHTML(data.question, data.questionBoldWords || [])}</p><div class="spec-choice-list">${optionOrder.map((option,index) => _specChoice2HTML(option,index, answered && option === data.correct ? 'correct' : wrongIndex === index ? 'wrong' : answered ? 'disabled' : '')).join('')}</div></div>`;
+  const questionHTML = () => _listeningQuestionHTML(String(data.question || '').replace(/\s*_{3,}\s*/g, ' '), data.questionBoldWords || []);
+  const answerSlotHTML = () => `<div class="spec-listening-choice-answer-line ${answered ? 'filling' : ''}"><div class="spec-context-underline">${answered ? `<span class="spec-word-answer-token correct">${_specEscape(data.correct || '')}</span>` : ''}</div></div>`;
+  const bodyHTML = () => `<div class="spec-main-stack spec-meaning-stack spec-listening-choice-stack"><p class="spec-stem">${questionHTML()}</p>${answerSlotHTML()}<div class="spec-choice-list">${optionOrder.map((option,index) => _specChoice2HTML(option,index, answered && option === data.correct ? 'correct' : wrongIndex === index ? 'wrong' : answered ? 'disabled' : '')).join('')}</div></div>`;
   const analysisHandleHTML = () => `<button class="spec-analysis-toggle" type="button" data-analysis-resize aria-label="${analysisResizeState.expanded ? '收起解析' : '展开解析'}" aria-expanded="${analysisResizeState.expanded ? 'true' : 'false'}"></button>`;
   const analysisHTML = () => {
     return '';
@@ -12735,7 +12795,7 @@ state.unlockedLevel = readUnlockedLevel();
 updateLessonEntryLocks();
 updateDemoScale();
 
-const V11_PROTO_RUNTIME_VERSION = 'demo-sync-20260617-latest-grammar2222';
+const V11_PROTO_RUNTIME_VERSION = 'local-fix-20260622';
 let prototypeCommandSerial = 0;
 
 window.__V11_PROTO__ = {
